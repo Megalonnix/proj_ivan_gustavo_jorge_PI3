@@ -1,12 +1,30 @@
 # ============================================================
+# Importar dependências (sejam elas locais ou em nuvem)
+# Necessário p/ eu e o Prof. executarmos!
+# ============================================================
+
+
+nm_script_buscado <- "3_similaridade_cosseno.R"
+local_scripts_folder <- "C:/Users/Ivan/Documents/Pasta-Documentos-PC-antigo/GITHUB-Meus-Repositorios/PesquisaPI3_2026_v2/proj_ivan_gustavo_jorge(PI3)/estrutura/scriptsR/"
+local_path <- file.path(local_scripts_folder, nm_script_buscado)
+
+if (file.exists(local_path)) { 
+  source(local_path) 
+} else {
+  source(paste0(
+    "https://raw.githubusercontent.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/",
+    "main/estrutura/scriptsR/",
+     nm_script_buscado
+  ))
+}
+
+# ============================================================
 # 5_webscraping_atribuna.R
 # Web Scraping: A Tribuna — Guarujá, Santos, Bertioga
 # ============================================================
 
 if (!require(pacman)) install.packages("pacman")
 pacman::p_load(rvest)
-
-source(file.path("estrutura", "scriptsR", "3_similaridade_cosseno.R"))
 
 # --- Configuração das cidades ---
 URL_DOWNLOADS <- file.path("estrutura", "bancoDeDados")
