@@ -3,21 +3,7 @@
 # Necessário p/ eu e o Prof. executarmos!
 # ============================================================
 
-
-nm_script_buscado <- "1_tokenizacao_stopwords.R"
-local_scripts_folder <- "C:/Users/Ivan/Documents/Pasta-Documentos-PC-antigo/GITHUB-Meus-Repositorios/PesquisaPI3_2026_v2/proj_ivan_gustavo_jorge(PI3)/estrutura/scriptsR/"
-local_path <- file.path(local_scripts_folder, nm_script_buscado)
-
-if (file.exists(local_path)) { 
-  source(local_path) 
-} else {
-  source(paste0(
-    "https://raw.githubusercontent.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/",
-    "main/estrutura/scriptsR/",
-    nm_script_buscado
-  ))
-}
-
+source("https://raw.githubusercontent.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/main/estrutura/scriptsR/1_tokenizacao_stopwords.R")
 
 # ============================================================
 # 4_indice_invertido_stemming.R
@@ -28,8 +14,6 @@ if (file.exists(local_path)) {
 # FASE 3: notícias da A Tribuna (opcional — só roda se os CSVs
 #         estiverem em estrutura/bancoDeDados/)
 # ============================================================
-
-source(file.path("estrutura", "scriptsR", "1_tokenizacao_stopwords.R"))
 
 # ------------------------------------------------------------
 # Funções do módulo
