@@ -24,8 +24,6 @@ if (file.exists(local_path)) {
 # Matrizes Bag-of-Words (BoW) e TF-IDF
 # ============================================================
 
-source(file.path("estrutura", "scriptsR", "1_tokenizacao_stopwords.R"))
-
 get_processed_tokens <- function(nonProcessedTexts,
                                  dontRemoveStopWords = FALSE) {
   lapply(nonProcessedTexts, function(txt) {
