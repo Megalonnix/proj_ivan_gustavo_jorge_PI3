@@ -85,7 +85,7 @@ scrape_wikipedia_articles <- function(urls) {
 salvar_wikipedia_csv <- function(df, output_dir = "estrutura/bancoDeDados") {
   if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
   filename <- file.path(output_dir, "wikipedia_baixada_santista.csv")
-  write.csv(df, filename, row.names = FALSE, fileEncoding = "latin1")
+  write.csv(df, filename, row.names = FALSE, fileEncoding = "latin1") # "latin1" é a melhor opcao, nao UTF-8!
   cat(sprintf("\nCSV salvo em: %s\n", filename))
   filename
 }
@@ -107,12 +107,12 @@ search_wikipedia_news <- function(query, top_n = 3) {
 # TESTES — descomente para rodar (precisa de internet)
 # ============================================================
 #
- resultados <- search_wikipedia_news("porto e economia de Santos", top_n = 10)
+# resultados <- search_wikipedia_news("porto e economia de Santos", top_n = 10)
 #
- URL_DESTINO_CSV_SCRAPING <- file.path(
-   "C:/Users/Ivan/Documents/Pasta-Documentos-PC-antigo/GITHUB-Meus-Repositorios",
-   "PesquisaPI3_2026_v2/proj_ivan_gustavo_jorge(PI3)/estrutura/bancoDeDados"
- )
+# URL_DESTINO_CSV_SCRAPING <- file.path(
+#   "C:/Users/Ivan/Documents/Pasta-Documentos-PC-antigo/GITHUB-Meus-Repositorios",
+#   "PesquisaPI3_2026_v2/proj_ivan_gustavo_jorge(PI3)/estrutura/bancoDeDados"
+# )
 #
- salvar_wikipedia_csv(resultados$dataframe, output_dir = URL_DESTINO_CSV_SCRAPING)
-# # O CSV agora é escrito em UTF-8 (antes era latin1).
+# salvar_wikipedia_csv(resultados$dataframe, output_dir = URL_DESTINO_CSV_SCRAPING)
+# # O CSV agora é escrito em latin1 (antes era UTF-8).
