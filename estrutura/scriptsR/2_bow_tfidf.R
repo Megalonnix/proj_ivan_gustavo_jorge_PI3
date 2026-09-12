@@ -107,13 +107,13 @@ textos <- list("I love you", "Love")
 # # (bate com sklearn.TfidfVectorizer default)
 #
 # # --- Teste 2: corpus PT pequeno, produção (stemming ON) ---
-docs <- list(
-   "O gato comeu o peixe",
-   "O gato comeu a carne",
-   "O cachorro late"
-)
+# docs <- list(
+#   "O gato comeu o peixe",
+#   "O gato comeu a carne",
+#   "O cachorro late"
+# )
 #
-get_BOW_matrix(docs)$matrix
+# get_BOW_matrix(docs)$matrix
 # # 3 colunas (docs), N linhas (radicais). "gato" e "comeu" (radicais
 # # correspondentes) devem aparecer nas duas primeiras colunas.
 #
