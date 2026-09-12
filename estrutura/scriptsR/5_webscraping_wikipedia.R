@@ -8,14 +8,12 @@ source("https://raw.githubusercontent.com/Megalonnix/proj_ivan_gustavo_jorge_PI3
 if (!require(pacman)) install.packages("pacman")
 pacman::p_load(rvest, stringr)
 
-# --- URLs dos 3 assuntos ---
 URLS_WIKIPEDIA <- c(
   guaruja  = "https://pt.wikipedia.org/wiki/Guarujá",
   santos   = "https://pt.wikipedia.org/wiki/Santos",
   bertioga = "https://pt.wikipedia.org/wiki/Bertioga"
 )
 
-# --- Mapeamento de mês (pt) -> número ---
 mes_para_numero <- function(mes) {
   meses <- c(
     janeiro = "01", fevereiro = "02", março = "03", abril = "04",
@@ -25,7 +23,6 @@ mes_para_numero <- function(mes) {
   meses[[tolower(mes)]]
 }
 
-# --- Scraping de UM artigo ---
 scrape_wikipedia_article <- function(url, nome_assunto = NULL) {
   pagina <- read_html(url)
   
@@ -48,16 +45,13 @@ scrape_wikipedia_article <- function(url, nome_assunto = NULL) {
     m <- regmatches(data_raw,
                     regexec("(\\d{1,2}) de (\\S+) de (\\d{4})", data_raw))[[1]]
     if (length(m) == 4) {
-      dia  <- sprintf("%02d", as.integer(m[2]))
-      mes  <- mes_para_numero(m[3])
-      ano  <- m[4]
-      if (!is.null(mes)) {
-        data <- paste(ano, mes, dia, sep = "/")   # 2026/06/29
-      }
+      dia <- sprintf("%02d", as.integer(m[2]))
+      mes <- mes_para_numero(m[3])
+      ano <- m[4]
+      if (!is.null(mes)) data <- paste(ano, mes, dia, sep = "/")
     }
   }
   
-  # Retorna UM data.frame com 1 linha POR parágrafo (sem id ainda)
   data.frame(
     titulo = paste0(ifelse(is.null(nome_assunto), titulo, nome_assunto),
                     " — par. ", seq_along(paragrafos)),
@@ -68,11 +62,10 @@ scrape_wikipedia_article <- function(url, nome_assunto = NULL) {
   )
 }
 
-# --- Scraping de VÁRIOS artigos ---
 scrape_wikipedia_articles <- function(urls) {
   artigos <- lapply(seq_along(urls), function(i) {
     cat(sprintf("\n[%d/%d] Scraping: %s\n", i, length(urls), urls[i]))
-    Sys.sleep(1)  # educado com o servidor
+    Sys.sleep(1)
     tryCatch(
       scrape_wikipedia_article(urls[i], nome_assunto = names(urls)[i]),
       error = function(e) {
@@ -84,23 +77,19 @@ scrape_wikipedia_articles <- function(urls) {
   
   artigos <- artigos[!sapply(artigos, is.null)]
   df <- do.call(rbind, artigos)
-  
-  # Adiciona id sequencial simples (1, 2, ..., n) na primeira coluna
   df <- cbind(id = seq_len(nrow(df)), df)
   rownames(df) <- NULL
   df
 }
 
-# --- Salvar CSV ---
 salvar_wikipedia_csv <- function(df, output_dir = "estrutura/bancoDeDados") {
   if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
   filename <- file.path(output_dir, "wikipedia_baixada_santista.csv")
-  write.csv(df, filename, row.names = FALSE, fileEncoding = "latin1")
+  write.csv(df, filename, row.names = FALSE, fileEncoding = "UTF-8")
   cat(sprintf("\nCSV salvo em: %s\n", filename))
   filename
 }
 
-# --- Busca + recomendação (SEM salvar automaticamente) ---
 search_wikipedia_news <- function(query, top_n = 3) {
   df <- scrape_wikipedia_articles(URLS_WIKIPEDIA)
   if (nrow(df) == 0) { cat("Nada coletado.\n"); return(NULL) }
@@ -114,16 +103,17 @@ search_wikipedia_news <- function(query, top_n = 3) {
   invisible(list(dataframe = df, query = query))
 }
 
-
 # ============================================================
-# BAIXANDO MANUALMENTE OS DADOS DA WIKIPEDIA
+# TESTES — descomente para rodar (precisa de internet)
 # ============================================================
-
-resultados <- search_wikipedia_news("porto e economia de Santos", top_n = 10)
-
-URL_DESTINO_CSV_SCRAPING <- "C:/Users/Ivan/Documents/Pasta-Documentos-PC-antigo/GITHUB-Meus-Repositorios/PesquisaPI3_2026_v2/proj_ivan_gustavo_jorge(PI3)/estrutura/bancoDeDados"
-
-salvar_wikipedia_csv(
-  resultados$dataframe,
-  output_dir = URL_DESTINO_CSV_SCRAPING
-)
+#
+# resultados <- search_wikipedia_news("porto e economia de Santos", top_n = 10)
+#
+# URL_DESTINO_CSV_SCRAPING <- file.path(
+#   "C:/Users/Ivan/Documents/Pasta-Documentos-PC-antigo/GITHUB-Meus-Repositorios",
+#   "PesquisaPI3_2026_v2/proj_ivan_gustavo_jorge(PI3)/estrutura/bancoDeDados"
+# )
+#
+# salvar_wikipedia_csv(resultados$dataframe,
+#                      output_dir = URL_DESTINO_CSV_SCRAPING)
+# # O CSV agora é escrito em UTF-8 (antes era latin1).
