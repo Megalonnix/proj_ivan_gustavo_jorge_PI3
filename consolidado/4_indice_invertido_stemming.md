@@ -1,56 +1,114 @@
 # **Módulo 4 — Índice Invertido + Stemming + Buscas Booleanas**
 
+📄 Script: [`estrutura/scriptsR/4_indice_invertido_stemming.R`](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/estrutura/scriptsR/4_indice_invertido_stemming.R)
+
 ## Objetivo
 Construir um índice invertido com pseudo-radicais (via `SnowballC`) e implementar buscas booleanas **AND** e **OR** sobre o corpus.
 
-## Arquivo
-`estrutura/scriptsR/4_indice_invertido_stemming.R`
+## Pipeline
+Este módulo usa **sempre** `processar_texto()` — o pipeline de **produção**, com stemming ligado e stopwords PT removidas. Não há opção de desligar o stemming aqui: o índice invertido do professor é definido sobre radicais.
 
 ## Funções
 
-- `construir_indice_invertido(docs)` — percorre cada documento, aplica `processar_texto()` (stemming + stopwords PT) e registra o doc_id em cada pseudo-radical.
-- `buscar_AND(consulta, indice)` — `Reduce(intersect, ...)` sobre as listas dos termos da consulta.
-- `buscar_OR(consulta, indice)` — `Reduce(union, ...)`.
-- `tabela_indice(postings)` — `data.frame` com Radical / Frequência / Documentos, ordenado alfabeticamente.
+### `construir_indice_invertido(docs, aplicar_stopwords = TRUE)`
+Percorre cada documento, aplica `processar_texto()`, pega os radicais **únicos** de cada documento (evitando duplicatas na lista) e registra o `doc_id` em cada pseudo-radical.
 
-## Saída completa do script
+Retorna uma `list()` — os nomes são o **dicionário** e cada elemento é a **lista de postagens** daquele radical.
+
+### `preparar_consulta(texto, aplicar_stopwords = TRUE)`
+Aplica o mesmo pré-processamento na consulta. **Regra de ouro:** a consulta precisa passar pelo mesmo pipeline dos documentos, senão `"Documentos"` não casa com `"documentos"`.
+
+### `buscar_AND(consulta, indice, aplicar_stopwords = TRUE)`
+`Reduce(intersect, ...)` sobre as listas dos termos da consulta. Retorna documentos que contêm **todos** os termos.
+
+### `buscar_OR(consulta, indice, aplicar_stopwords = TRUE)`
+`Reduce(union, ...)`. Retorna documentos que contêm **pelo menos um** termo.
+
+### `tabela_indice(postings)`
+`data.frame` com colunas `Radical` / `Frequencia_Docs` / `Documentos`, ordenado alfabeticamente.
+
+---
+
+## Testes
+
+Os blocos de teste abaixo ficam comentados no fim do `.R` e podem ser executados descomentando-os.
+
+### Teste 1 — Corpus mínimo em PT (didático)
+
+```r
+docs_teste <- c(
+  doc1 = "O gato comeu peixe",
+  doc2 = "Os gatos comem peixe",
+  doc3 = "O cachorro come carne"
+)
+
+postings <- construir_indice_invertido(docs_teste)
+
+postings[["gat"]]
+# [1] "doc1" "doc2"     (ambos contêm "gato"/"gatos" → mesmo radical)
+
+postings[["peix"]]
+# [1] "doc1" "doc2"
+
+postings[["carn"]]
+# [1] "doc3"
+```
+
+Note como o stemming colapsa `"gato"` e `"gatos"` no mesmo radical `"gat"` — é exatamente esse o ganho de recall.
+
+### Teste 2 — Buscas booleanas
+
+```r
+buscar_AND("peixe gato", postings)
+# [1] "doc1" "doc2"   (interseção)
+
+buscar_OR("gato carne", postings)
+# [1] "doc1" "doc2" "doc3"   (união)
+```
+
+### Teste 3 — Tabela do índice
+
+```r
+tabela_indice(postings)
+```
 
 ```
-============================================================
-FASE 1 — Corpus de teste (gato / peixe / carne)
-============================================================
-
--- Postings --
-gat  : doc1 doc2
-peix : doc1 doc2
-com  : doc1 doc2 doc3
-
--- Buscas booleanas --
-AND ('peixe gato') : doc1 doc2
-OR  ('gato comeu') : doc1 doc2 doc3
-
--- Tabela --
         Radical Frequencia_Docs       Documentos
 cachorr cachorr               1             doc3
 carn       carn               1             doc3
 com         com               3 doc1, doc2, doc3
 gat         gat               2       doc1, doc2
 peix       peix               2       doc1, doc2
+```
 
-============================================================
-FASE 2 — Corpus da Aula 01 (8 documentos do professor)
-============================================================
+### Teste 4 — Corpus da Aula 01 (8 documentos)
 
--- Postings --
-recuperaca : d1 d4
-acel       : d5
-captur     : d6
+```r
+docs_aula01 <- c(
+  d1 = "Recuperacao de Informacao: ORDENA documentos, por relevancia!",
+  d2 = "O modelo de espaco-vetorial representa documentos (como vetores).",
+  d3 = "BM25 e um modelo probabilistico de ranqueamento de texto.",
+  d4 = "Aprendizado estatistico fundamenta a recuperacao moderna.",
+  d5 = "O indice invertido acelera a busca em muitos documentos.",
+  d6 = "Embeddings capturam a semantica de palavras e documentos.",
+  d7 = "A avaliacao mede a relevancia dos resultados da busca.",
+  d8 = "Ciencia de dados combina estatistica e programacao."
+)
 
--- Buscas booleanas --
-AND ('modelo probabilistico') : d3
-OR  ('modelo probabilistico') : d2 d3
+postings_aula01 <- construir_indice_invertido(docs_aula01)
 
--- Tabela (10 primeiros) --
+buscar_AND("modelo probabilistico", postings_aula01)
+# [1] "d3"
+
+buscar_OR("modelo probabilistico", postings_aula01)
+# [1] "d2" "d3"
+
+head(tabela_indice(postings_aula01), 10)
+```
+
+**Saída esperada (10 primeiros):**
+
+```
           Radical Frequencia_Docs     Documentos
 acel         acel               1             d5
 aprendiz aprendiz               1             d4
@@ -62,20 +120,15 @@ cienc       cienc               1             d8
 combin     combin               1             d8
 dad           dad               1             d8
 document document               4 d1, d2, d5, d6
-
-============================================================
-FASE 3 — Notícias da A Tribuna (opcional)
-============================================================
-
-[SKIP] Arquivo não encontrado:
-       estrutura/bancoDeDados/noticias_santos.csv
-      Rode o módulo 5 (webscraping) para gerar os CSVs,
-      ou copie-os do projeto antigo para essa pasta.
 ```
 
-A FASE 3 só imprimirá os postings reais (`sant`, `funcionari`, etc.) se o CSV estiver presente em `estrutura/bancoDeDados/`.
+`document` é o radical mais comum (aparece em 4 dos 8 documentos) — é exatamente o termo de menor IDF no corpus. É esse tipo de informação que vai alimentar o BM25 no Módulo 6.
+
+---
 
 ## Observações
 
 - O stemming do `SnowballC` para português é agressivo; alguns pseudo-radicais ficam estranhos (ex.: `"terçafeir"`, `"cã"`), o que é normal e esperado.
-- Vale considerar um filtro de comprimento mínimo de token (≥ 3) em iterações futuras.
+- A regra de ouro do índice invertido: **a consulta precisa passar pelo mesmo pré-processamento dos documentos**. Se um lado faz stemming e o outro não, nenhum termo casa.
+- `Reduce(intersect, listas)` com **uma só lista** retorna ela própria; com lista vazia, retorna `character(0)`. As checagens de `length(termos) == 0` e `length(listas) == 0` cobrem esses casos.
+- O índice invertido guarda **quais** documentos contêm o termo, não **quantas vezes**. Essa decisão é intencional: para o BM25 (Módulo 6) a contagem será recuperada diretamente da matriz BoW do Módulo 2, que já tem essa informação.
