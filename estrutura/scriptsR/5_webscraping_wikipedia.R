@@ -15,39 +15,53 @@ URLS_WIKIPEDIA <- c(
   bertioga = "https://pt.wikipedia.org/wiki/Bertioga"
 )
 
+# --- Mapeamento de mês (pt) -> número ---
+mes_para_numero <- function(mes) {
+  meses <- c(
+    janeiro = "01", fevereiro = "02", março = "03", abril = "04",
+    maio = "05", junho = "06", julho = "07", agosto = "08",
+    setembro = "09", outubro = "10", novembro = "11", dezembro = "12"
+  )
+  meses[[tolower(mes)]]
+}
+
 # --- Scraping de UM artigo ---
 scrape_wikipedia_article <- function(url, nome_assunto = NULL) {
   pagina <- read_html(url)
-
-  # Título
+  
   titulo <- pagina %>%
     html_element("h1#firstHeading") %>%
     html_text(trim = TRUE)
-
-  # Corpo do artigo: parágrafos dentro de #mw-content-text
+  
   paragrafos <- pagina %>%
     html_elements("#mw-content-text p") %>%
     html_text(trim = TRUE)
-
-  # Remove parágrafos vazios ou muito curtos (lixo de navegação)
+  
   paragrafos <- paragrafos[nchar(paragrafos) > 30]
-  texto <- paste(paragrafos, collapse = " ")
-
-  # Data: última modificação da página
+  
   data_raw <- pagina %>%
     html_element("#footer-info-lastmod") %>%
     html_text(trim = TRUE)
-
-  # Extrai algo como "12 de setembro de 2026" com regex simples
-  data <- if (!is.na(data_raw)) {
-    str_extract(data_raw, "\\d{1,2} de \\w+ de \\d{4}")
-  } else {
-    NA_character_
+  
+  data <- NA_character_
+  if (!is.na(data_raw)) {
+    m <- regmatches(data_raw,
+                    regexec("(\\d{1,2}) de (\\S+) de (\\d{4})", data_raw))[[1]]
+    if (length(m) == 4) {
+      dia  <- sprintf("%02d", as.integer(m[2]))
+      mes  <- mes_para_numero(m[3])
+      ano  <- m[4]
+      if (!is.null(mes)) {
+        data <- paste(ano, mes, dia, sep = "/")   # 2026/06/29
+      }
+    }
   }
-
+  
+  # Retorna UM data.frame com 1 linha POR parágrafo (sem id ainda)
   data.frame(
-    titulo = ifelse(is.null(nome_assunto), titulo, nome_assunto),
-    texto  = texto,
+    titulo = paste0(ifelse(is.null(nome_assunto), titulo, nome_assunto),
+                    " — par. ", seq_along(paragrafos)),
+    texto  = paragrafos,
     data   = data,
     url    = url,
     stringsAsFactors = FALSE
@@ -67,51 +81,49 @@ scrape_wikipedia_articles <- function(urls) {
       }
     )
   })
-
+  
   artigos <- artigos[!sapply(artigos, is.null)]
-  do.call(rbind, artigos)
+  df <- do.call(rbind, artigos)
+  
+  # Adiciona id sequencial simples (1, 2, ..., n) na primeira coluna
+  df <- cbind(id = seq_len(nrow(df)), df)
+  rownames(df) <- NULL
+  df
 }
 
 # --- Salvar CSV ---
 salvar_wikipedia_csv <- function(df, output_dir = "estrutura/bancoDeDados") {
   if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
   filename <- file.path(output_dir, "wikipedia_baixada_santista.csv")
-  write.csv(df, filename, row.names = FALSE, fileEncoding = "UTF-8")
+  write.csv(df, filename, row.names = FALSE, fileEncoding = "latin1")
   cat(sprintf("\nCSV salvo em: %s\n", filename))
   filename
 }
 
-# --- Busca + salvamento + recomendação ---
-search_wikipedia_news <- function(query, top_n = 3,
-                                  output_dir = "estrutura/bancoDeDados") {
+# --- Busca + recomendação (SEM salvar automaticamente) ---
+search_wikipedia_news <- function(query, top_n = 3) {
   df <- scrape_wikipedia_articles(URLS_WIKIPEDIA)
   if (nrow(df) == 0) { cat("Nada coletado.\n"); return(NULL) }
-
-  salvar_wikipedia_csv(df, output_dir)
-
-  # Usa o TEXTO (não o título) para a recomendação
+  
   executar_recomendacao_ao_usuario(
     fonteDocumentos         = as.list(df$texto),
     queryEscritaPeloUsuario = query,
     top_n                   = top_n
   )
-
+  
   invisible(list(dataframe = df, query = query))
 }
 
-# --- Exemplo de uso ---
-# resultados <- search_wikipedia_news(
-#   query = "porto e economia de Santos",
-#   top_n = 3
-# )
 
+# ============================================================
+# BAIXANDO MANUALMENTE OS DADOS DA WIKIPEDIA
+# ============================================================
 
-# BAIXANDO MANUALMENTE OS DADOS DA WIKIPEDIA!!!
+resultados <- search_wikipedia_news("porto e economia de Santos", top_n = 10)
 
-# resultados <- search_wikipedia_news("porto e economia de Santos", top_n = 3)
+URL_DESTINO_CSV_SCRAPING <- "C:/Users/Ivan/Documents/Pasta-Documentos-PC-antigo/GITHUB-Meus-Repositorios/PesquisaPI3_2026_v2/proj_ivan_gustavo_jorge(PI3)/estrutura/bancoDeDados"
 
-# URL_DESTINO_CSV_SCRAPING <- "C:/Users/Ivan/Documents/Pasta-Documentos-PC-antigo/GITHUB-Meus-Repositorios/PesquisaPI3_2026_v2/proj_ivan_gustavo_jorge(PI3)/estrutura/bancoDeDados"
-
-# salvar_wikipedia_csv(
-#   resultados$dataframe, 
-#   output_dir = URL_DESTINO_CSV_SCRAPING)
+salvar_wikipedia_csv(
+  resultados$dataframe,
+  output_dir = URL_DESTINO_CSV_SCRAPING
+)
