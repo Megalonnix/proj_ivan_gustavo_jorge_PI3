@@ -104,3 +104,19 @@ search_wikipedia_news <- function(query, top_n = 3,
 #   query = "porto e economia de Santos",
 #   top_n = 3
 # )
+
+# source("https://raw.githubusercontent.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/main/estrutura/scriptsR/5_webscraping_wikipedia.R")
+# resultados <- search_wikipedia_news("porto e economia de Santos", top_n = 3)
+# salvar_wikipedia_csv(resultados$dataframe)
+
+pacman::p_load(rvest, stringr, here)
+
+salvar_wikipedia_csv <- function(df, output_dir = here::here("estrutura", "bancoDeDados")) {
+  if (!dir.exists(output_dir)) {
+    dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+  }
+  filename <- file.path(output_dir, "wikipedia_baixada_santista.csv")
+  write.csv(df, filename, row.names = FALSE, fileEncoding = "UTF-8")
+  cat(sprintf("\n>>> CSV salvo em: %s\n", normalizePath(filename)))
+  filename
+}
