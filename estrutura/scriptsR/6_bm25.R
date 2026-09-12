@@ -49,7 +49,12 @@ bm25_score <- function(query_tokens, tf_matrix, idf_vector,
   for (t in unique(query_tokens)) {
     if (!(t %in% vocab)) next
     f_vec  <- tf_matrix[t, ]
-    scores <- scores + idf_vector[t] * (f_vec * (k1 + 1)) / (f_vec + K)
+    # scores <- scores + idf_vector[t] * (f_vec * (k1 + 1)) / (f_vec + K)
+    scores <- scores + ifelse(
+      f_vec > 0,
+      idf_vector[t] * (f_vec * (k1 + 1)) / (f_vec + K),
+      0
+    )
   }
   scores
 }
@@ -69,14 +74,23 @@ bm25_rank <- function(query, textos,
   idf     <- idf_bm25(df, N)
   d_len   <- colSums(bow)
   avgdl   <- mean(d_len)
-
+  
   q_tokens <- if (usar_stemming) {
     processar_texto(query, aplicar_stopwords)
   } else {
     remove_stopwords(query, aplicar_stopwords)
   }
-
-  bm25_score(q_tokens, bow, idf, d_len, avgdl, k1, b)
+  
+  scores <- bm25_score(q_tokens, bow, idf, d_len, avgdl, k1, b)
+  
+  # Se o corpus veio nomeado (ex.: d1, d2, ...), preserva os nomes
+  # originais em vez dos textos processados (que é o que get_BOW_matrix
+  # usa por padrão como rótulo das colunas).
+  if (!is.null(names(textos))) {
+    names(scores) <- names(textos)
+  }
+  
+  scores
 }
 
 # ------------------------------------------------------------
@@ -145,60 +159,60 @@ comparar_tfidf_bm25 <- function(query, docs, top_n = 5,
 # TESTES — descomente para rodar
 # ============================================================
 #
-# docs_aula01 <- list(
-#   d1 = "recuperacao de informacao ordena documentos por relevancia",
-#   d2 = "o modelo de espaco vetorial representa documentos como vetores",
-#   d3 = "bm25 e um modelo probabilistico de ranqueamento de texto",
-#   d4 = "aprendizado estatistico fundamenta a recuperacao moderna",
-#   d5 = "o indice invertido acelera a busca em muitos documentos",
-#   d6 = "embeddings capturam a semantica de palavras e documentos",
-#   d7 = "a avaliacao mede a relevancia dos resultados da busca",
-#   d8 = "ciencia de dados combina estatistica e programacao"
-# )
+ docs_aula01 <- list(
+   d1 = "recuperacao de informacao ordena documentos por relevancia",
+   d2 = "o modelo de espaco vetorial representa documentos como vetores",
+   d3 = "bm25 e um modelo probabilistico de ranqueamento de texto",
+   d4 = "aprendizado estatistico fundamenta a recuperacao moderna",
+   d5 = "o indice invertido acelera a busca em muitos documentos",
+   d6 = "embeddings capturam a semantica de palavras e documentos",
+   d7 = "a avaliacao mede a relevancia dos resultados da busca",
+   d8 = "ciencia de dados combina estatistica e programacao"
+ )
 #
 # # --- Teste 1: reproduzir o slide do professor (Aula 04, pag. 36) ---
 # # O professor NÃO usa stemming nem remove stopwords.
-# scores <- bm25_rank("modelo de recuperacao", docs_aula01,
-#                     k1 = 1.2, b = 0.75,
-#                     aplicar_stopwords = FALSE,
-#                     usar_stemming     = FALSE)
-# round(sort(scores, decreasing = TRUE), 3)
+ scores <- bm25_rank("modelo de recuperacao", docs_aula01,
+                     k1 = 1.2, b = 0.75,
+                     aplicar_stopwords = FALSE,
+                     usar_stemming     = FALSE)
+round(sort(scores, decreasing = TRUE), 3)
 # # Esperado (slide 36):
 # #   d3    d1    d2    d4    d8    d6    d5    d7
 # # 1.873 1.869 1.687 1.427 0.519 0.492 0.000 0.000
 #
 # # --- Teste 2: mesmo corpus, pipeline padrão do projeto (ON/ON) ---
-# executar_bm25_ao_usuario(
-#   fonteDocumentos         = docs_aula01,
-#   queryEscritaPeloUsuario = "modelo de recuperacao",
-#   top_n                   = 5
-# )
+ executar_bm25_ao_usuario(
+   fonteDocumentos         = docs_aula01,
+   queryEscritaPeloUsuario = "modelo de recuperacao",
+   top_n                   = 5
+ )
 # # A ORDEM deve ser parecida com a do Teste 1,
 # # mas os valores diferem (stemming colapsa variações,
 # # stopwords saem do vocabulário e alteram IDF/avgdl).
 #
 # # --- Teste 3: saturação isolada (sem tamanho: b = 0) ---
-# sat <- function(f, k1 = 1.2) (f * (k1 + 1)) / (f + k1)
-# round(sapply(1:5, sat), 3)
+ sat <- function(f, k1 = 1.2) (f * (k1 + 1)) / (f + k1)
+ round(sapply(1:5, sat), 3)
 # # Esperado: 1.000 1.375 1.571 1.692 1.774
 # # (bate com o slide 37: "da 1ª p/ 2ª o ganho é grande, depois diminui")
 #
 # # --- Teste 4: sensibilidade a k1 ---
-# for (k in c(0, 0.5, 1.2, 2.0)) {
-#   s <- bm25_rank("modelo de recuperacao", docs_aula01,
-#                  k1 = k, b = 0.75,
-#                  aplicar_stopwords = FALSE,
-#                  usar_stemming     = FALSE)
-#   top3 <- paste(names(sort(s, decreasing = TRUE))[1:3], collapse = " ")
-#   cat(sprintf("k1 = %.1f  |  top 3: %s\n", k, top3))
-# }
+ for (k in c(0, 0.5, 1.2, 2.0)) {
+   s <- bm25_rank("modelo de recuperacao", docs_aula01,
+                  k1 = k, b = 0.75,
+                  aplicar_stopwords = FALSE,
+                  usar_stemming     = FALSE)
+   top3 <- paste(names(sort(s, decreasing = TRUE))[1:3], collapse = " ")
+   cat(sprintf("k1 = %.1f  |  top 3: %s\n", k, top3))
+ }
 # # Esperado:
 # #   k1 = 0   → ranking degenerado (busca booleana)
 # #   k1 grande → ranking se aproxima do TF-IDF
 #
 # # --- Teste 5: comparação lado a lado TF-IDF vs BM25 ---
-# comparar_tfidf_bm25(
-#   query = "modelo de recuperacao",
-#   docs  = docs_aula01,
-#   top_n = 5
-# )
+ comparar_tfidf_bm25(
+   query = "modelo de recuperacao",
+   docs  = docs_aula01,
+   top_n = 5
+ )
