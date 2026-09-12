@@ -119,7 +119,7 @@ executar_recomendacao_ao_usuario <- function(fonteDocumentos,
 # executar_recomendacao_ao_usuario(
 #   fonteDocumentos         = receitas,
 #   queryEscritaPeloUsuario = "receita de bolo de chocolate",
-#   top_n                   = 3
+#   top_n                   = 5
 # )
 # # Esperado: os 2 primeiros são sobre bolo; "cafe com chocolate"
 # # vem em terceiro por causa de "chocolate".
