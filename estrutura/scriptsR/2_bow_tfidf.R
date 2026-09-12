@@ -89,17 +89,17 @@ get_TFIDF_matrix <- function(texts,
 # # --- Teste 1: corpus mínimo em INGLÊS, sem stemming (bate com sklearn) ---
 textos <- list("I love you", "Love")
 #
-# get_BOW_matrix(textos,
-#                aplicar_stopwords = FALSE,
-#                usar_stemming     = FALSE)$matrix
+get_BOW_matrix(textos,
+               aplicar_stopwords = FALSE,
+               usar_stemming     = FALSE)$matrix
 # #      i love you love
 # # i     1          0
 # # love  1          1
 # # you   1          0
 #
-# get_TFIDF_matrix(textos,
-#                  aplicar_stopwords = FALSE,
-#                  usar_stemming     = FALSE)$matrix
+get_TFIDF_matrix(textos,
+                 aplicar_stopwords = FALSE,
+                 usar_stemming     = FALSE)$matrix
 # #      i love you     love
 # # i     0.631668     0
 # # love  0.449436     1
@@ -107,16 +107,16 @@ textos <- list("I love you", "Love")
 # # (bate com sklearn.TfidfVectorizer default)
 #
 # # --- Teste 2: corpus PT pequeno, produção (stemming ON) ---
-# docs <- list(
-#   "O gato comeu o peixe",
-#   "O gato comeu a carne",
-#   "O cachorro late"
-# )
+docs <- list(
+  "O gato comeu o peixe",
+  "O gato comeu a carne",
+  "O cachorro late"
+)
 #
-# get_BOW_matrix(docs)$matrix
+get_BOW_matrix(docs)$matrix
 # # 3 colunas (docs), N linhas (radicais). "gato" e "comeu" (radicais
 # # correspondentes) devem aparecer nas duas primeiras colunas.
 #
 # # --- Teste 3: mesmo corpus, sem stemming (didático) ---
-# get_BOW_matrix(docs, usar_stemming = FALSE)$matrix
+get_BOW_matrix(docs, usar_stemming = FALSE)$matrix
 # # Compare com o Teste 2: aqui aparecem "gato", "comeu", etc. inteiros.

@@ -97,47 +97,47 @@ executar_recomendacao_ao_usuario <- function(fonteDocumentos,
 # ============================================================
 #
 # # --- Teste 1: matriz de similaridade de um corpus pequeno ---
-# textos <- list(
-#   "Amo comer pizza",
-#   "Amo comer hamburguer",
-#   "Odeio lutar"
-# )
-# sim <- getCossine_Similarity_matrix(textos)
-# round(sim, 3)
+textos <- list(
+  "Amo comer pizza",
+  "Amo comer hamburguer",
+  "Odeio lutar"
+)
+sim <- getCossine_Similarity_matrix(textos)
+round(sim, 3)
 # # Diagonal = 1.000 sempre.
 # # Texto 1 vs 2 deve ter score ALTO (compartilham "amo" e "comer").
 # # Texto 3 vs 1/2 deve ter score BAIXO (nada em comum).
 #
 # # --- Teste 2: recomendação (corpus de receitas) ---
-# receitas <- list(
-#   "bolo de chocolate",
-#   "bolo de nozes e chocolate",
-#   "cafe com chocolate",
-#   "cookies 'n cream e bolo de chocolate, receita facil",
-#   "hamburguer vegano com ovos e bacon"
-# )
-# executar_recomendacao_ao_usuario(
-#   fonteDocumentos         = receitas,
-#   queryEscritaPeloUsuario = "receita de bolo de chocolate",
-#   top_n                   = 5
-# )
+receitas <- list(
+  "bolo de chocolate",
+  "bolo de nozes e chocolate",
+  "cafe com chocolate",
+  "cookies 'n cream e bolo de chocolate, receita facil",
+  "hamburguer vegano com ovos e bacon"
+)
+executar_recomendacao_ao_usuario(
+  fonteDocumentos         = receitas,
+  queryEscritaPeloUsuario = "receita de bolo de chocolate",
+  top_n                   = 5
+)
 # # Esperado: os 2 primeiros são sobre bolo; "cafe com chocolate"
 # # vem em terceiro por causa de "chocolate".
 #
 # # --- Teste 3: corpus da Aula 01 (8 documentos) ---
-# docs <- list(
-#   d1 = "recuperacao de informacao ordena documentos por relevancia",
-#   d2 = "o modelo de espaco vetorial representa documentos como vetores",
-#   d3 = "bm25 e um modelo probabilistico de ranqueamento de texto",
-#   d4 = "aprendizado estatistico fundamenta a recuperacao moderna",
-#   d5 = "o indice invertido acelera a busca em muitos documentos",
-#   d6 = "embeddings capturam a semantica de palavras e documentos",
-#   d7 = "a avaliacao mede a relevancia dos resultados da busca",
-#   d8 = "ciencia de dados combina estatistica e programacao"
-# )
-# executar_recomendacao_ao_usuario(
-#   fonteDocumentos         = docs,
-#   queryEscritaPeloUsuario = "modelo de espaco vetorial",
-#   top_n                   = 3
-# )
+docs <- list(
+  d1 = "recuperacao de informacao ordena documentos por relevancia",
+  d2 = "o modelo de espaco vetorial representa documentos como vetores",
+  d3 = "bm25 e um modelo probabilistico de ranqueamento de texto",
+  d4 = "aprendizado estatistico fundamenta a recuperacao moderna",
+  d5 = "o indice invertido acelera a busca em muitos documentos",
+  d6 = "embeddings capturam a semantica de palavras e documentos",
+  d7 = "a avaliacao mede a relevancia dos resultados da busca",
+  d8 = "ciencia de dados combina estatistica e programacao"
+)
+executar_recomendacao_ao_usuario(
+  fonteDocumentos         = docs,
+  queryEscritaPeloUsuario = "modelo de espaco vetorial",
+  top_n                   = 3
+)
 # # Esperado: d2 em primeiro (contém todos os termos da query).

@@ -58,44 +58,44 @@ tabela_indice <- function(postings) {
 # ============================================================
 #
 # # --- Teste 1: corpus mínimo em PT (didático) ---
-# docs_teste <- c(
-#   doc1 = "O gato comeu peixe",
-#   doc2 = "Os gatos comem peixe",
-#   doc3 = "O cachorro come carne"
-# )
+docs_teste <- c(
+  doc1 = "O gato comeu peixe",
+  doc2 = "Os gatos comem peixe",
+  doc3 = "O cachorro come carne"
+)
 #
-# postings <- construir_indice_invertido(docs_teste)
+postings <- construir_indice_invertido(docs_teste)
 #
-# postings[["gat"]]
+postings[["gat"]]
 # # Deve conter doc1 e doc2 (ambos contêm "gato"/"gatos").
 #
-# postings[["peix"]]
+postings[["peix"]]
 # # Deve conter doc1 e doc2.
 #
-# postings[["carn"]]
+postings[["carn"]]
 # # Deve conter apenas doc3.
 #
 # # --- Teste 2: buscas booleanas ---
-# buscar_AND("peixe gato", postings)   # interseção: doc1, doc2
-# buscar_OR("gato carne",  postings)   # união:       doc1, doc2, doc3
+buscar_AND("peixe gato", postings)   # interseção: doc1, doc2
+buscar_OR("gato carne",  postings)   # união:       doc1, doc2, doc3
 #
 # # --- Teste 3: tabela do índice ---
-# tabela_indice(postings)
+tabela_indice(postings)
 #
 # # --- Teste 4: corpus de 8 documentos da Aula 01 ---
-# docs_aula01 <- c(
-#   d1 = "Recuperacao de Informacao: ORDENA documentos, por relevancia!",
-#   d2 = "O modelo de espaco-vetorial representa documentos (como vetores).",
-#   d3 = "BM25 e um modelo probabilistico de ranqueamento de texto.",
-#   d4 = "Aprendizado estatistico fundamenta a recuperacao moderna.",
-#   d5 = "O indice invertido acelera a busca em muitos documentos.",
-#   d6 = "Embeddings capturam a semantica de palavras e documentos.",
-#   d7 = "A avaliacao mede a relevancia dos resultados da busca.",
-#   d8 = "Ciencia de dados combina estatistica e programacao."
-# )
-# postings_aula01 <- construir_indice_invertido(docs_aula01)
+docs_aula01 <- c(
+  d1 = "Recuperacao de Informacao: ORDENA documentos, por relevancia!",
+  d2 = "O modelo de espaco-vetorial representa documentos (como vetores).",
+  d3 = "BM25 e um modelo probabilistico de ranqueamento de texto.",
+  d4 = "Aprendizado estatistico fundamenta a recuperacao moderna.",
+  d5 = "O indice invertido acelera a busca em muitos documentos.",
+  d6 = "Embeddings capturam a semantica de palavras e documentos.",
+  d7 = "A avaliacao mede a relevancia dos resultados da busca.",
+  d8 = "Ciencia de dados combina estatistica e programacao."
+)
+postings_aula01 <- construir_indice_invertido(docs_aula01)
 #
-# buscar_AND("modelo probabilistico", postings_aula01)  # deve retornar d3
-# buscar_OR ("modelo probabilistico", postings_aula01)  # deve retornar d2, d3
+buscar_AND("modelo probabilistico", postings_aula01)  # deve retornar d3
+buscar_OR ("modelo probabilistico", postings_aula01)  # deve retornar d2, d3
 #
-# head(tabela_indice(postings_aula01), 10)
+head(tabela_indice(postings_aula01), 10)

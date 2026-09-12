@@ -107,7 +107,7 @@ search_wikipedia_news <- function(query, top_n = 3) {
 # TESTES — descomente para rodar (precisa de internet)
 # ============================================================
 #
-# resultados <- search_wikipedia_news("porto e economia de Santos", top_n = 10)
+resultados <- search_wikipedia_news("porto e economia de Santos", top_n = 10)
 #
 # URL_DESTINO_CSV_SCRAPING <- file.path(
 #   "C:/Users/Ivan/Documents/Pasta-Documentos-PC-antigo/GITHUB-Meus-Repositorios",

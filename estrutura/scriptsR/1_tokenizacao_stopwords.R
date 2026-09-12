@@ -57,27 +57,27 @@ processar_texto <- function(txt, aplicar_stopwords = TRUE) {
 # ============================================================
 #
 # # --- Teste 1: tokenização crua ---
-# tokenize_txt("O gato pulou na mesa")
+tokenize_txt("O gato pulou na mesa")
 # # Deve retornar 5 tokens. Note que "mesa" já vem sem ponto.
 #
 # # --- Teste 2: remove_stopwords (versão DIDÁTICA) ---
-# remove_stopwords("O gato pulou na mesa", aplicar_stopwords = FALSE)
+remove_stopwords("O gato pulou na mesa", aplicar_stopwords = FALSE)
 # # Retorna TODOS os tokens (sem remoção).
 #
-# remove_stopwords("O gato pulou na mesa", aplicar_stopwords = TRUE)
+remove_stopwords("O gato pulou na mesa", aplicar_stopwords = TRUE)
 # # Remove "o" e "na" (stopwords PT). Devem sobrar ~3 tokens.
 #
 # # --- Teste 3: processar_texto (versão PRODUÇÃO, com stemming) ---
-# processar_texto("Os gatos estão comendo peixes na mesa",
-#                 aplicar_stopwords = TRUE)
+processar_texto("Os gatos estão comendo peixes na mesa",
+                aplicar_stopwords = TRUE)
 # # "gatos"  -> "gat"   (stemming)
 # # "peixes" -> "peix"  (stemming)
 # # "mesa"   -> "mes"   (stemming agressivo do PT)
 # # "os", "estão", "na" removidas como stopwords.
 #
 # # --- Teste 4: contraste lado a lado ---
-# remove_stopwords("documentos ranqueamento relevancia", TRUE)
+remove_stopwords("documentos ranqueamento relevancia", TRUE)
 # # ["documentos", "ranqueamento", "relevancia"]  (palavras inteiras)
 #
-# processar_texto("documentos ranqueamento relevancia", TRUE)
+processar_texto("documentos ranqueamento relevancia", TRUE)
 # # ["document", "ranqueament", "relev"]           (radicais)
