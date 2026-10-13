@@ -1,7 +1,9 @@
 # Projeto Integrador III — Motor de Busca Municipal e Histórico da Baixada Santista
 **Alunos:** Ivan Guimarães dos S. da Silva, Jorge Sugano Suzart e Gustavo Geminiano  
+**Professor:** João Paulo Ferreira de Mello  
+**Disciplina:** Projeto Integrador 3  
 **Repositório:** https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3  
-**Ambiente:** R base no Google Colab / IRkernel
+**Ambiente:** R base no Google Colab / IRkernel; leitor dos consolidados em Python 3 no Colab
 
 ---
 
@@ -104,21 +106,45 @@ A árvore abaixo reflete a estrutura real do diretório no disco. O nome `projet
 | `estrutura/codigo/` | Notebooks executáveis e códigos de experimentação, por aula; inclui o leitor dos consolidados no Colab. |
 | `guias_estudo/` | Guias de estudo originais do professor para as aulas 00 a 06. |
 
-> Observação: a árvore acima corresponde ao repositório real no disco. A referência a `projeto_final/` foi removida do README para evitar confusão com a estrutura física do diretório atual.
+> Observação: a árvore corresponde ao repositório real no disco. A pasta oculta `.git/` foi omitida por ser metadado de controle de versão, não conteúdo do projeto.
 
 ---
 
-## Acessar todos os consolidados pelo Google Colab
+## De onde vêm os consolidados
 
-O Google Colab abre notebooks `.ipynb`, mas não usa arquivos `.md` como notebooks. Para facilitar a leitura dos consolidados, o projeto inclui um notebook leitor: ele busca os 15 arquivos Markdown da pasta `consolidados/` diretamente no GitHub e os exibe formatados no Colab.
+Os consolidados registram o conteúdo estudado e os resultados das sessões. Os guias de estudo definem o roteiro didático de cada aula e orientam o registro final — por meio de um modelo de consolidado ou de passos de fechamento. Em geral, os arquivos sem `parteD` documentam a sessão de teoria; os arquivos com `parteD` registram a atividade prática ou de grupo. A tabela relaciona cada arquivo de `consolidados/` ao guia correspondente e resume o que foi desenvolvido.
 
-Depois de abrir o leitor no Colab, mantenha o runtime padrão **Python 3** e selecione **Runtime → Run all**. O notebook baixa os 15 arquivos para `/content/consolidados/` no armazenamento temporário do Colab e também os exibe na página. Não é necessário trocar para R, instalar pacotes ou enviar arquivos manualmente; é preciso ter conexão com a internet e acesso ao repositório.
+| Arquivo consolidado | Guia de estudo de origem | Conteúdo registrado |
+| --- | --- | --- |
+| `00_FICHA_PROJETO.md` | Acumulativa: criada com o [GUIA_ESTUDO_aula01_parteD.md](guias_estudo/GUIA_ESTUDO_aula01_parteD.md) e atualizada a partir dos guias de grupo das aulas [02](guias_estudo/GUIA_ESTUDO_aula02_parteD.md), [03](guias_estudo/GUIA_ESTUDO_aula03_parteD.md), [04](guias_estudo/GUIA_ESTUDO_aula04_parteD.md), [05b](guias_estudo/GUIA_ESTUDO_aula05b_parteD.md) e [06](guias_estudo/GUIA_ESTUDO_aula06_parteD.md). | Ficha viva do projeto: tema, fonte e unidade de análise, descrição do corpus, estado da implementação, decisões metodológicas e histórico das sessões. |
+| `aula00_consolidado.md` | [GUIA_ESTUDO_aula00_teoria.md](guias_estudo/GUIA_ESTUDO_aula00_teoria.md) | Fundamentos de R aplicados ao corpus: vetores, indexação, texto e funções, tokenização, matrizes e expressões regulares. |
+| `aula00_parteD_consolidado.md` | [GUIA_ESTUDO_aula00_parteD.md](guias_estudo/GUIA_ESTUDO_aula00_parteD.md) | Exercícios práticos com frases próprias, limpeza e contagem de texto, regex e fluxo de trabalho com Colab e GitHub. |
+| `aula01_consolidado.md` | [GUIA_ESTUDO_aula01_teoria.md](guias_estudo/GUIA_ESTUDO_aula01_teoria.md) | Introdução à recuperação de informação, arquitetura do projeto, corpus, tokenização, vocabulário, matriz termo-documento, busca booleana e TF-IDF. |
+| `aula01_parteD_consolidado.md` | [GUIA_ESTUDO_aula01_parteD.md](guias_estudo/GUIA_ESTUDO_aula01_parteD.md) | Definição do tema e da fonte, conceito de documento, coleta do primeiro corpus, organização do repositório e criação da ficha do projeto. |
+| `aula02_consolidado.md` | [GUIA_ESTUDO_aula02_teoria.md](guias_estudo/GUIA_ESTUDO_aula02_teoria.md) | Modelo vetorial: pesos TF-IDF, norma e normalização, similaridade do cosseno e ordenação dos documentos por relevância. |
+| `aula02_parteD_consolidado.md` | [GUIA_ESTUDO_aula02_parteD.md](guias_estudo/GUIA_ESTUDO_aula02_parteD.md) | Aplicação do cosseno aos 132 documentos do corpus, definição das consultas de trabalho e análise de acertos e limitações no corpus do grupo. |
+| `aula03_consolidado.md` | [GUIA_ESTUDO_aula03_teoria.md](guias_estudo/GUIA_ESTUDO_aula03_teoria.md) | Pré-processamento, limpeza com regex, stopwords, stemming, tokenização subword/BPE, índice invertido e consultas booleanas. |
+| `aula03_parteD_consolidado.md` | [GUIA_ESTUDO_aula03_parteD.md](guias_estudo/GUIA_ESTUDO_aula03_parteD.md) | Limpeza do corpus real, decisão sobre acentos e stopwords, construção do índice invertido e validação de buscas AND. |
+| `aula04_consolidado.md` | [GUIA_ESTUDO_aula04_teoria.md](guias_estudo/GUIA_ESTUDO_aula04_teoria.md) | Fundamentos probabilísticos do BM25, distribuição 2-Poisson, burstiness, eliteness, saturação de frequência, normalização por tamanho e implementação. |
+| `aula04_parteD_consolidado.md` | [GUIA_ESTUDO_aula04_parteD.md](guias_estudo/GUIA_ESTUDO_aula04_parteD.md) | Implementação e comparação de BM25 com cosseno no corpus do grupo, experimentos com parâmetros `k1` e `b` e registro da configuração escolhida. |
+| `aula05b_consolidado.md` | [GUIA_ESTUDO_aula05b_teoria.md](guias_estudo/GUIA_ESTUDO_aula05b_teoria.md) | Métricas de avaliação de rankings: Precisão, Recall, P@k/R@k, AP/MAP, MRR e nDCG, incluindo diferenças entre relevância binária e graduada. |
+| `aula05b_parteD_consolidado.md` | [GUIA_ESTUDO_aula05b_parteD.md](guias_estudo/GUIA_ESTUDO_aula05b_parteD.md) | Preparação dos qrels do grupo, escolha de juiz e limiar, aplicação das métricas às 12 consultas e comparação dos resultados de cosseno e BM25. |
+| `aula06_consolidado.md` | [GUIA_ESTUDO_aula06_teoria.md](guias_estudo/GUIA_ESTUDO_aula06_teoria.md) | Realimentação de relevância com Rocchio, expansão e novo ranking, avaliação na coleção residual e pseudo-realimentação com risco de *query drift*. |
+| `aula06_parteD_consolidado.md` | [GUIA_ESTUDO_aula06_parteD.md](guias_estudo/GUIA_ESTUDO_aula06_parteD.md) | Aplicação de Rocchio e PRF ao gabarito real, comparação entre coleção completa e residual, avaliação em desenvolvimento/teste e decisão do grupo sobre a configuração do motor. |
 
-### Links individuais — abrir cada arquivo `.md`
+## Acessar os consolidados
 
-Clique no nome de qualquer consolidado para abrir e ler aquele arquivo `.md` individualmente no GitHub.
+### 🚨 **Baixar todos pelo *Google Colab***
 
-| Consolidado | Arquivo |
+- **Link Colab**: [Abrir o Colab e baixar os 15 arquivos .md](https://colab.research.google.com/github/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/estrutura/codigo/Consolidados_Colab.ipynb)
+
+No Colab, mantenha o runtime padrão **Python 3** e escolha **Runtime → Run all**. O notebook baixa os arquivos da branch `main` para `/content/consolidados/` no armazenamento temporário da sessão e também os exibe na página. Não é necessário instalar pacotes nem enviar arquivos manualmente. A pasta temporária é removida quando a sessão do Colab termina.
+
+### Abrir cada consolidado no GitHub
+
+Os links a seguir abrem os arquivos Markdown individuais no GitHub:
+
+| Consolidado | Abrir no GitHub |
 | --- | --- |
 | Ficha do projeto | [00_FICHA_PROJETO.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/00_FICHA_PROJETO.md) |
 | Aula 00 — Teoria | [aula00_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula00_consolidado.md) |
@@ -136,13 +162,7 @@ Clique no nome de qualquer consolidado para abrir e ler aquele arquivo `.md` ind
 | Aula 06 — Teoria | [aula06_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula06_consolidado.md) |
 | Aula 06 — Parte D | [aula06_parteD_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula06_parteD_consolidado.md) |
 
-### Baixar todos os consolidados no Google Colab
-
-[**Abrir o Colab e baixar os 15 arquivos `.md`**](https://colab.research.google.com/github/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/estrutura/codigo/Consolidados_Colab.ipynb)
-
-Ao abrir, escolha **Runtime → Run all** para baixar e visualizar os arquivos. Eles ficam no armazenamento temporário da sessão do Colab, na pasta `/content/consolidados/`; ao encerrar a sessão, esse armazenamento temporário é removido.
-
-> O leitor busca a versão disponível na branch `main`. Após enviar alterações ao GitHub, os documentos exibidos serão os dessa branch.
+> O leitor do Colab busca os arquivos publicados na branch `main`. As alterações feitas no repositório local aparecerão nesses links depois do push.
 
 ---
 
