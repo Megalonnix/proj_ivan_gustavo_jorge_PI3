@@ -37,7 +37,9 @@ A árvore abaixo reflete a estrutura real do diretório no disco. O nome `projet
 │   ├── aula05b_consolidado.md
 │   ├── aula05b_parteD_consolidado.md
 │   ├── aula06_consolidado.md
-│   └── aula06_parteD_consolidado.md
+│   ├── aula06_parteD_consolidado.md
+│   ├── aula07_consolidado.md
+│   └── aula07_parteD_consolidado.md
 │
 ├─── estrutura/
 │   ├─── bancoDeDados/
@@ -69,6 +71,8 @@ A árvore abaixo reflete a estrutura real do diretório no disco. O nome `projet
 │       ├── aula06.ipynb
 │       ├── Aula06_ParteD.ipynb
 │       ├── Aula06_Teoria.ipynb
+│       ├── Aula07_ParteD.ipynb
+│       ├── Aula07_Teoria.ipynb
 │       └── config.R
 │
 └─── guias_estudo/
@@ -85,26 +89,28 @@ A árvore abaixo reflete a estrutura real do diretório no disco. O nome `projet
     ├── GUIA_ESTUDO_aula05b_parteD.md
     ├── GUIA_ESTUDO_aula05b_teoria.md
     ├── GUIA_ESTUDO_aula06_parteD.md
-    └── GUIA_ESTUDO_aula06_teoria.md
+    ├── GUIA_ESTUDO_aula06_teoria.md
+    ├── GUIA_ESTUDO_aula07_parteD.md
+    └── GUIA_ESTUDO_aula07_teoria.md
 ```
 
 ### Legenda complementar
 
 | Item | Descrição |
 | --- | --- |
-| `00_FICHA_PROJETO.md` | Ficha técnica acumulada das aulas 01 a 06, consolidando os principais detalhes do projeto. |
+| `00_FICHA_PROJETO.md` | Ficha técnica acumulada das aulas 01 a 07, consolidando os principais detalhes do projeto. |
 | `README.md` | Guia de navegação, visão geral e orientações do repositório. |
-| `config.R` | Configuração homologada do motor de busca (BM25, limiar, PRF e demais parâmetros de execução). |
+| `config.R` | Configuração homologada do motor de busca (BM25, limiar, PRF, LSA e demais parâmetros de execução). |
 | `corpus.csv` | Corpus principal com os 132 parágrafos autônomos usados para indexação e avaliação. |
 | `wikipedia_baixada_santista.csv` | Base bruta extraída da Wikipédia para a Baixada Santista. |
 | `necessidades.csv` | Conjunto de 12 necessidades de busca usadas em desenvolvimento e teste. |
 | `qrels_jorge_2026-10-13.csv` | Arquivo de julgamentos de relevância do juiz Jorge com 230 qrels. |
 | `projeto.zip` | Arquivo compactado para entrega/submissão direta. |
-| `consolidados/` | Relatórios semanais de teoria e sessões de grupo (parte D) por aula. |
+| `consolidados/` | Relatórios semanais de teoria e sessões de grupo (parte D) por aula, incluindo a aula 07 e 07D. |
 | `estrutura/` | Estrutura organizacional do projeto em dados, notebooks e código. |
 | `estrutura/bancoDeDados/` | Bases de dados oficiais usadas no projeto. |
 | `estrutura/codigo/` | Notebooks executáveis e códigos de experimentação, por aula; inclui o leitor dos consolidados no Colab. |
-| `guias_estudo/` | Guias de estudo originais do professor para as aulas 00 a 06. |
+| `guias_estudo/` | Guias de estudo originais do professor para as aulas 00 a 07. |
 
 > Observação: a árvore corresponde ao repositório real no disco. A pasta oculta `.git/` foi omitida por ser metadado de controle de versão, não conteúdo do projeto.
 
@@ -131,12 +137,14 @@ Os consolidados registram o conteúdo estudado e os resultados das sessões. Os 
 | `aula05b_parteD_consolidado.md` | [GUIA_ESTUDO_aula05b_parteD.md](guias_estudo/GUIA_ESTUDO_aula05b_parteD.md) | Preparação dos qrels do grupo, escolha de juiz e limiar, aplicação das métricas às 12 consultas e comparação dos resultados de cosseno e BM25. |
 | `aula06_consolidado.md` | [GUIA_ESTUDO_aula06_teoria.md](guias_estudo/GUIA_ESTUDO_aula06_teoria.md) | Realimentação de relevância com Rocchio, expansão e novo ranking, avaliação na coleção residual e pseudo-realimentação com risco de *query drift*. |
 | `aula06_parteD_consolidado.md` | [GUIA_ESTUDO_aula06_parteD.md](guias_estudo/GUIA_ESTUDO_aula06_parteD.md) | Aplicação de Rocchio e PRF ao gabarito real, comparação entre coleção completa e residual, avaliação em desenvolvimento/teste e decisão do grupo sobre a configuração do motor. |
+| `aula07_consolidado.md` | [GUIA_ESTUDO_aula07_teoria.md](guias_estudo/GUIA_ESTUDO_aula07_teoria.md) | Introdução ao descasamento léxico, embeddings latentes, LSA/SVD, *folding-in* da consulta e fusão híbrida via RRF. |
+| `aula07_parteD_consolidado.md` | [GUIA_ESTUDO_aula07_parteD.md](guias_estudo/GUIA_ESTUDO_aula07_parteD.md) | Aplicação de LSA e busca híbrida no corpus real da Baixada Santista, avaliação em dev/teste e decisão de manter BM25 como modelo oficial. |
 
 ## Acessar os consolidados
 
 ### 🚨 **Baixar todos pelo *Google Colab***
 
-- **Link Colab**: [Abrir o Colab e baixar os 15 arquivos .md](https://colab.research.google.com/github/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/estrutura/codigo/Consolidados_Colab.ipynb)
+- **Link Colab**: [Abrir o Colab e baixar os 17 arquivos .md](https://colab.research.google.com/github/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/estrutura/codigo/Consolidados_Colab.ipynb)
 
 No Colab, mantenha o runtime padrão **Python 3** e escolha **Runtime → Run all**. O notebook baixa os arquivos da branch `main` para `/content/consolidados/` no armazenamento temporário da sessão e também os exibe na página. Não é necessário instalar pacotes nem enviar arquivos manualmente. A pasta temporária é removida quando a sessão do Colab termina.
 
@@ -161,6 +169,8 @@ Os links a seguir abrem os arquivos Markdown individuais no GitHub:
 | Aula 05b — Parte D | [aula05b_parteD_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula05b_parteD_consolidado.md) |
 | Aula 06 — Teoria | [aula06_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula06_consolidado.md) |
 | Aula 06 — Parte D | [aula06_parteD_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula06_parteD_consolidado.md) |
+| Aula 07 — Teoria | [aula07_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula07_consolidado.md) |
+| Aula 07 — Parte D | [aula07_parteD_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula07_parteD_consolidado.md) |
 
 > O leitor do Colab busca os arquivos publicados na branch `main`. As alterações feitas no repositório local aparecerão nesses links depois do push.
 
@@ -176,3 +186,6 @@ Os links a seguir abrem os arquivos Markdown individuais no GitHub:
    - Rocchio na coleção completa aparenta salto ($0{,}780 	o 0{,}947$), mas na coleção residual cai ($0{,}649 	o 0{,}498$), provando o viés de reordenação dos documentos já vistos.
    - PRF provoca *query drift* em consultas curtas ($MAP_{dev}: 0{,}653 	o 0{,}448$; $MAP_{teste}: 0{,}612 	o 0{,}487$).
    - Decisão homologada em `config.R`: `prf_k = 0` (desativada em produção) e `rocchio = c(a = 1, b = 0.75, g = 0.15)`.
+6. **Aula 07:**
+   - Descobrimento do descasamento léxico e do limite do vocabulário puro; LSA/SVD e *folding-in* da consulta expandem semântica em consultas conceptuais.
+   - A implementação de RRF em conjunto com BM25 mostrou ganho em alguns cenários conceituais, mas o grupo decidiu manter o BM25 como modelo oficial em produção (`modelo = "bm25"`, `lsa_k = 20`, `rrf_c = 60`).
