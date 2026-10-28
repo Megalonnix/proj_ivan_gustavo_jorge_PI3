@@ -1,0 +1,279 @@
+% ==========================================================
+% ENTREGA 1 - O corpus do projeto
+% Projeto Integrador III - Motor de Busca - Ciencia de Dados
+% Fatec Baixada Santista - Rubens Lara
+% Grupo: Ivan Guimaraes, Gustavo Geminiano e Jorge Sugano Suzart
+% ==========================================================
+%
+% COMO COMPILAR
+%   1. Na raiz: Rscript entregas/entrega-1/entrega-1-corpus.R
+%      (gera docs.rds, origem.rds e os entrega-1-*.csv)
+%   2. Em entregas/entrega-1/ (ou consolidados/):
+%      Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
+% ==========================================================
+
+\documentclass[
+  article,
+  12pt,
+  oneside,
+  a4paper,
+  english,
+  brazil
+]{abntex2}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{icomma}
+\usepackage{booktabs}
+\usepackage[alf]{abntex2cite}
+
+\hypersetup{hidelinks}
+\setlength{\emergencystretch}{3em}
+
+% ----------------------------------------------------------
+% DADOS DA ENTREGA
+% ----------------------------------------------------------
+\titulo{O corpus do projeto: \textit{história, turismo e geografia dos municípios da Baixada Santista (Santos, Guarujá e Bertioga)}}
+\tituloestrangeiro{}
+\autor{Grupo Ivan, Gustavo e Jorge}
+\local{Santos-SP}
+\data{\today}
+
+\newcommand{\nomecurso}{Tecnologia em Ciência de Dados}
+\newcommand{\nomedisciplina}{Projeto Integrador III - Motor de Busca}
+\newcommand{\nomeprofessor}{Prof.\ Dr.\ João Paulo Ferreira de Mello}
+\newcommand{\repositorio}{proj\_ivan\_gustavo\_jorge\_PI3}
+\newcommand{\integrantes}{%
+  Ivan Guimarães dos S.\ da Silva (RA 0051352421038) \quad
+  Gustavo Geminiano (RA 0051352511009) \\
+  Jorge Sugano Suzart (RA 0051352511005)%
+}
+
+\begin{document}
+
+<<setup, include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+  echo       = FALSE,
+  message    = FALSE,
+  warning    = FALSE,
+  fig.align  = "center",
+  out.width  = "0.48\\linewidth",
+  fig.width  = 5.4,
+  fig.height = 1.55
+)
+options(OutDec = ",", digits = 4)
+@
+
+<<dados, include=FALSE>>=
+docs_df <- read.csv("entrega-1-docs.csv", fileEncoding = "UTF-8", stringsAsFactors = FALSE)
+pag     <- read.csv("entrega-1-paginas.csv", fileEncoding = "UTF-8", stringsAsFactors = FALSE)
+met     <- read.csv("entrega-1-metodos.csv", fileEncoding = "UTF-8", stringsAsFactors = FALSE)
+rk      <- read.csv("entrega-1-rankings.csv", fileEncoding = "UTF-8", stringsAsFactors = FALSE)
+top     <- read.csv("entrega-1-top10.csv", fileEncoding = "UTF-8", stringsAsFactors = FALSE)
+res     <- read.csv("entrega-1-resultados.csv", fileEncoding = "UTF-8", stringsAsFactors = FALSE)
+r       <- setNames(res$valor, res$medida)
+
+f1 <- function(x, d = 1) formatC(x, format = "f", digits = d, big.mark = ".", decimal.mark = ",")
+f0 <- function(x) formatC(as.integer(round(x)), format = "d", big.mark = ".")
+
+tex <- function(x) {
+  x <- gsub("\\\\", "\\\\textbackslash{}", x)
+  x <- gsub("([%&_#$])", "\\\\\\1", x)
+  x <- gsub("([{}])", "\\\\\\1", x)
+  x <- gsub("~", "\\\\textasciitilde{}", x)
+  x <- gsub("\\^", "\\\\textasciicircum{}", x)
+  x
+}
+
+tam_bruto <- setNames(docs_df$n_tokens_bruto, docs_df$id)
+texto_top10 <- paste0("\\texttt{", tex(top$termo), "} (", top$n, ")", collapse = ", ")
+texto_pag   <- paste0("\\textit{", pag$pagina_tex, "}: ", pag$documentos, " de ", pag$brutos,
+                      " (", f1(pag$pct, 1), "\\%, m\\'edia ", f1(pag$tokens_bruto, 1), " tokens)", collapse = "; ")
+
+m  <- function(cq, me, col) met[met$consulta == cq & met$metodo == me, col]
+nd <- function(cq, me) f1(m(cq, me, "ndcg"), 2)
+ms_med <- tapply(met$ms, met$metodo, mean)
+@
+
+\selectlanguage{brazil}
+\frenchspacing
+\captiondelim{ - }
+
+\begin{center}
+  \SingleSpacing
+  {\Large \imprimirtitulo \par}
+  \vspace{0.5em}
+  {\large \imprimirautor \par}
+  \vspace{0.2em}
+  \imprimirlocal, \imprimirdata
+\end{center}
+
+\begin{center}
+  \small
+  \SingleSpacing
+  Fatec Baixada Santista, Rubens Lara \quad|\quad \nomecurso{} \\
+  \nomedisciplina{} \quad|\quad \nomeprofessor{} \\[0.25em]
+  {\footnotesize \integrantes} \\[0.25em]
+  Repositório: \texttt{\repositorio}
+\end{center}
+
+\textual
+
+% ==========================================================================
+\section{Introdução}
+% ==========================================================================
+
+O motor de busca do grupo aborda a história, a geografia, o patrimônio e o
+turismo dos municípios costeiros da Baixada Santista (Santos, Guarujá e
+Bertioga). Quem o utiliza é um estudante, pesquisador regional, turista ou
+morador que precisa localizar rapidamente o parágrafo que responde a uma
+dúvida histórica, econômica ou geográfica sobre a região. Em recuperação de
+informação, atende-se à \emph{necessidade de informação} do usuário, não à
+consulta literal \cite[cap.~1]{manning2008}; por isso as três perguntas de
+trabalho vieram antes do corpus: \textbf{(1)} como o ciclo do café, a ferrovia
+e o Porto de Santos impulsionaram a economia santista (\texttt{porto de santos});
+\textbf{(2)} quais praias e atrativos turísticos destacam o litoral e o
+Guarujá (\texttt{praias e turismo}); e \textbf{(3)} quais são os marcos da
+fundação e fortificação colonial de Bertioga (\texttt{forte sao joao}). Este
+texto apresenta a fonte escolhida, descreve como o corpus foi obtido e
+demonstra com evidências empíricas que ele responde às perguntas do projeto.
+
+% ==========================================================================
+\section{A fonte e o documento}
+% ==========================================================================
+
+Os textos provêm da Wikipédia em português, sob licença aberta Creative
+Commons Atribuição-CompartilhaIgual (CC BY-SA 4.0), extraídos em 21 de junho
+de 2026 de três páginas: \textit{Santos (São Paulo)} \cite{wikisantos},
+\textit{Guarujá} \cite{wikiguaruja} e \textit{Bertioga} \cite{wikibertioga}.
+As três páginas cobrem de forma complementar o polo portuário e histórico de
+Santos, o balneário turístico da Ilha de Santo Amaro (Guarujá) e o patrimônio
+colonial e ambiental de Bertioga, totalizando $N = \Sexpr{f0(r[["n.docs"]])}$
+documentos válidos.
+
+No projeto, \textbf{um documento é um parágrafo enciclopédico autônomo} com
+mais de $\Sexpr{f0(r[["minimo"]])}$ caracteres (\texttt{cfg\$minimo = 200}),
+identificado de \texttt{d1} a \texttt{d132}. Um artigo inteiro como documento
+faria a busca devolver apenas ``a resposta está no artigo de Santos'' sem
+indicar em qual dos seus 86 parágrafos; já o parágrafo acima de 200
+caracteres é a menor unidade de prosa que preserva contexto histórico e
+geográfico suficiente para responder sozinha a uma consulta. O grupo descartou
+portais de notícias locais por ausência de licença aberta e bases tabulares do
+IBGE por não constituírem texto em prosa.
+
+% ==========================================================================
+\section{Como o corpus foi obtido}
+% ==========================================================================
+
+Os artigos foram coletados via API da Wikipédia e armazenados na base bruta
+\texttt{wikipedia\_baixada\_santista.csv} ($\Sexpr{f0(r[["n.brutos"]])}$
+parágrafos). O script \texttt{coletar.R} (e o notebook \texttt{Aula01\_ParteD.ipynb})
+lê a base bruta, aplica o filtro \texttt{nchar(texto) > cfg\$minimo}
+($\Sexpr{f0(r[["minimo"]])}$ caracteres), atribui os identificadores canônicos
+\texttt{d1..d132} e grava os objetos \texttt{docs.rds} e \texttt{origem.rds}
+em \texttt{estrutura/banco-de-dados/}.
+
+\textbf{O que deu errado e o que mudou.} (i) Na extração bruta dos
+$\Sexpr{f0(r[["n.brutos"]])}$ parágrafos vieram $\Sexpr{f0(r[["n.descartados"]])}$
+fragmentos curtos ($\le 200$ caracteres) compostos por cabeçalhos de seção,
+legendas soltas e linhas de referências (5 em Santos, 8 em Guarujá e 7 em
+Bertioga); o corte \texttt{cfg\$minimo = 200} eliminou todo esse ruído sem
+perder conteúdo enciclopédico. (ii) No carregamento remoto pelo Google Colab,
+arquivos com acentuação apresentaram erro de multibyte; o grupo padronizou a
+leitura binária com \texttt{fileEncoding = "latin1"} e, na Aula~03, adotou
+\texttt{cfg\$acentos = "translit"}, evitando que a remoção de caracteres
+partisse topônimos como ``Guarujá'' e ``São João''.
+
+% ==========================================================================
+\section{Defesa do corpus}
+% ==========================================================================
+
+\begin{table}[htb]
+  \centering
+  \caption{Diagnóstico do corpus ($N = 132$ parágrafos, tokenização da Aula 01 e Aula 03)}
+  \label{tab:diag}
+  \small
+  \begin{tabular}{@{}p{0.31\textwidth}p{0.62\textwidth}@{}}
+    \toprule
+    \textbf{Verificação} & \textbf{Resultado} \\
+    \midrule
+    Tamanho ($N$ documentos, páginas) & $\Sexpr{f0(r[["n.docs"]])}$ parágrafos válidos (de $\Sexpr{f0(r[["n.brutos"]])}$ brutos) em $\Sexpr{f0(r[["n.paginas"]])}$ páginas \\
+    Tokens por documento & Bruto: $\Sexpr{f0(r[["tam.bruto.min"]])}$ a $\Sexpr{f0(r[["tam.bruto.max"]])}$ (média $\Sexpr{f1(r[["tam.bruto.media"]], 0)}$) $\cdot$ Limpo (Aula 03): $\Sexpr{f0(r[["tam.limpo.min"]])}$ a $\Sexpr{f0(r[["tam.limpo.max"]])}$ (média $\Sexpr{f1(r[["tam.limpo.media"]], 1)}$) \\
+    Vocabulário & $\Sexpr{f0(r[["n.vocab.bruto"]])}$ termos brutos em $\Sexpr{f0(r[["n.tokens.bruto"]])}$ tokens ($\Sexpr{f0(r[["n.vocab.limpo"]])}$ termos limpos após Aula 03) \\
+    Por página de origem & \Sexpr{texto_pag} \\
+    Página que domina & \textit{Santos (São Paulo)}: $\Sexpr{f0(r[["dom.n"]])}$ de $\Sexpr{f0(r[["n.docs"]])}$ ($\Sexpr{f1(r[["dom.pct"]], 1)}\%$) \\
+    Documentos extremos & $0$ com menos de $20$ tokens; $\Sexpr{f0(r[["n.longos"]])}$ acima de $200$ tokens brutos (máx.\ \texttt{d85}, $167$ tokens limpos) \\
+    Sujeira na tokenização bruta & $\Sexpr{f0(r[["com.acento"]])}$ com acento, $\Sexpr{f0(r[["com.pont"]])}$ com pontuação, $\Sexpr{f0(r[["com.digito"]])}$ com dígitos (de $\Sexpr{f0(r[["n.docs"]])}$) \\
+    \bottomrule
+  \end{tabular}
+  \fonte{Elaborada pelos autores a partir de \texttt{docs.rds} e \texttt{origem.rds} (\texttt{entrega-1-corpus.R}).}
+\end{table}
+
+\textbf{Tamanho e domínio.} Os $\Sexpr{f0(r[["n.docs"]])}$ parágrafos
+(Tabela~\ref{tab:diag}) superam a faixa inicial de 20 a 60 documentos porque o
+corpus já foi consolidado para o julgamento humano de relevância (230
+\textit{qrels} em 12 necessidades). Santos concentra
+$\Sexpr{f1(r[["dom.pct"]], 1)}\%$ do acervo por ser a maior e mais antiga
+cidade da região, mas Guarujá ($29$) e Bertioga ($17$) garantem cobertura densa
+para as perguntas de turismo e história colonial.
+\textbf{Prosa e sujeira.} Não há parágrafos abaixo de 20 tokens graças ao
+filtro de 200 caracteres; o mais longo (\texttt{d85}, sobre a história e
+cultura santista, com 167 tokens limpos) é prosa contínua e sua extensão é
+controlada pela normalização euclidiana no cosseno e pelo fator $K = 2,568$ no
+BM25 \cite{robertson2009}. A presença de acentos e pontuação nos 132 textos e
+de marcações como \texttt{[4]} em $\Sexpr{f0(r[["com.digito"]])}$ documentos é
+tratada na Aula~03. A Figura~\ref{fig:tam} exibe a distribuição de tamanhos.
+
+\begin{figure}[htb]
+  \centering
+  \caption{Distribuição de tokens brutos por documento ($N = 132$)}
+  \label{fig:tam}
+<<fig-tam>>=
+par(mar = c(3.4, 3.8, 0.4, 0.8), mgp = c(2.1, 0.6, 0), cex = 0.82)
+hist(tam_bruto, breaks = 14, col = "#D6EAF3", border = "white",
+     main = "", xlab = "tokens por documento", ylab = "documentos")
+@
+  \fonte{Elaborada pelos autores.}
+\end{figure}
+
+\textbf{Termos mais frequentes.} Na tokenização bruta, os 10 termos mais
+frequentes são \Sexpr{texto_top10}: todos os 10 são palavras funcionais vazias
+de conteúdo temático, o que motivou o peso IDF e a remoção das 27
+\textit{stopwords} na Aula~03 (reduzindo o vocabulário de 4.250 para 3.483
+termos e revelando \texttt{santos}, \texttt{sao}, \texttt{cidade} e
+\texttt{porto} no topo).
+
+\begin{table}[!htb]
+  \centering
+  \caption{As três consultas de trabalho no corpus: documentos devolvidos, 1.º lugar e nDCG@5}
+  \label{tab:busca}
+  \small
+  \begin{tabular}{@{}lrrccrrr@{}}
+    \toprule
+    Consulta de trabalho & AND & OR & 1.º Cosseno & 1.º BM25 & TF-IDF & Cosseno & BM25 \\
+    \midrule
+    1. \texttt{porto de santos}  & \Sexpr{m("q1","and","hits")} & \Sexpr{m("q1","or","hits")} & \texttt{\Sexpr{m("q1","cosseno","top1")}} & \texttt{\Sexpr{m("q1","bm25","top1")}} & \Sexpr{nd("q1","tfidf")} & \Sexpr{nd("q1","cosseno")} & \Sexpr{nd("q1","bm25")} \\
+    2. \texttt{praias e turismo} & \Sexpr{m("q2","and","hits")} & \Sexpr{m("q2","or","hits")} & \texttt{\Sexpr{m("q2","cosseno","top1")}} & \texttt{\Sexpr{m("q2","bm25","top1")}} & \Sexpr{nd("q2","tfidf")} & \Sexpr{nd("q2","cosseno")} & \Sexpr{nd("q2","bm25")} \\
+    3. \texttt{forte sao joao}   & \Sexpr{m("q3","and","hits")} & \Sexpr{m("q3","or","hits")} & \texttt{\Sexpr{m("q3","cosseno","top1")}} & \texttt{\Sexpr{m("q3","bm25","top1")}} & \Sexpr{nd("q3","tfidf")} & \Sexpr{nd("q3","cosseno")} & \Sexpr{nd("q3","bm25")} \\
+    \midrule
+    Tempo médio (ms) & \Sexpr{f1(ms_med[["and"]], 1)} & \Sexpr{f1(ms_med[["or"]], 1)} & & & \Sexpr{f1(ms_med[["tfidf"]], 1)} & \Sexpr{f1(ms_med[["cosseno"]], 1)} & \Sexpr{f1(ms_med[["bm25"]], 1)} \\
+    \bottomrule
+  \end{tabular}
+  \fonte{Elaborada pelos autores. nDCG@5 calculado com \texttt{qrels\_jorge\_2026-10-13.csv} \cite{jarvelin2002}.}
+\end{table}
+
+\textbf{Veredito.} A Tabela~\ref{tab:busca} comprova que o corpus responde às
+três perguntas com alta precisão: em $q_1$, Cosseno e BM25 cravam \texttt{d76}
+(inauguração do Porto de Santos em 1892) em 1.º lugar com $\text{nDCG@5} = 1,00$;
+em $q_2$, o Cosseno coloca \texttt{d2} (praias do Guarujá) no topo e o BM25
+promove \texttt{d80} e \texttt{d118}; em $q_3$, ambos posicionam \texttt{d117}
+(Forte de São João em Bertioga) na liderança, validando o corpus para as etapas
+de avaliação formal (Aula~5,5), Rocchio/PRF (Aula~06) e LSA/RRF (Aula~07).
+
+\postextual
+{\SingleSpacing\footnotesize
+\bibliography{referencias}}
+
+\end{document}

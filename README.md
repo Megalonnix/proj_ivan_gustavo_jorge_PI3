@@ -1,191 +1,191 @@
 # Projeto Integrador III — Motor de Busca Municipal e Histórico da Baixada Santista
-**Alunos:** Ivan Guimarães dos S. da Silva, Jorge Sugano Suzart e Gustavo Geminiano  
-**Professor:** João Paulo Ferreira de Mello  
-**Disciplina:** Projeto Integrador 3  
+
+**Alunos:**
+- **Ivan Guimarães dos S. da Silva** — RA `0051352421038`
+- **Gustavo Geminiano** — RA `0051352511009`
+- **Jorge Sugano Suzart** — RA `0051352511005`
+
+**Professor:** Prof. Dr. João Paulo Ferreira de Mello  
+**Disciplina:** Projeto Integrador III — Motor de Busca (Tecnologia em Ciência de Dados — Fatec Baixada Santista / Rubens Lara)  
 **Repositório:** https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3  
-**Ambiente:** R base no Google Colab / IRkernel; leitor dos consolidados em Python 3 no Colab
+**Ambiente:** R base (`Rscript` / RStudio / Google Colab IRkernel) · LaTeX (`abnTeX2` + `knitr`)
 
 ---
 
-## Estrutura Oficial do Repositório
+## 📋 Guia Rápido para Avaliação do Professor (Entrega de Meio de Semestre)
 
-A árvore abaixo reflete a estrutura real do diretório no disco. O nome `projeto_final/` não é uma pasta física neste repositório; ele era uma convenção documental, não uma pasta real.
+Esta seção reúne em um único lugar todas as entregas exigidas nas diretrizes da **Entrega de Meio de Semestre** e os comandos exatos para verificação no terminal ou RStudio.
+
+### 1. Checklist das Entregas no Repositório
+
+| Entrega Exigida | Status | Arquivos no Repositório (Links Diretos) |
+|---|---|---|
+| **1. Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências)** | ✅ Entregue | • PDF em `consolidados/`: [`consolidados/entrega-1-corpus.pdf`](consolidados/entrega-1-corpus.pdf)<br>• PDF em `entregas/entrega-1/`: [`entregas/entrega-1/entrega-1-corpus.pdf`](entregas/entrega-1/entrega-1-corpus.pdf)<br>• PDF na raiz: [`entrega-1-corpus.pdf`](entrega-1-corpus.pdf)<br>• Código-fonte `.Rnw`: [`consolidados/entrega-1-corpus.Rnw`](consolidados/entrega-1-corpus.Rnw) · [`entregas/entrega-1/entrega-1-corpus.Rnw`](entregas/entrega-1/entrega-1-corpus.Rnw)<br>• Bibliografia `.bib`: [`consolidados/referencias.bib`](consolidados/referencias.bib) · [`entregas/entrega-1/referencias.bib`](entregas/entrega-1/referencias.bib)<br>• Script gerador dos CSVs e compilação: [`entregas/entrega-1/entrega-1-corpus.R`](entregas/entrega-1/entrega-1-corpus.R) |
+| **2. Ficha do Projeto completa (Seções 1 a 7 + Estado do R)** | ✅ Entregue | • [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md)<br>• [`00_FICHA_PROJETO.md`](00_FICHA_PROJETO.md) (espelho na raiz) |
+| **3. Corpus congelado em `.rds` e scripts executáveis (`coletar.R`, `aula02.R`, `buscar.R`)** | ✅ Entregue | • Corpus `.rds`: [`estrutura/banco-de-dados/docs.rds`](estrutura/banco-de-dados/docs.rds) e [`estrutura/banco-de-dados/origem.rds`](estrutura/banco-de-dados/origem.rds) (também em `estrutura/bancoDeDados/`)<br>• Base bruta `.csv`: [`estrutura/bancoDeDados/wikipedia_baixada_santista.csv`](estrutura/bancoDeDados/wikipedia_baixada_santista.csv) (152 brutos $\to$ 132 válidos)<br>• Scripts de terminal: [`estrutura/codigo/coletar.R`](estrutura/codigo/coletar.R) · [`estrutura/codigo/aula02.R`](estrutura/codigo/aula02.R) · [`estrutura/codigo/buscar.R`](estrutura/codigo/buscar.R) (também em `entregas/entrega-1/`) |
+| **4. Consolidados das Aulas 00 a 07 (Teoria e Parte D)** | ✅ Entregue | • Pasta [`consolidados/`](consolidados/) completa (`aula00` a `aula07`, teoria e `parteD`)<br>• Leitor automático no Colab: [`estrutura/codigo/Consolidados_Colab.ipynb`](estrutura/codigo/Consolidados_Colab.ipynb) |
+
+---
+
+### 2. Instruções para o Professor — Roteiro da Demonstração no Terminal
+
+Todos os scripts foram construídos apenas com **R base** (sem dependências externas para o motor) e detectam automaticamente a raiz do repositório, podendo ser executados da raiz do projeto, de `estrutura/codigo/` ou de `entregas/entrega-1/`.
+
+#### Passo 1 — Conferir o repositório, o PDF do corpus e a Ficha do Projeto
+- Abrir [`consolidados/entrega-1-corpus.pdf`](consolidados/entrega-1-corpus.pdf) (3 páginas de texto com as 4 seções obrigatórias + Referências na página 4).
+- Abrir [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md) e verificar na **Seção 4** os rankings Top-5 de referência das três consultas de trabalho ($q_1, q_2, q_3$).
+
+#### Passo 2 — Regenerar e verificar o corpus (`docs.rds` e `origem.rds`)
+No terminal (na raiz do repositório):
+```bash
+Rscript estrutura/codigo/coletar.R
+```
+Ou diretamente no console do R / RStudio:
+```r
+docs   <- readRDS("estrutura/banco-de-dados/docs.rds")
+origem <- readRDS("estrutura/banco-de-dados/origem.rds")
+length(docs)        # [1] 132
+table(origem)       # Bertioga: 17 | Guaruja: 29 | Santos: 86
+substr(docs[1:2], 1, 90)
+```
+> **Resultado esperado:** lê os 152 parágrafos brutos de `wikipedia_baixada_santista.csv`, aplica o corte `nchar(texto) > cfg$minimo` (`200` caracteres), descarta os 20 fragmentos curtos (cabeçalhos/rodapés) e grava os **132 parágrafos autônomos (`d1..d132`)** distribuídos em **Santos (86 — 65,2%)**, **Guarujá (29 — 22,0%)** e **Bertioga (17 — 12,9%)**.
+
+#### Passo 3 — Rodar `aula02.R` (TF-IDF + Cosseno) e conferir com a Seção 4 da Ficha
+No terminal:
+```bash
+Rscript estrutura/codigo/aula02.R
+```
+> **Resultado esperado (idêntico à Seção 4 de `00_FICHA_PROJETO.md`):**
+> - **`q1 = "porto de santos"`** $\to$ Top-5 Cosseno: `d76 (0.193) · d39 (0.146) · d50 (0.132) · d67 (0.132) · d26 (0.123)`
+> - **`q2 = "praias e turismo"`** $\to$ Top-5 Cosseno: `d2 (0.135) · d19 (0.120) · d80 (0.116) · d118 (0.106) · d53 (0.097)`
+> - **`q3 = "forte sao joao"`** $\to$ Top-5 Cosseno: `d117 (0.205) · d121 (0.190) · d16 (0.129) · d132 (0.106) · d10 (0.104)`
+
+#### Passo 4 — Explicar por que o 1.º colocado ganhou (parcelas do produto escalar `qw * w[, melhor]`)
+O próprio script `aula02.R` já imprime no terminal a decomposição exata de `qw * w[, melhor]` para o 1.º colocado de cada consulta:
+- Em **$q_1$ (`"porto de santos"`)**, vence **`d76`** (Santos, inauguração do Porto de Santos em 1892): `porto = 4.22 | de = 0.01 | santos = 0.59`. O termo raro `porto` ($\text{IDF}$ alto, repetido no parágrafo) domina a soma, enquanto a preposição `de` (presente em quase todo o corpus) contribui apenas `0.01`.
+- Em **$q_2$ (`"praias e turismo"`)**, vence **`d2`** (Guarujá): `praias = 5.32 | e = 0.05 | turismo = 0.00`. Na busca pós-limpeza com BM25 (`Rscript estrutura/codigo/buscar.R`), o 1.º lugar passa a ser **`d80`** (Santos), pois contém simultaneamente `praias` e `turismo`.
+- Em **$q_3$ (`"forte sao joao"`)**, vence **`d117`** (Bertioga, Forte de São João): `forte = 6.28 | são = 1.37 | joão = 3.78`.
+
+#### Passo 5 (Opcional) — Auditoria multimétodo (Booleano AND/OR, TF-IDF, Cosseno, BM25 e nDCG@5)
+Para verificar os resultados da **Tabela 2 do PDF do corpus** (pós-limpeza da Aula 03 com `translit` e remoção das 27 stopwords, avaliados contra `qrels_jorge_2026-10-13.csv`):
+```bash
+Rscript estrutura/codigo/buscar.R
+```
+
+#### Passo 6 (Opcional) — Recompilar o PDF `entrega-1-corpus.pdf` do zero
+Caso deseje regenerar todas as tabelas `.csv` (`entrega-1-docs.csv`, `entrega-1-paginas.csv`, `entrega-1-metodos.csv`, `entrega-1-rankings.csv`, `entrega-1-resultados.csv`, `entrega-1-top10.csv`) e recompilar o `.Rnw` em PDF (requer pacote `knitr` e distribuição LaTeX com `abntex2`):
+```bash
+Rscript entregas/entrega-1/entrega-1-corpus.R
+```
+Ou compilando diretamente o `.Rnw` dentro de `consolidados/` (ou `entregas/entrega-1/`):
+```bash
+cd consolidados
+Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
+```
+
+---
+
+## 📂 Estrutura Oficial do Repositório
 
 ```text
 .
-├── 00_FICHA_PROJETO.md
-├── config.R
-├── corpus.csv
-├── necessidades.csv
-├── projeto.zip
-├── qrels_jorge_2026-10-13.csv
-├── README.md
-├── wikipedia_baixada_santista.csv
+├── 00_FICHA_PROJETO.md                 # Ficha acumulativa (Aulas 01 a 07 - motor07)
+├── config.R                            # Configuração homologada do motor de busca
+├── corpus.csv                          # Base bruta (152 parágrafos; 132 válidos > 200 chars)
+├── entrega-1-corpus.pdf                # PDF da Entrega 1 (cópia na raiz para acesso imediato)
+├── necessidades.csv                    # 12 necessidades de informação (8 dev + 4 teste)
+├── qrels_jorge_2026-10-13.csv          # 230 julgamentos humanos de relevância (0, 1, 2)
+├── README.md                           # Este guia de navegação e instruções para o professor
+├── wikipedia_baixada_santista.csv      # Base bruta extraída da Wikipédia (Santos, Guarujá, Bertioga)
 │
 ├─── consolidados/
-│   ├── 00_FICHA_PROJETO.md
-│   ├── aula00_consolidado.md
-│   ├── aula00_parteD_consolidado.md
-│   ├── aula01_consolidado.md
-│   ├── aula01_parteD_consolidado.md
-│   ├── aula02_consolidado.md
-│   ├── aula02_parteD_consolidado.md
-│   ├── aula03_consolidado.md
-│   ├── aula03_parteD_consolidado.md
-│   ├── aula04_consolidado.md
-│   ├── aula04_parteD_consolidado.md
-│   ├── aula05b_consolidado.md
-│   ├── aula05b_parteD_consolidado.md
-│   ├── aula06_consolidado.md
-│   ├── aula06_parteD_consolidado.md
-│   ├── aula07_consolidado.md
-│   └── aula07_parteD_consolidado.md
+│   ├── 00_FICHA_PROJETO.md             # Ficha do projeto sincronizada
+│   ├── entrega-1-corpus.pdf            # PDF oficial da Entrega 1 (abnTeX2, 3 págs + Referências)
+│   ├── entrega-1-corpus.Rnw            # Código-fonte LaTeX + knitr (Sweave) sem números fixos
+│   ├── entrega-1-corpus.R              # Script que gera os CSVs diagnósticos e compila o PDF
+│   ├── referencias.bib                 # Base BibTeX (Manning, Robertson, Järvelin, Wikipédia)
+│   ├── entrega-1-*.csv                 # 6 tabelas CSV lidas pelos chunks do .Rnw
+│   ├── aula00_consolidado.md .. aula07_parteD_consolidado.md
+│
+├─── entregas/
+│   └─── entrega-1/
+│       ├── entrega-1-corpus.pdf        # PDF oficial da Entrega 1
+│       ├── entrega-1-corpus.Rnw        # Código-fonte LaTeX + knitr
+│       ├── entrega-1-corpus.R          # Script gerador dos CSVs e compilação do PDF
+│       ├── referencias.bib             # Base BibTeX
+│       ├── entrega-1-*.csv             # 6 tabelas CSV geradas pelo script
+│       ├── coletar.R                   # Cópia do script de coleta/filtro do corpus
+│       ├── aula02.R                    # Cópia do script de demonstração da Aula 02
+│       └── buscar.R                    # Cópia do script de auditoria multimétodo
 │
 ├─── estrutura/
+│   ├─── banco-de-dados/
+│   │   ├── docs.rds                    # Vetor nomeado (d1..d132) com os 132 parágrafos válidos
+│   │   └── origem.rds                  # Vetor nomeado (d1..d132) com a página de origem
+│   │
 │   ├─── bancoDeDados/
+│   │   ├── docs.rds
+│   │   ├── origem.rds
 │   │   ├── corpus.csv
 │   │   ├── necessidades.csv
 │   │   ├── qrels_jorge_2026-10-13.csv
 │   │   └── wikipedia_baixada_santista.csv
 │   │
 │   └─── codigo/
-│       ├── Consolidados_Colab.ipynb
-│       ├── aula00.ipynb
-│       ├── Aula00_ParteD.ipynb
-│       ├── Aula00_Teoria.ipynb
-│       ├── aula01.ipynb
-│       ├── Aula01_ParteD.ipynb
-│       ├── Aula01_Teoria.ipynb
-│       ├── aula02.ipynb
-│       ├── Aula02_ParteD.ipynb
-│       ├── Aula02_Teoria.ipynb
-│       ├── aula03.ipynb
-│       ├── Aula03_ParteD.ipynb
-│       ├── Aula03_Teoria.ipynb
-│       ├── aula04.ipynb
-│       ├── Aula04_ParteD.ipynb
-│       ├── Aula04_Teoria.ipynb
-│       ├── aula05b.ipynb
-│       ├── Aula05b_ParteD.ipynb
-│       ├── Aula05b_Teoria.ipynb
-│       ├── aula06.ipynb
-│       ├── Aula06_ParteD.ipynb
-│       ├── Aula06_Teoria.ipynb
-│       ├── Aula07_ParteD.ipynb
-│       ├── Aula07_Teoria.ipynb
-│       └── config.R
+│       ├── coletar.R                   # Regenera docs.rds e origem.rds a partir da base bruta
+│       ├── aula02.R                    # Executa TF-IDF + Cosseno nas 3 consultas de trabalho
+│       ├── buscar.R                    # Executa Booleano AND/OR, TF-IDF, Cosseno, BM25 e nDCG@5
+│       ├── config.R                    # Configuração homologada do motor
+│       ├── Consolidados_Colab.ipynb    # Leitor automático dos consolidados no Google Colab
+│       └── aula00.ipynb .. Aula07_ParteD.ipynb
 │
 └─── guias_estudo/
-    ├── GUIA_ESTUDO_aula00_parteD.md
-    ├── GUIA_ESTUDO_aula00_teoria.md
-    ├── GUIA_ESTUDO_aula01_parteD.md
-    ├── GUIA_ESTUDO_aula01_teoria.md
-    ├── GUIA_ESTUDO_aula02_parteD.md
-    ├── GUIA_ESTUDO_aula02_teoria.md
-    ├── GUIA_ESTUDO_aula03_parteD.md
-    ├── GUIA_ESTUDO_aula03_teoria.md
-    ├── GUIA_ESTUDO_aula04_parteD.md
-    ├── GUIA_ESTUDO_aula04_teoria.md
-    ├── GUIA_ESTUDO_aula05b_parteD.md
-    ├── GUIA_ESTUDO_aula05b_teoria.md
-    ├── GUIA_ESTUDO_aula06_parteD.md
-    ├── GUIA_ESTUDO_aula06_teoria.md
-    ├── GUIA_ESTUDO_aula07_parteD.md
-    └── GUIA_ESTUDO_aula07_teoria.md
+    └── GUIA_ESTUDO_aula00 .. aula07 (.md)
 ```
 
-### Legenda complementar
-
-| Item | Descrição |
-| --- | --- |
-| `00_FICHA_PROJETO.md` | Ficha técnica acumulada das aulas 01 a 07, consolidando os principais detalhes do projeto. |
-| `README.md` | Guia de navegação, visão geral e orientações do repositório. |
-| `config.R` | Configuração homologada do motor de busca (BM25, limiar, PRF, LSA e demais parâmetros de execução). |
-| `corpus.csv` | Corpus principal com os 132 parágrafos autônomos usados para indexação e avaliação. |
-| `wikipedia_baixada_santista.csv` | Base bruta extraída da Wikipédia para a Baixada Santista. |
-| `necessidades.csv` | Conjunto de 12 necessidades de busca usadas em desenvolvimento e teste. |
-| `qrels_jorge_2026-10-13.csv` | Arquivo de julgamentos de relevância do juiz Jorge com 230 qrels. |
-| `projeto.zip` | Arquivo compactado para entrega/submissão direta. |
-| `consolidados/` | Relatórios semanais de teoria e sessões de grupo (parte D) por aula, incluindo a aula 07 e 07D. |
-| `estrutura/` | Estrutura organizacional do projeto em dados, notebooks e código. |
-| `estrutura/bancoDeDados/` | Bases de dados oficiais usadas no projeto. |
-| `estrutura/codigo/` | Notebooks executáveis e códigos de experimentação, por aula; inclui o leitor dos consolidados no Colab. |
-| `guias_estudo/` | Guias de estudo originais do professor para as aulas 00 a 07. |
-
-> Observação: a árvore corresponde ao repositório real no disco. A pasta oculta `.git/` foi omitida por ser metadado de controle de versão, não conteúdo do projeto.
-
 ---
 
-## De onde vêm os consolidados
+## 🔗 Abrir Entregas e Consolidados Diretamente no GitHub
 
-Os consolidados registram o conteúdo estudado e os resultados das sessões. Os guias de estudo definem o roteiro didático de cada aula e orientam o registro final — por meio de um modelo de consolidado ou de passos de fechamento. Em geral, os arquivos sem `parteD` documentam a sessão de teoria; os arquivos com `parteD` registram a atividade prática ou de grupo. A tabela relaciona cada arquivo de `consolidados/` ao guia correspondente e resume o que foi desenvolvido.
+### 🚨 Baixar e visualizar todos os consolidados pelo *Google Colab*
+- **Link direto para o Colab:** [Abrir o Colab e carregar os 17 arquivos `.md`](https://colab.research.google.com/github/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/estrutura/codigo/Consolidados_Colab.ipynb)  
+  *(No Colab, mantenha o runtime padrão **Python 3** e clique em **Runtime → Run all**).*
 
-| Arquivo consolidado | Guia de estudo de origem | Conteúdo registrado |
+### Links diretos para cada documento no GitHub
+
+| Documento / Consolidado | Guia / Modelo de Origem | Abrir no GitHub |
 | --- | --- | --- |
-| `00_FICHA_PROJETO.md` | Acumulativa: criada com o [GUIA_ESTUDO_aula01_parteD.md](guias_estudo/GUIA_ESTUDO_aula01_parteD.md) e atualizada a partir dos guias de grupo das aulas [02](guias_estudo/GUIA_ESTUDO_aula02_parteD.md), [03](guias_estudo/GUIA_ESTUDO_aula03_parteD.md), [04](guias_estudo/GUIA_ESTUDO_aula04_parteD.md), [05b](guias_estudo/GUIA_ESTUDO_aula05b_parteD.md) e [06](guias_estudo/GUIA_ESTUDO_aula06_parteD.md). | Ficha viva do projeto: tema, fonte e unidade de análise, descrição do corpus, estado da implementação, decisões metodológicas e histórico das sessões. |
-| `aula00_consolidado.md` | [GUIA_ESTUDO_aula00_teoria.md](guias_estudo/GUIA_ESTUDO_aula00_teoria.md) | Fundamentos de R aplicados ao corpus: vetores, indexação, texto e funções, tokenização, matrizes e expressões regulares. |
-| `aula00_parteD_consolidado.md` | [GUIA_ESTUDO_aula00_parteD.md](guias_estudo/GUIA_ESTUDO_aula00_parteD.md) | Exercícios práticos com frases próprias, limpeza e contagem de texto, regex e fluxo de trabalho com Colab e GitHub. |
-| `aula01_consolidado.md` | [GUIA_ESTUDO_aula01_teoria.md](guias_estudo/GUIA_ESTUDO_aula01_teoria.md) | Introdução à recuperação de informação, arquitetura do projeto, corpus, tokenização, vocabulário, matriz termo-documento, busca booleana e TF-IDF. |
-| `aula01_parteD_consolidado.md` | [GUIA_ESTUDO_aula01_parteD.md](guias_estudo/GUIA_ESTUDO_aula01_parteD.md) | Definição do tema e da fonte, conceito de documento, coleta do primeiro corpus, organização do repositório e criação da ficha do projeto. |
-| `aula02_consolidado.md` | [GUIA_ESTUDO_aula02_teoria.md](guias_estudo/GUIA_ESTUDO_aula02_teoria.md) | Modelo vetorial: pesos TF-IDF, norma e normalização, similaridade do cosseno e ordenação dos documentos por relevância. |
-| `aula02_parteD_consolidado.md` | [GUIA_ESTUDO_aula02_parteD.md](guias_estudo/GUIA_ESTUDO_aula02_parteD.md) | Aplicação do cosseno aos 132 documentos do corpus, definição das consultas de trabalho e análise de acertos e limitações no corpus do grupo. |
-| `aula03_consolidado.md` | [GUIA_ESTUDO_aula03_teoria.md](guias_estudo/GUIA_ESTUDO_aula03_teoria.md) | Pré-processamento, limpeza com regex, stopwords, stemming, tokenização subword/BPE, índice invertido e consultas booleanas. |
-| `aula03_parteD_consolidado.md` | [GUIA_ESTUDO_aula03_parteD.md](guias_estudo/GUIA_ESTUDO_aula03_parteD.md) | Limpeza do corpus real, decisão sobre acentos e stopwords, construção do índice invertido e validação de buscas AND. |
-| `aula04_consolidado.md` | [GUIA_ESTUDO_aula04_teoria.md](guias_estudo/GUIA_ESTUDO_aula04_teoria.md) | Fundamentos probabilísticos do BM25, distribuição 2-Poisson, burstiness, eliteness, saturação de frequência, normalização por tamanho e implementação. |
-| `aula04_parteD_consolidado.md` | [GUIA_ESTUDO_aula04_parteD.md](guias_estudo/GUIA_ESTUDO_aula04_parteD.md) | Implementação e comparação de BM25 com cosseno no corpus do grupo, experimentos com parâmetros `k1` e `b` e registro da configuração escolhida. |
-| `aula05b_consolidado.md` | [GUIA_ESTUDO_aula05b_teoria.md](guias_estudo/GUIA_ESTUDO_aula05b_teoria.md) | Métricas de avaliação de rankings: Precisão, Recall, P@k/R@k, AP/MAP, MRR e nDCG, incluindo diferenças entre relevância binária e graduada. |
-| `aula05b_parteD_consolidado.md` | [GUIA_ESTUDO_aula05b_parteD.md](guias_estudo/GUIA_ESTUDO_aula05b_parteD.md) | Preparação dos qrels do grupo, escolha de juiz e limiar, aplicação das métricas às 12 consultas e comparação dos resultados de cosseno e BM25. |
-| `aula06_consolidado.md` | [GUIA_ESTUDO_aula06_teoria.md](guias_estudo/GUIA_ESTUDO_aula06_teoria.md) | Realimentação de relevância com Rocchio, expansão e novo ranking, avaliação na coleção residual e pseudo-realimentação com risco de *query drift*. |
-| `aula06_parteD_consolidado.md` | [GUIA_ESTUDO_aula06_parteD.md](guias_estudo/GUIA_ESTUDO_aula06_parteD.md) | Aplicação de Rocchio e PRF ao gabarito real, comparação entre coleção completa e residual, avaliação em desenvolvimento/teste e decisão do grupo sobre a configuração do motor. |
-| `aula07_consolidado.md` | [GUIA_ESTUDO_aula07_teoria.md](guias_estudo/GUIA_ESTUDO_aula07_teoria.md) | Introdução ao descasamento léxico, embeddings latentes, LSA/SVD, *folding-in* da consulta e fusão híbrida via RRF. |
-| `aula07_parteD_consolidado.md` | [GUIA_ESTUDO_aula07_parteD.md](guias_estudo/GUIA_ESTUDO_aula07_parteD.md) | Aplicação de LSA e busca híbrida no corpus real da Baixada Santista, avaliação em dev/teste e decisão de manter BM25 como modelo oficial. |
-
-## Acessar os consolidados
-
-### 🚨 **Baixar todos pelo *Google Colab***
-
-- **Link Colab**: [Abrir o Colab e baixar os 17 arquivos .md](https://colab.research.google.com/github/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/estrutura/codigo/Consolidados_Colab.ipynb)
-
-No Colab, mantenha o runtime padrão **Python 3** e escolha **Runtime → Run all**. O notebook baixa os arquivos da branch `main` para `/content/consolidados/` no armazenamento temporário da sessão e também os exibe na página. Não é necessário instalar pacotes nem enviar arquivos manualmente. A pasta temporária é removida quando a sessão do Colab termina.
-
-### Abrir cada consolidado no GitHub
-
-Os links a seguir abrem os arquivos Markdown individuais no GitHub:
-
-| Consolidado | Abrir no GitHub |
-| --- | --- |
-| Ficha do projeto | [00_FICHA_PROJETO.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/00_FICHA_PROJETO.md) |
-| Aula 00 — Teoria | [aula00_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula00_consolidado.md) |
-| Aula 00 — Parte D | [aula00_parteD_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula00_parteD_consolidado.md) |
-| Aula 01 — Teoria | [aula01_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula01_consolidado.md) |
-| Aula 01 — Parte D | [aula01_parteD_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula01_parteD_consolidado.md) |
-| Aula 02 — Teoria | [aula02_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula02_consolidado.md) |
-| Aula 02 — Parte D | [aula02_parteD_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula02_parteD_consolidado.md) |
-| Aula 03 — Teoria | [aula03_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula03_consolidado.md) |
-| Aula 03 — Parte D | [aula03_parteD_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula03_parteD_consolidado.md) |
-| Aula 04 — Teoria | [aula04_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula04_consolidado.md) |
-| Aula 04 — Parte D | [aula04_parteD_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula04_parteD_consolidado.md) |
-| Aula 05b — Teoria | [aula05b_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula05b_consolidado.md) |
-| Aula 05b — Parte D | [aula05b_parteD_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula05b_parteD_consolidado.md) |
-| Aula 06 — Teoria | [aula06_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula06_consolidado.md) |
-| Aula 06 — Parte D | [aula06_parteD_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula06_parteD_consolidado.md) |
-| Aula 07 — Teoria | [aula07_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula07_consolidado.md) |
-| Aula 07 — Parte D | [aula07_parteD_consolidado.md](https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/consolidados/aula07_parteD_consolidado.md) |
-
-> O leitor do Colab busca os arquivos publicados na branch `main`. As alterações feitas no repositório local aparecerão nesses links depois do push.
+| **Texto do Corpus (PDF)** | Modelo oficial `entrega-1-corpus.Rnw` (`abnTeX2`) | [`consolidados/entrega-1-corpus.pdf`](consolidados/entrega-1-corpus.pdf) |
+| **Código-fonte do Corpus (`.Rnw`)** | Modelo oficial `entrega-1-corpus.Rnw` (`knitr`) | [`consolidados/entrega-1-corpus.Rnw`](consolidados/entrega-1-corpus.Rnw) |
+| **Ficha do Projeto** | Acumulativa ([Aula 01](guias_estudo/GUIA_ESTUDO_aula01_parteD.md) a [Aula 07](guias_estudo/GUIA_ESTUDO_aula07_parteD.md)) | [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md) |
+| **Aula 00 — Teoria** | [GUIA_ESTUDO_aula00_teoria.md](guias_estudo/GUIA_ESTUDO_aula00_teoria.md) | [`consolidados/aula00_consolidado.md`](consolidados/aula00_consolidado.md) |
+| **Aula 00 — Parte D** | [GUIA_ESTUDO_aula00_parteD.md](guias_estudo/GUIA_ESTUDO_aula00_parteD.md) | [`consolidados/aula00_parteD_consolidado.md`](consolidados/aula00_parteD_consolidado.md) |
+| **Aula 01 — Teoria** | [GUIA_ESTUDO_aula01_teoria.md](guias_estudo/GUIA_ESTUDO_aula01_teoria.md) | [`consolidados/aula01_consolidado.md`](consolidados/aula01_consolidado.md) |
+| **Aula 01 — Parte D** | [GUIA_ESTUDO_aula01_parteD.md](guias_estudo/GUIA_ESTUDO_aula01_parteD.md) | [`consolidados/aula01_parteD_consolidado.md`](consolidados/aula01_parteD_consolidado.md) |
+| **Aula 02 — Teoria** | [GUIA_ESTUDO_aula02_teoria.md](guias_estudo/GUIA_ESTUDO_aula02_teoria.md) | [`consolidados/aula02_consolidado.md`](consolidados/aula02_consolidado.md) |
+| **Aula 02 — Parte D** | [GUIA_ESTUDO_aula02_parteD.md](guias_estudo/GUIA_ESTUDO_aula02_parteD.md) | [`consolidados/aula02_parteD_consolidado.md`](consolidados/aula02_parteD_consolidado.md) |
+| **Aula 03 — Teoria** | [GUIA_ESTUDO_aula03_teoria.md](guias_estudo/GUIA_ESTUDO_aula03_teoria.md) | [`consolidados/aula03_consolidado.md`](consolidados/aula03_consolidado.md) |
+| **Aula 03 — Parte D** | [GUIA_ESTUDO_aula03_parteD.md](guias_estudo/GUIA_ESTUDO_aula03_parteD.md) | [`consolidados/aula03_parteD_consolidado.md`](consolidados/aula03_parteD_consolidado.md) |
+| **Aula 04 — Teoria** | [GUIA_ESTUDO_aula04_teoria.md](guias_estudo/GUIA_ESTUDO_aula04_teoria.md) | [`consolidados/aula04_consolidado.md`](consolidados/aula04_consolidado.md) |
+| **Aula 04 — Parte D** | [GUIA_ESTUDO_aula04_parteD.md](guias_estudo/GUIA_ESTUDO_aula04_parteD.md) | [`consolidados/aula04_parteD_consolidado.md`](consolidados/aula04_parteD_consolidado.md) |
+| **Aula 05b — Teoria** | [GUIA_ESTUDO_aula05b_teoria.md](guias_estudo/GUIA_ESTUDO_aula05b_teoria.md) | [`consolidados/aula05b_consolidado.md`](consolidados/aula05b_consolidado.md) |
+| **Aula 05b — Parte D** | [GUIA_ESTUDO_aula05b_parteD.md](guias_estudo/GUIA_ESTUDO_aula05b_parteD.md) | [`consolidados/aula05b_parteD_consolidado.md`](consolidados/aula05b_parteD_consolidado.md) |
+| **Aula 06 — Teoria** | [GUIA_ESTUDO_aula06_teoria.md](guias_estudo/GUIA_ESTUDO_aula06_teoria.md) | [`consolidados/aula06_consolidado.md`](consolidados/aula06_consolidado.md) |
+| **Aula 06 — Parte D** | [GUIA_ESTUDO_aula06_parteD.md](guias_estudo/GUIA_ESTUDO_aula06_parteD.md) | [`consolidados/aula06_parteD_consolidado.md`](consolidados/aula06_parteD_consolidado.md) |
+| **Aula 07 — Teoria** | [GUIA_ESTUDO_aula07_teoria.md](guias_estudo/GUIA_ESTUDO_aula07_teoria.md) | [`consolidados/aula07_consolidado.md`](consolidados/aula07_consolidado.md) |
+| **Aula 07 — Parte D** | [GUIA_ESTUDO_aula07_parteD.md](guias_estudo/GUIA_ESTUDO_aula07_parteD.md) | [`consolidados/aula07_parteD_consolidado.md`](consolidados/aula07_parteD_consolidado.md) |
 
 ---
 
-## Resumo dos Resultados Experimentais Homologados
+## 📊 Resumo dos Resultados Experimentais Homologados pelo Grupo
 
-1. **Aulas 00–02:** Fundação vetorial com TF-IDF e Similaridade do Cosseno ($N=132$).
-2. **Aula 03:** Limpeza (`translit`), remoção de 27 stopwords e indexação invertida (3.483 termos).
-3. **Aula 04:** BM25 construído com parâmetros canônicos ($k_1=1{,}2$ e $b=0{,}75$).
-4. **Aula 05,5:** Avaliação com gabarito de 230 qrels. Empate exato em 6 a 6 entre Cosseno (MAP $0{,}640$) e BM25 (MAP $0{,}637$), P@3 de $0{,}917$ em ambos.
-5. **Aula 06:** 
-   - Rocchio na coleção completa aparenta salto ($0{,}780 	o 0{,}947$), mas na coleção residual cai ($0{,}649 	o 0{,}498$), provando o viés de reordenação dos documentos já vistos.
-   - PRF provoca *query drift* em consultas curtas ($MAP_{dev}: 0{,}653 	o 0{,}448$; $MAP_{teste}: 0{,}612 	o 0{,}487$).
-   - Decisão homologada em `config.R`: `prf_k = 0` (desativada em produção) e `rocchio = c(a = 1, b = 0.75, g = 0.15)`.
-6. **Aula 07:**
-   - Descobrimento do descasamento léxico e do limite do vocabulário puro; LSA/SVD e *folding-in* da consulta expandem semântica em consultas conceptuais.
-   - A implementação de RRF em conjunto com BM25 mostrou ganho em alguns cenários conceituais, mas o grupo decidiu manter o BM25 como modelo oficial em produção (`modelo = "bm25"`, `lsa_k = 20`, `rrf_c = 60`).
+1. **Aulas 00–02 (Corpus e Modelo Vetorial):** Extração de 152 parágrafos brutos da Wikipédia e congelamento de $N=132$ parágrafos autônomos (`cfg$minimo = 200` caracteres: 86 de Santos, 29 de Guarujá e 17 de Bertioga). Homologação das 3 consultas de trabalho no modelo TF-IDF + Cosseno ($q_1 \to d_{76}$, $q_2 \to d_2$, $q_3 \to d_{117}$).
+2. **Aula 03 (Limpeza e Índice Invertido):** Adoção de `cfg$acentos = "translit"`, remoção de 27 stopwords funcionais e construção do índice invertido (`postings`), reduzindo o vocabulário de 4.250 para 3.483 termos sem partir topônimos regionais.
+3. **Aula 04 (Modelo Probabilístico BM25):** Implementação do BM25 com parâmetros canônicos ($k_1=1{,}2$ e $b=0{,}75$), promovendo documentos que cobrem todos os termos da consulta (como `d80` e `d118` em $q_2$).
+4. **Aula 05,5 (Avaliação Formal com 230 Qrels):** No conjunto de 12 necessidades julgadas pelo juiz Jorge (`cfg$limiar = 2`), houve empate técnico de 6 a 6 em AP entre Cosseno ($\text{MAP} = 0{,}640$) e BM25 ($\text{MAP} = 0{,}637$), ambos com $\text{P@3} = 0{,}917$.
+5. **Aula 06 (Rocchio e Pseudo-Realimentação PRF):**
+   - Na consulta $q_{02}$, o Rocchio elevou o AP na coleção completa ($0{,}780 \to 0{,}947$), mas caiu na coleção residual ($0{,}649 \to 0{,}498$), comprovando o viés otimista de reordenação dos documentos já vistos.
+   - A PRF provocou *query drift* em consultas curtas ($\text{MAP}_{\text{dev}}: 0{,}653 \to 0{,}448$ em $k=2$; $\text{MAP}_{\text{teste}}: 0{,}612 \to 0{,}487$). Decisão homologada em `config.R`: **`prf_k = 0`** (desligada em produção).
+6. **Aula 07 (Decomposição Espectral LSA/SVD e Fusão Híbrida RRF):**
+   - Avaliação sistemática de SVD truncada ($k=10, 20, 50$) e fusão híbrida RRF ($c=60$): no dev ($q_{01}..q_{08}$), o BM25 puro obteve $\text{MAP} = 0{,}744$ contra $0{,}652$ do híbrido ($k=20$); no teste ($q_{09}..q_{12}$), o BM25 confirmou a liderança com $\text{MAP} = 0{,}718$ contra $0{,}642$ do híbrido ($k=20$).
+   - Decisão homologada em `config.R`: manter **`modelo = "bm25"`** em produção (`lsa_k = 20`, `rrf_c = 60`).
