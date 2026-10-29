@@ -183,9 +183,12 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 2. **Aula 03 (Limpeza e Índice Invertido):** Adoção de `cfg$acentos = "translit"`, remoção de 27 stopwords funcionais e construção do índice invertido (`postings`), reduzindo o vocabulário de 4.250 para 3.483 termos sem partir topônimos regionais.
 3. **Aula 04 (Modelo Probabilístico BM25):** Implementação do BM25 com parâmetros canônicos ($k_1=1{,}2$ e $b=0{,}75$), promovendo documentos que cobrem todos os termos da consulta (como `d80` e `d118` em $q_2$).
 4. **Aula 05,5 (Avaliação Formal com 230 Qrels):** No conjunto de 12 necessidades julgadas pelo juiz Jorge (`cfg$limiar = 2`), houve empate técnico de 6 a 6 em AP entre Cosseno ($\text{MAP} = 0{,}640$) e BM25 ($\text{MAP} = 0{,}637$), ambos com $\text{P@3} = 0{,}917$.
-5. **Aula 06 (Rocchio e Pseudo-Realimentação PRF):**
+<!-- 5. **Aula 06 (Rocchio e Pseudo-Realimentação PRF):**
    - Na consulta $q_{02}$, o Rocchio elevou o AP na coleção completa ($0{,}780 \to 0{,}947$), mas caiu na coleção residual ($0{,}649 \to 0{,}498$), comprovando o viés otimista de reordenação dos documentos já vistos.
-   - A PRF provocou *query drift* em consultas curtas ($\text{MAP}_{\text{dev}}: 0{,}653 \to 0{,}448$ em $k=2$; $\text{MAP}_{\text{teste}}: 0{,}612 \to 0{,}487$). Decisão homologada em `config.R`: **`prf_k = 0`** (desligada em produção).
+   - A PRF provocou *query drift* em consultas curtas ($\text{MAP}_{\text{dev}}: 0{,}653 \to 0{,}448$ em $k=2$; $\text{MAP}_{\text{teste}}: 0{,}612 \to 0{,}487$). Decisão homologada em `config.R`: **`prf_k = 0`** (desligada em produção). -->
+5. **Aula 06 (Rocchio e Pseudo-Realimentação PRF):**
+   - Na consulta q<sub>02</sub>, o Rocchio elevou o AP na coleção completa (0,780 → 0,947), mas caiu na coleção residual (0,649 → 0,498), comprovando o viés otimista de reordenação dos documentos já vistos.
+   - A PRF provocou *query drift* em consultas curtas (MAP<sub>dev</sub>: 0,653 → 0,448 em k = 2; MAP<sub>teste</sub>: 0,612 → 0,487). Decisão homologada em `config.R`: **`prf_k = 0`** (desligada em produção).
 6. **Aula 07 (Decomposição Espectral LSA/SVD e Fusão Híbrida RRF):**
    - Avaliação sistemática de SVD truncada ($k=10, 20, 50$) e fusão híbrida RRF ($c=60$): no dev ($q_{01}..q_{08}$), o BM25 puro obteve $\text{MAP} = 0{,}744$ contra $0{,}652$ do híbrido ($k=20$); no teste ($q_{09}..q_{12}$), o BM25 confirmou a liderança com $\text{MAP} = 0{,}718$ contra $0{,}642$ do híbrido ($k=20$).
    - Decisão homologada em `config.R`: manter **`modelo = "bm25"`** em produção (`lsa_k = 20`, `rrf_c = 60`).
