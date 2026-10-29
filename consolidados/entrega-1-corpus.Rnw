@@ -88,6 +88,9 @@ tex <- function(x) {
 }
 
 tam_bruto <- setNames(docs_df$n_tokens_bruto, docs_df$id)
+tam_limpo <- setNames(docs_df$n_tokens_limpo, docs_df$id)
+doc_mais_longo <- names(tam_limpo)[which.max(tam_limpo)]
+K_mais_longo <- 1.2 * (1 - 0.75 + 0.75 * max(tam_limpo) / mean(tam_limpo))
 texto_top10 <- paste0("\\texttt{", tex(top$termo), "} (", top$n, ")", collapse = ", ")
 texto_pag   <- paste0("\\textit{", pag$pagina_tex, "}: ", pag$documentos, " de ", pag$brutos,
                       " (", f1(pag$pct, 1), "\\%, m\\'edia ", f1(pag$tokens_bruto, 1), " tokens)", collapse = "; ")
@@ -200,11 +203,11 @@ partisse topônimos como ``Guarujá'' e ``São João''.
     \textbf{Verificação} & \textbf{Resultado} \\
     \midrule
     Tamanho ($N$ documentos, páginas) & $\Sexpr{f0(r[["n.docs"]])}$ parágrafos válidos (de $\Sexpr{f0(r[["n.brutos"]])}$ brutos) em $\Sexpr{f0(r[["n.paginas"]])}$ páginas \\
-    Tokens por documento & Bruto: $\Sexpr{f0(r[["tam.bruto.min"]])}$ a $\Sexpr{f0(r[["tam.bruto.max"]])}$ (média $\Sexpr{f1(r[["tam.bruto.media"]], 0)}$) $\cdot$ Limpo (Aula 03): $\Sexpr{f0(r[["tam.limpo.min"]])}$ a $\Sexpr{f0(r[["tam.limpo.max"]])}$ (média $\Sexpr{f1(r[["tam.limpo.media"]], 1)}$) \\
+    Tokens por documento & Bruto: $\Sexpr{f0(min(tam_bruto))}$ a $\Sexpr{f0(max(tam_bruto))}$ (média $\Sexpr{f1(mean(tam_bruto), 0)}$) $\cdot$ Limpo (Aula 03): $\Sexpr{f0(min(tam_limpo))}$ a $\Sexpr{f0(max(tam_limpo))}$ (média $\Sexpr{f1(mean(tam_limpo), 1)}$) \\
     Vocabulário & $\Sexpr{f0(r[["n.vocab.bruto"]])}$ termos brutos em $\Sexpr{f0(r[["n.tokens.bruto"]])}$ tokens ($\Sexpr{f0(r[["n.vocab.limpo"]])}$ termos limpos após Aula 03) \\
     Por página de origem & \Sexpr{texto_pag} \\
     Página que domina & \textit{Santos (São Paulo)}: $\Sexpr{f0(r[["dom.n"]])}$ de $\Sexpr{f0(r[["n.docs"]])}$ ($\Sexpr{f1(r[["dom.pct"]], 1)}\%$) \\
-    Documentos extremos & $0$ com menos de $20$ tokens; $\Sexpr{f0(r[["n.longos"]])}$ acima de $200$ tokens brutos (máx.\ \texttt{d85}, $167$ tokens limpos) \\
+    Documentos extremos & $\Sexpr{f0(sum(tam_limpo < 20))}$ com menos de $20$ tokens; $\Sexpr{f0(sum(tam_bruto > 200))}$ acima de $200$ tokens brutos (máx.\ \texttt{\Sexpr{doc_mais_longo}}, $\Sexpr{f0(max(tam_limpo))}$ tokens limpos) \\
     Sujeira na tokenização bruta & $\Sexpr{f0(r[["com.acento"]])}$ com acento, $\Sexpr{f0(r[["com.pont"]])}$ com pontuação, $\Sexpr{f0(r[["com.digito"]])}$ com dígitos (de $\Sexpr{f0(r[["n.docs"]])}$) \\
     \bottomrule
   \end{tabular}
@@ -218,11 +221,12 @@ corpus já foi consolidado para o julgamento humano de relevância (230
 $\Sexpr{f1(r[["dom.pct"]], 1)}\%$ do acervo por ser a maior e mais antiga
 cidade da região, mas Guarujá ($29$) e Bertioga ($17$) garantem cobertura densa
 para as perguntas de turismo e história colonial.
-\textbf{Prosa e sujeira.} Não há parágrafos abaixo de 20 tokens graças ao
-filtro de 200 caracteres; o mais longo (\texttt{d85}, sobre a história e
-cultura santista, com 167 tokens limpos) é prosa contínua e sua extensão é
-controlada pela normalização euclidiana no cosseno e pelo fator $K = 2,568$ no
-BM25 \cite{robertson2009}. A presença de acentos e pontuação nos 132 textos e
+\textbf{Prosa e sujeira.} O menor parágrafo tem
+$\Sexpr{f0(min(tam_limpo))}$ tokens após a limpeza; o mais longo
+(\texttt{\Sexpr{doc_mais_longo}}, de Santos, com
+$\Sexpr{f0(max(tam_limpo))}$ tokens limpos) é prosa contínua e sua extensão é
+controlada pela normalização euclidiana no cosseno e pelo fator
+$K = \Sexpr{f1(K_mais_longo, 3)}$ no BM25 \cite{robertson2009}. A presença de acentos e pontuação nos 132 textos e
 de marcações como \texttt{[4]} em $\Sexpr{f0(r[["com.digito"]])}$ documentos é
 tratada na Aula~03. A Figura~\ref{fig:tam} exibe a distribuição de tamanhos.
 

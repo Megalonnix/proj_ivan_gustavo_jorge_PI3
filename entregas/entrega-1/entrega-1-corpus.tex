@@ -210,11 +210,11 @@ partisse topônimos como ``Guarujá'' e ``São João''.
     \textbf{Verificação} & \textbf{Resultado} \\
     \midrule
     Tamanho ($N$ documentos, páginas) & $132$ parágrafos válidos (de $152$ brutos) em $3$ páginas \\
-    Tokens por documento & Bruto: $24$ a $239$ (média $98$) $\cdot$ Limpo (Aula 03): $20$ a $167$ (média $66,3$) \\
-    Vocabulário & $4.250$ termos brutos em $12.925$ tokens ($3.483$ termos limpos após Aula 03) \\
+    Tokens por documento & Bruto: $24$ a $239$ (média $98$) $\cdot$ Limpo (Aula 03): $22$ a $186$ (média $73,0$) \\
+    Vocabulário & $4.250$ termos brutos em $12.925$ tokens ($3.471$ termos limpos após Aula 03) \\
     Por página de origem & \textit{Santos (S\~ao Paulo)}: 86 de 91 (65,2\%, m\'edia 100,5 tokens); \textit{Guaruj\'a}: 29 de 37 (22,0\%, m\'edia 93,8 tokens); \textit{Bertioga}: 17 de 24 (12,9\%, m\'edia 91,8 tokens) \\
     Página que domina & \textit{Santos (São Paulo)}: $86$ de $132$ ($65,2\%$) \\
-    Documentos extremos & $0$ com menos de $20$ tokens; $7$ acima de $200$ tokens brutos (máx.\ \texttt{d85}, $167$ tokens limpos) \\
+    Documentos extremos & $0$ com menos de $20$ tokens; $7$ acima de $200$ tokens brutos (máx.\ \texttt{d85}, $186$ tokens limpos) \\
     Sujeira na tokenização bruta & $132$ com acento, $132$ com pontuação, $122$ com dígitos (de $132$) \\
     \bottomrule
   \end{tabular}
@@ -228,11 +228,12 @@ corpus já foi consolidado para o julgamento humano de relevância (230
 $65,2\%$ do acervo por ser a maior e mais antiga
 cidade da região, mas Guarujá ($29$) e Bertioga ($17$) garantem cobertura densa
 para as perguntas de turismo e história colonial.
-\textbf{Prosa e sujeira.} Não há parágrafos abaixo de 20 tokens graças ao
-filtro de 200 caracteres; o mais longo (\texttt{d85}, sobre a história e
-cultura santista, com 167 tokens limpos) é prosa contínua e sua extensão é
-controlada pela normalização euclidiana no cosseno e pelo fator $K = 2,568$ no
-BM25 \cite{robertson2009}. A presença de acentos e pontuação nos 132 textos e
+\textbf{Prosa e sujeira.} O menor parágrafo tem
+$22$ tokens após a limpeza; o mais longo
+(\texttt{d85}, de Santos, com
+$186$ tokens limpos) é prosa contínua e sua extensão é
+controlada pela normalização euclidiana no cosseno e pelo fator
+$K = 2,594$ no BM25 \cite{robertson2009}. A presença de acentos e pontuação nos 132 textos e
 de marcações como \texttt{[4]} em $122$ documentos é
 tratada na Aula~03. A Figura~\ref{fig:tam} exibe a distribuição de tamanhos.
 
@@ -272,7 +273,7 @@ termos e revelando \texttt{santos}, \texttt{sao}, \texttt{cidade} e
     2. \texttt{praias e turismo} & \text{6} & \text{22} & \texttt{d2} & \texttt{d80} & 0,72 & 0,70 & 0,51 \\
     3. \texttt{forte sao joao}   & \text{0} & \text{8} & \texttt{d117} & \texttt{d117} & 0,68 & 0,68 & 0,68 \\
     \midrule
-    Tempo médio (ms) & 0,5 & 0,7 & & & 0,8 & 5,5 & 1,5 \\
+    Tempo médio (ms) & 0,3 & 0,3 & & & 0,4 & 3,2 & 0,5 \\
     \bottomrule
   \end{tabular}
   \fonte{Elaborada pelos autores. nDCG@5 calculado com \texttt{qrels\_jorge\_2026-10-13.csv} \cite{jarvelin2002}.}

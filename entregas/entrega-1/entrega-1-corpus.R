@@ -234,10 +234,10 @@ resultados <- data.frame(
              "tam.limpo.min", "tam.limpo.max", "tam.limpo.media", "tam.limpo.mediana",
              "curto", "longo", "n.curtos", "n.longos",
              "dom.n", "dom.pct", "com.acento", "com.pont", "com.digito"),
-  valor = c(nrow(corpus_raw), nrow(corpus_raw) - N, N, 3, cfg$minimo,
-            4250, sum(tam_bruto), 3483, 8750,
-            24, 239, 98.0, median(tam_bruto),
-            20, 167, 66.3, median(tam_limpo),
+  valor = c(nrow(corpus_raw), nrow(corpus_raw) - N, N, length(ord_pags), cfg$minimo,
+            length(vocab_bruto), sum(tam_bruto), length(vocab), sum(tam_limpo),
+            min(tam_bruto), max(tam_bruto), mean(tam_bruto), median(tam_bruto),
+            min(tam_limpo), max(tam_limpo), mean(tam_limpo), median(tam_limpo),
             curto_lim, longo_lim, sum(tam_bruto < curto_lim), sum(tam_bruto > longo_lim),
             pag_df$documentos[1], pag_df$pct[1],
             sum(grepl("[^ -~]", docs)), sum(grepl("[[:punct:]]", docs)), sum(grepl("[0-9]", docs)))
@@ -303,4 +303,3 @@ if (requireNamespace("knitr", quietly = TRUE)) {
   file.copy(file.path(pasta_ent, "entrega-1-corpus.R"),
             file.path("consolidados", "entrega-1-corpus.R"), overwrite = TRUE)
 }
-

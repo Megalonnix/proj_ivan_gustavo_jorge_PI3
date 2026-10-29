@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.5.30)  28 OCT 2026 14:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.5.30)  29 OCT 2026 18:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -904,10 +904,10 @@ en-tos,
 <figure/fig-tam-1.pdf, id=48, 389.455pt x 111.41624pt>
 File: figure/fig-tam-1.pdf Graphic file (type pdf)
 <use figure/fig-tam-1.pdf>
-Package pdftex.def Info: figure/fig-tam-1.pdf  used on input line 246.
+Package pdftex.def Info: figure/fig-tam-1.pdf  used on input line 247.
 (pdftex.def)             Requested size: 218.39806pt x 62.47937pt.
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 2
-64.
+65.
 (C:\Users\Ivan\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) (entrega-1-corpus.bbl [3{C:/Users/Ivan/AppData/Local/Programs/MiKTeX/fonts/en
@@ -947,9 +947,9 @@ n/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmss17.pfb><C:/Users/Ivan
 /AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmsy10.pfb><C:/Users/Ivan/
 AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt10.pfb><C:/Users/Ivan/A
 ppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb>
-Output written on entrega-1-corpus.pdf (4 pages, 338326 bytes).
+Output written on entrega-1-corpus.pdf (4 pages, 338100 bytes).
 PDF statistics:
- 175 PDF objects out of 1000 (max. 8388607)
+ 174 PDF objects out of 1000 (max. 8388607)
  22 named destinations out of 1000 (max. 500000)
  46 words of extra memory for PDF output out of 10000 (max. 10000000)
 

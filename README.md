@@ -26,7 +26,7 @@ Esta seção reúne em um único lugar todas as entregas exigidas nas diretrizes
 
 | Entrega Exigida | Status | Arquivos no Repositório (Links Diretos) |
 |---|---|---|
-| **1. Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências)** | ✅ Entregue | • PDF em `consolidados/`: [`consolidados/entrega-1-corpus.pdf`](consolidados/entrega-1-corpus.pdf)<br>• PDF em `entregas/entrega-1/`: [`entregas/entrega-1/entrega-1-corpus.pdf`](entregas/entrega-1/entrega-1-corpus.pdf)<br>• PDF na raiz: [`entrega-1-corpus.pdf`](entrega-1-corpus.pdf)<br>• Código-fonte `.Rnw`: [`consolidados/entrega-1-corpus.Rnw`](consolidados/entrega-1-corpus.Rnw) · [`entregas/entrega-1/entrega-1-corpus.Rnw`](entregas/entrega-1/entrega-1-corpus.Rnw)<br>• Bibliografia `.bib`: [`consolidados/referencias.bib`](consolidados/referencias.bib) · [`entregas/entrega-1/referencias.bib`](entregas/entrega-1/referencias.bib)<br>• Script gerador dos CSVs e compilação: [`entregas/entrega-1/entrega-1-corpus.R`](entregas/entrega-1/entrega-1-corpus.R) |
+| **1. Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências)** | ✅ Regenerado e conferido | • PDF em `consolidados/`: [`consolidados/entrega-1-corpus.pdf`](consolidados/entrega-1-corpus.pdf)<br>• PDF em `entregas/entrega-1/`: [`entregas/entrega-1/entrega-1-corpus.pdf`](entregas/entrega-1/entrega-1-corpus.pdf)<br>• PDF na raiz: [`entrega-1-corpus.pdf`](entrega-1-corpus.pdf)<br>• Código-fonte `.Rnw`: [`consolidados/entrega-1-corpus.Rnw`](consolidados/entrega-1-corpus.Rnw) · [`entregas/entrega-1/entrega-1-corpus.Rnw`](entregas/entrega-1/entrega-1-corpus.Rnw)<br>• Bibliografia `.bib`: [`consolidados/referencias.bib`](consolidados/referencias.bib) · [`entregas/entrega-1/referencias.bib`](entregas/entrega-1/referencias.bib)<br>• Script gerador dos CSVs e compilação: [`entregas/entrega-1/entrega-1-corpus.R`](entregas/entrega-1/entrega-1-corpus.R) |
 | **2. Ficha do Projeto completa (Seções 1 a 7 + Estado do R)** | ✅ Entregue | • [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md)<br>• [`00_FICHA_PROJETO.md`](00_FICHA_PROJETO.md) (espelho na raiz) |
 | **3. Corpus congelado em `.rds` e scripts executáveis (`coletar.R`, `aula02.R`, `buscar.R`)** | ✅ Entregue | • Corpus `.rds`: [`estrutura/banco-de-dados/docs.rds`](estrutura/banco-de-dados/docs.rds) e [`estrutura/banco-de-dados/origem.rds`](estrutura/banco-de-dados/origem.rds) (também em `estrutura/bancoDeDados/`)<br>• Base bruta `.csv`: [`estrutura/bancoDeDados/wikipedia_baixada_santista.csv`](estrutura/bancoDeDados/wikipedia_baixada_santista.csv) (152 brutos → 132 válidos)<br>• Scripts de terminal: [`estrutura/codigo/coletar.R`](estrutura/codigo/coletar.R) · [`estrutura/codigo/aula02.R`](estrutura/codigo/aula02.R) · [`estrutura/codigo/buscar.R`](estrutura/codigo/buscar.R) (também em `entregas/entrega-1/`) |
 | **4. Consolidados das Aulas 00 a 07 (Teoria e Parte D)** | ✅ Entregue | • Pasta [`consolidados/`](consolidados/) completa (`aula00` a `aula07`, teoria e `parteD`)<br>• Leitor automático no Colab: [`estrutura/codigo/Consolidados_Colab.ipynb`](estrutura/codigo/Consolidados_Colab.ipynb) |
@@ -38,7 +38,7 @@ Esta seção reúne em um único lugar todas as entregas exigidas nas diretrizes
 Todos os scripts foram construídos apenas com **R base** (sem dependências externas para o motor) e detectam automaticamente a raiz do repositório, podendo ser executados da raiz do projeto, de `estrutura/codigo/` ou de `entregas/entrega-1/`.
 
 #### Passo 1 — Conferir o repositório, o PDF do corpus e a Ficha do Projeto
-- Abrir [`consolidados/entrega-1-corpus.pdf`](consolidados/entrega-1-corpus.pdf) (3 páginas de texto com as 4 seções obrigatórias + Referências na página 4).
+- Abrir [`consolidados/entrega-1-corpus.pdf`](consolidados/entrega-1-corpus.pdf) (3 páginas de texto + Referências na página 4).
 - Abrir [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md) e verificar na **Seção 4** os rankings Top-5 de referência das três consultas de trabalho (q₁, q₂, q₃).
 
 #### Passo 2 — Regenerar e verificar o corpus (`docs.rds` e `origem.rds`)
@@ -91,7 +91,9 @@ cd consolidados
 Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 ```
 
-> **⚠️ Aviso antes de recompilar:** o `entrega-1-corpus.R` ainda contém um valor **hardcoded** para `tam.limpo.max` (registrado como `167` no vetor `resultados`), enquanto o valor efetivamente computado pelo pipeline atual é **`186`** (documento `d85`, Santos) — visível em `entrega-1-docs.csv`. O `167` é resíduo de uma versão anterior do script. Antes de recompilar o PDF, corrija a linha do vetor `resultados` no `entrega-1-corpus.R` para usar `max(tam_limpo)` em vez do literal `167`. Os demais hardcodes (`4250`, `3483`, `8750`, `24`, `239`, `98.0`, `20`, `66.3`) conferem com os valores computados.
+> **Auditoria dos tamanhos limpos:** os 132 documentos têm de **22 a 186 tokens limpos**, total de **9.632**, média **73,0** e mediana **64,5**; `d85` é o maior, com 186 tokens. Os CSVs e os três PDFs foram regenerados a partir dos dados e agora apresentam essas medidas. O vocabulário limpo calculado pelo gerador atual é **3.471 termos**.
+
+> **Nota histórica sobre vocabulário:** os consolidados das Aulas 03 e 07 registram 3.483 e 3.493 termos, respectivamente. Esses números são snapshots de sessões anteriores; para a versão atual da Entrega 1, use 3.471, calculado pelo gerador.
 
 ---
 
@@ -191,7 +193,7 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 
 1. **Aulas 00–02 (Corpus e Modelo Vetorial):** Extração de 152 parágrafos brutos da Wikipédia e congelamento de N = 132 parágrafos autônomos (`cfg$minimo = 200` caracteres: 86 de Santos, 29 de Guarujá e 17 de Bertioga). Homologação das 3 consultas de trabalho no modelo TF-IDF + Cosseno (q₁ → `d76`, q₂ → `d2`, q₃ → `d117`).
 
-2. **Aula 03 (Limpeza e Índice Invertido):** Adoção de `cfg$acentos = "translit"`, remoção de 27 stopwords funcionais e construção do índice invertido (`postings`), reduzindo o vocabulário de 4.250 para 3.483 termos sem partir topônimos regionais (ex.: `Guarujá` → `guaruja`, não `guaruj`/`guaruj a`).
+2. **Aula 03 (Limpeza e Índice Invertido):** Adoção de `cfg$acentos = "translit"`, remoção de 27 stopwords funcionais e construção do índice invertido (`postings`), reduzindo o vocabulário de 4.250 para 3.483 termos no resultado registrado naquela sessão, sem partir topônimos regionais (ex.: `Guarujá` → `guaruja`, não `guaruj`/`guaruj a`).
 
 3. **Aula 04 (Modelo Probabilístico BM25):** Implementação do BM25 com parâmetros canônicos (k₁ = 1,2 e b = 0,75), promovendo documentos que cobrem **todos** os termos da consulta (como `d80` e `d118` em q₂), em contraste com o Cosseno, que privilegiava `d2` por repetição de `praias`.
 

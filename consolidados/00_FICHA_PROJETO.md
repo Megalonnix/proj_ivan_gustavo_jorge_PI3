@@ -46,8 +46,8 @@
 |---|---|
 | **Total de Documentos ($N$)** | 132 parágrafos autônomos (`d1..d132`) congelados em `corpus.csv` e `estrutura/banco-de-dados/docs.rds` (de 152 parágrafos brutos extraídos em `wikipedia_baixada_santista.csv`; 20 descartados com $\le 200$ caracteres). |
 | **Distribuição por Artigo** | Santos: 86 parágrafos de 91 brutos (65,2%, média 100,5 tokens brutos / 76,0 limpos) · Guarujá: 29 de 37 (22,0%, média 93,8 brutos / 68,5 limpos) · Bertioga: 17 de 24 (12,9%, média 91,8 brutos / 65,5 limpos). |
-| **Tamanho dos Documentos (Tokens)** | Tokenização bruta (Aula 01): menor 24 · maior 239 · média 98,0 tokens (0 curtos $<20$; 7 longos $>200$). <br>Tokenização limpa (Aula 03): menor 20 · maior 167 (`d85` - Santos) · média 66,3 tokens. |
-| **Vocabulário** | 4.250 termos brutos (12.925 ocorrências) · 3.483 termos limpos após transliteração e remoção de 27 stopwords (Aula 03). |
+| **Tamanho dos Documentos (Tokens)** | Tokenização bruta (Aula 01): menor 24 · maior 239 · média 98,0 tokens (0 curtos $<20$; 7 longos $>200$). <br>Tokenização limpa no CSV atual: menor 22 · maior 186 (`d85` - Santos) · média 73,0 · mediana 64,5 tokens. |
+| **Vocabulário** | 4.250 termos brutos (12.925 ocorrências) · 3.471 termos limpos na versão atual da Entrega 1. Os registros históricos das Aulas 03 e 07 registram 3.483 e 3.493, respectivamente. |
 | **Top-10 Termos Brutos** | `de` (910), `a` (494), `e` (392), `o` (365), `do` (301), `da` (250), `em` (226), `que` (157), `com` (126), `na` (114). |
 | **Gabarito e Necessidades** | 12 consultas formuladas em `necessidades.csv` e julgadas em `qrels_jorge_2026-10-13.csv` (230 julgamentos, juiz Jorge). Divisão: 8 dev ($q_{01}..q_{08}$) e 4 teste ($q_{09}..q_{12}$). |
 | **Idioma, acentos, caixa, pontuação** | Decisão de acentos: `"translit"` (transliteração para ASCII sem partir palavras); pontuações eliminadas por `[^a-z0-9 ]`. |
@@ -61,12 +61,12 @@
 
 | Componente | Status | Arquivo / Entrega |
 |---|---|---|
-| Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências) | OK | `consolidados/entrega-1-corpus.pdf` · `entregas/entrega-1/entrega-1-corpus.Rnw` · `entregas/entrega-1/entrega-1-corpus.R` |
+| Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências) | OK — regenerado e conferido | `consolidados/entrega-1-corpus.pdf` · `entregas/entrega-1/entrega-1-corpus.Rnw` · `entregas/entrega-1/entrega-1-corpus.R` |
 | Coleta e Extração do Corpus (`docs.rds` e `origem.rds`) | OK | `estrutura/codigo/coletar.R` · `estrutura/banco-de-dados/docs.rds` · `estrutura/bancoDeDados/wikipedia_baixada_santista.csv` |
 | Scripts Executáveis via Terminal (`Rscript`) | OK | `estrutura/codigo/coletar.R` · `estrutura/codigo/aula02.R` · `estrutura/codigo/buscar.R` |
 | Configuração `config.R` (`minimo, grupo, limpar, acentos, stopwords, k1, b, juizes, limiar, prf_k, rocchio, modelo, lsa_k, rrf_c`) | OK | `config.R` · `estrutura/codigo/config.R` |
 | Tokenização e Vocabulário Real | OK | `Aula01_ParteD.ipynb` · `coletar.R` |
-| Matriz Termo-Documento ($4250 \times 132$ bruta; $3483 \times 132$ limpa) | OK | `Aula01_ParteD.ipynb` · `Aula03_ParteD.ipynb` |
+| Matriz Termo-Documento ($4250 \times 132$ bruta; $3471 \times 132$ na geração atual; Aula 03 registrou $3483 \times 132$) | OK | `Aula01_ParteD.ipynb` · `Aula03_ParteD.ipynb` |
 | Busca Booleana Conjuntiva (AND) e Disjuntiva (OR) | OK | `Aula01_ParteD.ipynb` · `buscar.R` |
 | TF-IDF + Similaridade do Cosseno | OK | `Aula02_ParteD.ipynb` · `estrutura/codigo/aula02.R` |
 | Limpeza textual e stopwords do grupo | OK | `Aula03_ParteD.ipynb` |

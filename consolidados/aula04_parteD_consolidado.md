@@ -15,6 +15,8 @@
   - Com $k_1 = 0$, a frequência é ignorada e todos os documentos que contêm os termos empatam na soma dos IDFs ($2{,}199$).
   - Decisão: O grupo fixou $k_1 = 1{,}2$ e $b = 0{,}75$ no `config.R`, adotando o padrão da literatura para evitar sobreajuste preliminar antes do teste com gabarito na Aula 5,5.
 
+> **Nota de auditoria (2026-10-29):** os valores de comprimento registrados nesta sessão (máximo 167, média 66,3 e $K=2{,}568$) são o retrato histórico da Aula 04. O CSV atual de documentos registra mínimo 22, máximo 186 e média 72,97 tokens limpos; os arquivos da Entrega 1 foram atualizados para essa base.
+
 ## 2. Como o grupo trabalhou — opinião da tutora
 O grupo trabalhou com extraordinário rigor técnico e postura analítica exemplar. Ao identificar que $d_{80}$ e $d_{118}$ ultrapassaram $d_{2}$ na consulta `"praias e turismo"`, os alunos inspecionaram diretamente as contagens de termos na TDM (`counts$praias` vs `counts$turismo`) e os comprimentos documentais, explicando a inversão pelo duplo mecanismo de saturação de frequência e soma aditiva de termos em vez de atribuir a diferença a preferências estéticas. A alternância de digitadores ocorreu com fluidez (Ivan conduziu o M10, Jorge o M11 e Gustavo o M12). As variações de parâmetros foram testadas de maneira univariada, compreendendo com clareza o efeito assintótico de $k_1 = 0$. O arquivo `config.R` foi descomentado e sincronizado com perfeição.
 
