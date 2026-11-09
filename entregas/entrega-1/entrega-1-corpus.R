@@ -12,11 +12,11 @@ if (length(file_arg) == 1) {
   setwd(dirname(normalizePath(sub("^--file=", "", file_arg))))
 }
 
-raiz <- if (file.exists("wikipedia_baixada_santista.csv")) {
+raiz <- if (file.exists(file.path("estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
   "."
-} else if (file.exists(file.path("..", "bancoDeDados", "wikipedia_baixada_santista.csv"))) {
+} else if (file.exists(file.path("..", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
   file.path("..", "..")
-} else if (file.exists(file.path("..", "..", "wikipedia_baixada_santista.csv"))) {
+} else if (file.exists(file.path("..", "..", "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
   file.path("..", "..")
 } else {
   "."
@@ -29,8 +29,8 @@ dir.create("consolidados", recursive = TRUE, showWarnings = FALSE)
 
 # 1. Carrega config.R e gera docs.rds / origem.rds (132 paragrafos validos)
 source("config.R")
-arq_csv <- if (file.exists(file.path("estrutura", "bancoDeDados", "wikipedia_baixada_santista.csv"))) {
-  file.path("estrutura", "bancoDeDados", "wikipedia_baixada_santista.csv")
+arq_csv <- if (file.exists(file.path("estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+  file.path("estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv")
 } else {
   "wikipedia_baixada_santista.csv"
 }
@@ -54,12 +54,10 @@ origem <- setNames(orig_raw[validos], names(docs))
 id_orig_map <- setNames(as.character(cp_validos$id), names(docs))
 doc_de_id   <- setNames(names(docs), as.character(cp_validos$id))
 
-for (pasta_bd in c(file.path("estrutura", "banco-de-dados"),
-                   file.path("estrutura", "bancoDeDados"))) {
-  dir.create(pasta_bd, recursive = TRUE, showWarnings = FALSE)
-  saveRDS(docs,   file.path(pasta_bd, "docs.rds"))
-  saveRDS(origem, file.path(pasta_bd, "origem.rds"))
-}
+pasta_bd <- file.path("estrutura", "banco-de-dados")
+dir.create(pasta_bd, recursive = TRUE, showWarnings = FALSE)
+saveRDS(docs,   file.path(pasta_bd, "docs.rds"))
+saveRDS(origem, file.path(pasta_bd, "origem.rds"))
 
 # 2. Tokenizacao bruta da Aula 01 (minusculas + quebra por espaco)
 # Normaliza espacos nao-quebraveis (\u00a0) para espaco comum como no Linux/Colab
@@ -145,7 +143,12 @@ rank_bm25 <- function(q, k1 = cfg$k1, b = cfg$b) {
 }
 
 # 5. Avaliacao das 3 consultas de trabalho com o gabarito do grupo (qrels_jorge)
-qrels_df <- read.csv("qrels_jorge_2026-10-13.csv", stringsAsFactors = FALSE)
+arq_qrels <- if (file.exists(file.path("estrutura", "banco-de-dados", "qrels_jorge_2026-10-13.csv"))) {
+  file.path("estrutura", "banco-de-dados", "qrels_jorge_2026-10-13.csv")
+} else {
+  "qrels_jorge_2026-10-13.csv"
+}
+qrels_df <- read.csv(arq_qrels, stringsAsFactors = FALSE)
 grau_de <- function(qid) {
   sub <- qrels_df[qrels_df$consulta == qid, ]
   # Mapeia id original (1..152) para d1..d132
@@ -259,7 +262,7 @@ docs_df <- data.frame(
   stringsAsFactors = FALSE
 )
 
-for (dest in c(pasta_ent, "consolidados")) {
+for (dest in c(pasta_ent)) {
   write.csv(docs_df,    file.path(dest, "entrega-1-docs.csv"),       row.names = FALSE, fileEncoding = "UTF-8")
   write.csv(pag_df,     file.path(dest, "entrega-1-paginas.csv"),    row.names = FALSE, fileEncoding = "UTF-8")
   write.csv(metodos,    file.path(dest, "entrega-1-metodos.csv"),    row.names = FALSE, fileEncoding = "UTF-8")
@@ -268,7 +271,7 @@ for (dest in c(pasta_ent, "consolidados")) {
   write.csv(top10_df,   file.path(dest, "entrega-1-top10.csv"),      row.names = FALSE, fileEncoding = "UTF-8")
 }
 
-cat("CSVs de diagnostico gerados com sucesso em entregas/entrega-1/ e consolidados/!\n")
+cat("CSVs de diagnostico gerados com sucesso em entregas/entrega-1/!\n")
 print(pag_df)
 cat("\nResumo das 3 consultas nos 5 metodos:\n")
 print(metodos, digits = 3)
@@ -288,18 +291,10 @@ if (requireNamespace("knitr", quietly = TRUE)) {
     cat("\nAviso na compilacao direta do PDF:", conditionMessage(e), "\n")
   })
   setwd(old_wd)
-  if (file.exists(file.path(pasta_ent, "entrega-1-corpus.pdf"))) {
-    file.copy(file.path(pasta_ent, "entrega-1-corpus.pdf"),
-              file.path("consolidados", "entrega-1-corpus.pdf"), overwrite = TRUE)
-    file.copy(file.path(pasta_ent, "entrega-1-corpus.pdf"),
-              "entrega-1-corpus.pdf", overwrite = TRUE)
-  }
   for (scr in c("coletar.R", "aula02.R", "buscar.R")) {
     src_p <- file.path("estrutura", "codigo", scr)
     if (file.exists(src_p)) {
       file.copy(src_p, file.path(pasta_ent, scr), overwrite = TRUE)
     }
   }
-  file.copy(file.path(pasta_ent, "entrega-1-corpus.R"),
-            file.path("consolidados", "entrega-1-corpus.R"), overwrite = TRUE)
 }

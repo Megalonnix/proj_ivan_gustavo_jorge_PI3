@@ -11,7 +11,7 @@
 | **Projeto** | Motor de Busca Municipal e Histórico da Baixada Santista |
 | **Alunos** | Ivan Guimarães dos S. da Silva (RA 0051352421038) · Gustavo Geminiano (RA 0051352511009) · Jorge Sugano Suzart (RA 0051352511005) |
 | **Repositório** | https://github.com/Megalonnix/proj_ivan_gustavo_jorge_PI3 |
-| **Texto do Corpus (PDF)** | `consolidados/entrega-1-corpus.pdf` · `entregas/entrega-1/entrega-1-corpus.pdf` (gerado por `entrega-1-corpus.Rnw` + `entrega-1-corpus.R`) |
+| **Texto do Corpus (PDF)** | `entregas/entrega-1/entrega-1-corpus.pdf` (gerado por `entregas/entrega-1/entrega-1-corpus.Rnw` + `entregas/entrega-1/entrega-1-corpus.R`) |
 | **Linguagem & Ambiente** | R base no Google Colab (Linux) / IRkernel / RStudio (`Rscript`) |
 
 ---
@@ -36,7 +36,7 @@
 | **Licença** | Creative Commons Atribuição-CompartilhaIgual (CC BY-SA 4.0). |
 | **Títulos das Páginas** | `Santos (São Paulo)`, `Guarujá`, `Bertioga`. |
 | **O que é UM documento** | Um parágrafo enciclopédico com comprimento superior a 200 caracteres (`nchar > 200`), garantindo contexto autônomo para resposta. |
-| **Critério no Código** | `cfg$minimo = 200` (configurado em `config.R` e aplicado em `coletar.R`). |
+| **Critério no Código** | `cfg$minimo = 200` (configurado em `config.R` e aplicado em `coletar.R` e `pipeline.R`). |
 
 ---
 
@@ -44,16 +44,16 @@
 
 | Métrica | Valor Observado |
 |---|---|
-| **Total de Documentos ($N$)** | 132 parágrafos autônomos (`d1..d132`) congelados em `corpus.csv` e `estrutura/banco-de-dados/docs.rds` (de 152 parágrafos brutos extraídos em `wikipedia_baixada_santista.csv`; 20 descartados com $\le 200$ caracteres). |
+| **Total de Documentos ($N$)** | 132 parágrafos autônomos (`d1..d132`) congelados em `estrutura/banco-de-dados/docs.rds` (de 152 parágrafos brutos extraídos em `estrutura/banco-de-dados/wikipedia_baixada_santista.csv`; 20 descartados com $\le 200$ caracteres). |
 | **Distribuição por Artigo** | Santos: 86 parágrafos de 91 brutos (65,2%, média 100,5 tokens brutos / 76,0 limpos) · Guarujá: 29 de 37 (22,0%, média 93,8 brutos / 68,5 limpos) · Bertioga: 17 de 24 (12,9%, média 91,8 brutos / 65,5 limpos). |
 | **Tamanho dos Documentos (Tokens)** | Tokenização bruta (Aula 01): menor 24 · maior 239 · média 98,0 tokens (0 curtos $<20$; 7 longos $>200$). <br>Tokenização limpa no CSV atual: menor 22 · maior 186 (`d85` - Santos) · média 73,0 · mediana 64,5 tokens. |
-| **Vocabulário** | 4.250 termos brutos (12.925 ocorrências) · 3.471 termos limpos na versão atual da Entrega 1. Os registros históricos das Aulas 03 e 07 registram 3.483 e 3.493, respectivamente. |
+| **Vocabulário** | 4.250 termos brutos (12.925 ocorrências) · 3.471 termos limpos na versão atual da Entrega 1 (`buscar.R` / `pipeline.R`). Os registros históricos das Aulas 03 e 07 registram 3.483 e 3.493, respectivamente. |
 | **Top-10 Termos Brutos** | `de` (910), `a` (494), `e` (392), `o` (365), `do` (301), `da` (250), `em` (226), `que` (157), `com` (126), `na` (114). |
-| **Gabarito e Necessidades** | 12 consultas formuladas em `necessidades.csv` e julgadas em `qrels_jorge_2026-10-13.csv` (230 julgamentos, juiz Jorge). Divisão: 8 dev ($q_{01}..q_{08}$) e 4 teste ($q_{09}..q_{12}$). |
+| **Gabarito e Necessidades** | 12 consultas formuladas em `estrutura/banco-de-dados/necessidades.csv` e julgadas em `estrutura/banco-de-dados/qrels_jorge_2026-10-13.csv` (230 julgamentos, juiz Jorge). Divisão: 8 dev ($q_{01}..q_{08}$) e 4 teste ($q_{09}..q_{12}$). |
 | **Idioma, acentos, caixa, pontuação** | Decisão de acentos: `"translit"` (transliteração para ASCII sem partir palavras); pontuações eliminadas por `[^a-z0-9 ]`. |
 | **Consultas de Trabalho Fixadas** | $q_1$: `"porto de santos"` · $q_2$: `"praias e turismo"` · $q_3$: `"forte sao joao"`. |
-| **Top-5 Cosseno — Aula 02 (`Rscript aula02.R`, tokenização bruta)** | • $q_1$ (`"porto de santos"`): `d76 (0.193) · d39 (0.146) · d50 (0.132) · d67 (0.132) · d26 (0.123)` — 1.º lugar `d76` (Santos), parcelas `porto=4.22 | de=0.01 | santos=0.59` <br>• $q_2$ (`"praias e turismo"`): `d2 (0.135) · d19 (0.120) · d80 (0.116) · d118 (0.106) · d53 (0.097)` — 1.º lugar `d2` (Guarujá), parcelas `praias=5.32 | e=0.05 | turismo=0.00` <br>• $q_3$ (`"forte sao joao"`): `d117 (0.205) · d121 (0.190) · d16 (0.129) · d132 (0.106) · d10 (0.104)` — 1.º lugar `d117` (Bertioga), parcelas `forte=6.28 | são=1.37 | joão=3.78` |
-| **Top-5 Pós-Limpeza — Aula 03/04 (`Rscript buscar.R`, `translit` + 27 stopwords)** | • $q_1$ (`"porto de santos"`): Cosseno `d76 (0.26) · d78 (0.17) · d25 (0.15) · d77 (0.13) · d50 (0.12)` ($\text{nDCG@5}=1{,}00$) \| BM25 `d76 (3.88) · d78 (3.29) · d25 (3.19) · d77 (3.13) · d39 (3.12)` ($\text{nDCG@5}=1{,}00$) <br>• $q_2$ (`"praias e turismo"`): Cosseno `d2 (0.18) · d118 (0.15) · d80 (0.13) · d19 (0.13) · d53 (0.12)` ($\text{nDCG@5}=0{,}70$) \| BM25 `d80 (5.01) · d118 (4.83) · d19 (4.73) · d53 (4.70) · d51 (4.22)` ($\text{nDCG@5}=0{,}51$) <br>• $q_3$ (`"forte sao joao"`): Cosseno `d117 (0.30) · d121 (0.17) · d132 (0.12) · d16 (0.11) · d123 (0.09)` ($\text{nDCG@5}=0{,}68$) \| BM25 `d117 (4.43) · d121 (3.60) · d132 (3.44) · d16 (3.08) · d123 (2.73)` ($\text{nDCG@5}=0{,}68$) |
+| **Top-5 Cosseno — Aula 02 (`Rscript estrutura/codigo/aula02.R`, tokenização bruta)** | • $q_1$ (`"porto de santos"`): `d76 (0.193) · d39 (0.146) · d50 (0.132) · d67 (0.132) · d26 (0.123)` — 1.º lugar `d76` (Santos), parcelas `porto=4.22 | de=0.01 | santos=0.59` <br>• $q_2$ (`"praias e turismo"`): `d2 (0.135) · d19 (0.120) · d80 (0.116) · d118 (0.106) · d53 (0.097)` — 1.º lugar `d2` (Guarujá), parcelas `praias=5.32 | e=0.05 | turismo=0.00` <br>• $q_3$ (`"forte sao joao"`): `d117 (0.205) · d121 (0.190) · d16 (0.129) · d132 (0.106) · d10 (0.104)` — 1.º lugar `d117` (Bertioga), parcelas `forte=6.28 | são=1.37 | joão=3.78` |
+| **Top-5 Pós-Limpeza — Aula 03/04 (`Rscript estrutura/codigo/buscar.R`, `translit` + 27 stopwords)** | • $q_1$ (`"porto de santos"`): Cosseno `d76 (0.26) · d78 (0.17) · d25 (0.15) · d77 (0.13) · d50 (0.12)` ($\text{nDCG@5}=1{,}00$) \| BM25 `d76 (3.88) · d78 (3.29) · d25 (3.19) · d77 (3.13) · d39 (3.12)` ($\text{nDCG@5}=1{,}00$) <br>• $q_2$ (`"praias e turismo"`): Cosseno `d2 (0.18) · d118 (0.15) · d80 (0.13) · d19 (0.13) · d53 (0.12)` ($\text{nDCG@5}=0{,}70$) \| BM25 `d80 (5.01) · d118 (4.83) · d19 (4.73) · d53 (4.70) · d51 (4.22)` ($\text{nDCG@5}=0{,}51$) <br>• $q_3$ (`"forte sao joao"`): Cosseno `d117 (0.30) · d121 (0.17) · d132 (0.12) · d16 (0.11) · d123 (0.09)` ($\text{nDCG@5}=0{,}68$) \| BM25 `d117 (4.43) · d121 (3.60) · d132 (3.44) · d16 (3.08) · d123 (2.73)` ($\text{nDCG@5}=0{,}68$) |
 
 ---
 
@@ -61,9 +61,9 @@
 
 | Componente | Status | Arquivo / Entrega |
 |---|---|---|
-| Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências) | OK — regenerado e conferido | `consolidados/entrega-1-corpus.pdf` · `entregas/entrega-1/entrega-1-corpus.Rnw` · `entregas/entrega-1/entrega-1-corpus.R` |
-| Coleta e Extração do Corpus (`docs.rds` e `origem.rds`) | OK | `estrutura/codigo/coletar.R` · `estrutura/banco-de-dados/docs.rds` · `estrutura/bancoDeDados/wikipedia_baixada_santista.csv` |
-| Scripts Executáveis via Terminal (`Rscript`) | OK | `estrutura/codigo/coletar.R` · `estrutura/codigo/aula02.R` · `estrutura/codigo/buscar.R` |
+| Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências) | OK — regenerado e conferido | `entregas/entrega-1/entrega-1-corpus.pdf` · `entregas/entrega-1/entrega-1-corpus.Rnw` · `entregas/entrega-1/entrega-1-corpus.R` |
+| Coleta e Extração do Corpus (`docs.rds` e `origem.rds`) | OK | `estrutura/codigo/coletar.R` · `estrutura/banco-de-dados/docs.rds` · `estrutura/banco-de-dados/wikipedia_baixada_santista.csv` |
+| Scripts Executáveis via Terminal (`Rscript`) | OK | `estrutura/codigo/coletar.R` · `estrutura/codigo/aula02.R` · `estrutura/codigo/buscar.R` · `estrutura/codigo/pipeline.R` |
 | Configuração `config.R` (`minimo, grupo, limpar, acentos, stopwords, k1, b, juizes, limiar, prf_k, rocchio, modelo, lsa_k, rrf_c`) | OK | `config.R` · `estrutura/codigo/config.R` |
 | Tokenização e Vocabulário Real | OK | `Aula01_ParteD.ipynb` · `coletar.R` |
 | Matriz Termo-Documento ($4250 \times 132$ bruta; $3471 \times 132$ na geração atual; Aula 03 registrou $3483 \times 132$) | OK | `Aula01_ParteD.ipynb` · `Aula03_ParteD.ipynb` |
@@ -72,7 +72,7 @@
 | Limpeza textual e stopwords do grupo | OK | `Aula03_ParteD.ipynb` |
 | Índice invertido rápido + Busca AND | OK | `Aula03_ParteD.ipynb` |
 | Modelo Probabilístico BM25 ($k_1=1{,}2, b=0{,}75$) | OK | `Aula04_ParteD.ipynb` · `estrutura/codigo/buscar.R` |
-| Avaliação com Gabarito (P@k, MAP, MRR, nDCG) | OK | `Aula05b_ParteD.ipynb` · `qrels_jorge_2026-10-13.csv` |
+| Avaliação com Gabarito (P@k, MAP, MRR, nDCG) | OK | `Aula05b_ParteD.ipynb` · `estrutura/banco-de-dados/qrels_jorge_2026-10-13.csv` · `csv/` |
 | Realimentação (Rocchio e Pseudo-realimentação PRF) | OK | `Aula06_ParteD.ipynb` (testado; desligado em produção: `prf_k = 0`) |
 | Decomposição Espectral LSA (SVD) e Fusão Híbrida RRF | OK | `Aula07_ParteD.ipynb` (testado; mantido BM25 em produção: `modelo = "bm25"`, `lsa_k = 20`, `rrf_c = 60`) |
 

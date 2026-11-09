@@ -11,11 +11,11 @@ if (length(file_arg) == 1) {
 }
 
 # Localiza a raiz do repositorio independentemente de onde Rscript foi chamado
-raiz <- if (file.exists("wikipedia_baixada_santista.csv")) {
+raiz <- if (file.exists(file.path("estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
   "."
-} else if (file.exists(file.path("..", "bancoDeDados", "wikipedia_baixada_santista.csv"))) {
+} else if (file.exists(file.path("..", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
   file.path("..", "..")
-} else if (file.exists(file.path("..", "..", "wikipedia_baixada_santista.csv"))) {
+} else if (file.exists(file.path("..", "..", "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
   file.path("..", "..")
 } else {
   "."
@@ -34,8 +34,8 @@ if (!is.null(arq_cfg)) {
   cfg <- list(minimo = 200, grupo = "ivan_gustavo_jorge")
 }
 
-arq_csv <- if (file.exists(file.path(raiz, "estrutura", "bancoDeDados", "wikipedia_baixada_santista.csv"))) {
-  file.path(raiz, "estrutura", "bancoDeDados", "wikipedia_baixada_santista.csv")
+arq_csv <- if (file.exists(file.path(raiz, "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+  file.path(raiz, "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv")
 } else {
   file.path(raiz, "wikipedia_baixada_santista.csv")
 }
@@ -60,12 +60,10 @@ origem <- setNames(
   names(docs)
 )
 
-for (pasta_bd in c(file.path(raiz, "estrutura", "banco-de-dados"),
-                   file.path(raiz, "estrutura", "bancoDeDados"))) {
-  dir.create(pasta_bd, recursive = TRUE, showWarnings = FALSE)
-  saveRDS(docs,   file.path(pasta_bd, "docs.rds"))
-  saveRDS(origem, file.path(pasta_bd, "origem.rds"))
-}
+pasta_bd <- file.path(raiz, "estrutura", "banco-de-dados")
+dir.create(pasta_bd, recursive = TRUE, showWarnings = FALSE)
+saveRDS(docs,   file.path(pasta_bd, "docs.rds"))
+saveRDS(origem, file.path(pasta_bd, "origem.rds"))
 
 W <- 74L
 hr <- function(ch = "=") cat(paste(rep(ch, W), collapse = ""), "\n", sep = "")
@@ -100,6 +98,5 @@ cat(sprintf("\n  %-12s  %-26s  %10d  %10d  %9.1f%%\n",
             "TOTAL", "3 paginas (CC BY-SA 4.0)", nrow(corpus_raw), length(docs), 100.0))
 hr("-")
 cat("  Arquivos gerados: estrutura/banco-de-dados/docs.rds e origem.rds\n")
-cat("                    estrutura/bancoDeDados/docs.rds e origem.rds\n")
-cat("  Proximo passo   : Rscript aula02.R  ou  Rscript buscar.R\n")
+cat("  Proximo passo   : Rscript estrutura/codigo/aula02.R  ou  Rscript estrutura/codigo/buscar.R\n")
 hr("=")

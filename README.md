@@ -11,8 +11,8 @@
 **Ambiente:** R base (`Rscript` / RStudio / Google Colab IRkernel) · LaTeX (`abnTeX2` + `knitr`)
 
 > **Nota sobre convenção de identificadores.** Ao longo do curso convivem duas numerações para os documentos do corpus:
-> - **Sequencial (`d1..d132`)** — usada no `entrega-1-docs.csv`, nos notebooks e no `corpus.csv`. É a numeração estável do corpus congelado.
-> - **Por id original (`d<id_orig>`, 1..152 com 132 válidos)** — usada nos consolidados das Aulas 05b–07 e no `estado-R`. Reflete o `id` que veio da extração bruta antes do filtro `nchar > 200`.
+> - **Sequencial (`d1..d132`)** — usada no `entrega-1-docs.csv`, nos notebooks e em `docs.rds`. É a numeração estável do corpus congelado.
+> - **Por id original (`d<id_orig>`, 1..152 com 132 válidos)** — usada nos consolidados das Aulas 05b–07, em `pipeline.R` (`csv/`) e no `estado-R`. Reflete o `id` que veio da extração bruta antes do filtro `nchar > 200`.
 >
 > A ponte entre as duas é a coluna `id_orig` do `entrega-1-docs.csv` (e o mapa `id_orig_map` em `entrega-1-corpus.R`). Exemplo: o `d121` citado no consolidado da Aula 07 (poesia de Vicente de Carvalho e Victor Hugo, `id_orig=121`) corresponde ao **`d108` sequencial** da entrega. Já o `d121` sequencial da entrega (`id_orig=134`) é outro parágrafo, sobre o Forte de São João de Bertioga.
 
@@ -26,10 +26,10 @@ Esta seção reúne em um único lugar todas as entregas exigidas nas diretrizes
 
 | Entrega Exigida | Status | Arquivos no Repositório (Links Diretos) |
 |---|---|---|
-| **1. Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências)** | ✅ Regenerado e conferido | • PDF em `consolidados/`: [`consolidados/entrega-1-corpus.pdf`](consolidados/entrega-1-corpus.pdf)<br>• PDF em `entregas/entrega-1/`: [`entregas/entrega-1/entrega-1-corpus.pdf`](entregas/entrega-1/entrega-1-corpus.pdf)<br>• PDF na raiz: [`entrega-1-corpus.pdf`](entrega-1-corpus.pdf)<br>• Código-fonte `.Rnw`: [`consolidados/entrega-1-corpus.Rnw`](consolidados/entrega-1-corpus.Rnw) · [`entregas/entrega-1/entrega-1-corpus.Rnw`](entregas/entrega-1/entrega-1-corpus.Rnw)<br>• Bibliografia `.bib`: [`consolidados/referencias.bib`](consolidados/referencias.bib) · [`entregas/entrega-1/referencias.bib`](entregas/entrega-1/referencias.bib)<br>• Script gerador dos CSVs e compilação: [`entregas/entrega-1/entrega-1-corpus.R`](entregas/entrega-1/entrega-1-corpus.R) |
+| **1. Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências)** | ✅ Regenerado e conferido | • PDF em `entregas/entrega-1/`: [`entregas/entrega-1/entrega-1-corpus.pdf`](entregas/entrega-1/entrega-1-corpus.pdf)<br>• Código-fonte `.Rnw`: [`entregas/entrega-1/entrega-1-corpus.Rnw`](entregas/entrega-1/entrega-1-corpus.Rnw)<br>• Bibliografia `.bib`: [`entregas/entrega-1/referencias.bib`](entregas/entrega-1/referencias.bib)<br>• Script gerador dos CSVs e compilação: [`entregas/entrega-1/entrega-1-corpus.R`](entregas/entrega-1/entrega-1-corpus.R) |
 | **2. Ficha do Projeto completa (Seções 1 a 7 + Estado do R)** | ✅ Entregue | • [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md)<br>• [`00_FICHA_PROJETO.md`](00_FICHA_PROJETO.md) (espelho na raiz) |
-| **3. Corpus congelado em `.rds` e scripts executáveis (`coletar.R`, `aula02.R`, `buscar.R`)** | ✅ Entregue | • Corpus `.rds`: [`estrutura/banco-de-dados/docs.rds`](estrutura/banco-de-dados/docs.rds) e [`estrutura/banco-de-dados/origem.rds`](estrutura/banco-de-dados/origem.rds) (também em `estrutura/bancoDeDados/`)<br>• Base bruta `.csv`: [`estrutura/bancoDeDados/wikipedia_baixada_santista.csv`](estrutura/bancoDeDados/wikipedia_baixada_santista.csv) (152 brutos → 132 válidos)<br>• Scripts de terminal: [`estrutura/codigo/coletar.R`](estrutura/codigo/coletar.R) · [`estrutura/codigo/aula02.R`](estrutura/codigo/aula02.R) · [`estrutura/codigo/buscar.R`](estrutura/codigo/buscar.R) (também em `entregas/entrega-1/`) |
-| **4. Consolidados das Aulas 00 a 07 (Teoria e Parte D)** | ✅ Entregue | • Pasta [`consolidados/`](consolidados/) completa (`aula00` a `aula07`, teoria e `parteD`)<br>• Leitor automático no Colab: [`estrutura/codigo/Consolidados_Colab.ipynb`](estrutura/codigo/Consolidados_Colab.ipynb) |
+| **3. Corpus congelado em `.rds` e scripts executáveis (`coletar.R`, `aula02.R`, `buscar.R`, `pipeline.R`)** | ✅ Entregue | • Corpus `.rds`: [`estrutura/banco-de-dados/docs.rds`](estrutura/banco-de-dados/docs.rds) e [`estrutura/banco-de-dados/origem.rds`](estrutura/banco-de-dados/origem.rds)<br>• Base bruta `.csv`: [`estrutura/banco-de-dados/wikipedia_baixada_santista.csv`](estrutura/banco-de-dados/wikipedia_baixada_santista.csv) (152 brutos → 132 válidos)<br>• Scripts de terminal: [`estrutura/codigo/coletar.R`](estrutura/codigo/coletar.R) · [`estrutura/codigo/aula02.R`](estrutura/codigo/aula02.R) · [`estrutura/codigo/buscar.R`](estrutura/codigo/buscar.R) · [`estrutura/codigo/pipeline.R`](estrutura/codigo/pipeline.R) (também em `entregas/entrega-1/`) |
+| **4. Consolidados das Aulas 00 a 07 (Teoria e Parte D)** | ✅ Entregue | • Pasta [`consolidados/`](consolidados/) completa (`aula00` a `aula07`, teoria e `parteD`)<br>• Leitor automático no Colab: [`arquivo-legado/Consolidados_Colab.ipynb`](arquivo-legado/Consolidados_Colab.ipynb) |
 
 ---
 
@@ -38,7 +38,7 @@ Esta seção reúne em um único lugar todas as entregas exigidas nas diretrizes
 Todos os scripts foram construídos apenas com **R base** (sem dependências externas para o motor) e detectam automaticamente a raiz do repositório, podendo ser executados da raiz do projeto, de `estrutura/codigo/` ou de `entregas/entrega-1/`.
 
 #### Passo 1 — Conferir o repositório, o PDF do corpus e a Ficha do Projeto
-- Abrir [`consolidados/entrega-1-corpus.pdf`](consolidados/entrega-1-corpus.pdf) (3 páginas de texto + Referências na página 4).
+- Abrir [`entregas/entrega-1/entrega-1-corpus.pdf`](entregas/entrega-1/entrega-1-corpus.pdf) (3 páginas de texto + Referências na página 4).
 - Abrir [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md) e verificar na **Seção 4** os rankings Top-5 de referência das três consultas de trabalho (q₁, q₂, q₃).
 
 #### Passo 2 — Regenerar e verificar o corpus (`docs.rds` e `origem.rds`)
@@ -85,13 +85,13 @@ Caso deseje regenerar todas as tabelas `.csv` (`entrega-1-docs.csv`, `entrega-1-
 ```bash
 Rscript entregas/entrega-1/entrega-1-corpus.R
 ```
-Ou compilando diretamente o `.Rnw` dentro de `consolidados/` (ou `entregas/entrega-1/`):
+Ou compilando diretamente o `.Rnw` dentro de `entregas/entrega-1/`:
 ```bash
-cd consolidados
+cd entregas/entrega-1
 Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 ```
 
-> **Auditoria dos tamanhos limpos:** os 132 documentos têm de **22 a 186 tokens limpos**, total de **9.632**, média **73,0** e mediana **64,5**; `d85` é o maior, com 186 tokens. Os CSVs e os três PDFs foram regenerados a partir dos dados e agora apresentam essas medidas. O vocabulário limpo calculado pelo gerador atual é **3.471 termos**.
+> **Auditoria dos tamanhos limpos:** os 132 documentos têm de **22 a 186 tokens limpos**, total de **9.632**, média **73,0** e mediana **64,5**; `d85` é o maior, com 186 tokens. Os CSVs e o PDF foram regenerados a partir dos dados e apresentam essas medidas. O vocabulário limpo calculado pelo gerador atual é **3.471 termos**.
 
 > **Nota histórica sobre vocabulário:** os consolidados das Aulas 03 e 07 registram 3.483 e 3.493 termos, respectivamente. Esses números são snapshots de sessões anteriores; para a versão atual da Entrega 1, use 3.471, calculado pelo gerador.
 
@@ -103,28 +103,34 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 .
 ├── 00_FICHA_PROJETO.md                 # Ficha acumulativa (Aulas 01 a 07 - motor07)
 ├── config.R                            # Configuração homologada do motor de busca
-├── corpus.csv                          # Base bruta (152 parágrafos; 132 válidos > 200 chars)
-├── entrega-1-corpus.pdf                # PDF da Entrega 1 (cópia na raiz para acesso imediato)
-├── necessidades.csv                    # 12 necessidades de informação (8 dev + 4 teste)
-├── qrels_jorge_2026-10-13.csv          # 230 julgamentos humanos de relevância (0, 1, 2)
 ├── README.md                           # Este guia de navegação e instruções para o professor
-├── wikipedia_baixada_santista.csv      # Base bruta extraída da Wikipédia (Santos, Guarujá, Bertioga)
+│
+├─── arquivo-legado/
+│   └── Consolidados_Colab.ipynb        # Leitor automático dos consolidados no Google Colab
 │
 ├─── consolidados/
 │   ├── 00_FICHA_PROJETO.md             # Ficha do projeto sincronizada
-│   ├── entrega-1-corpus.pdf            # PDF oficial da Entrega 1 (abnTeX2, 3 págs + Referências)
-│   ├── entrega-1-corpus.Rnw            # Código-fonte LaTeX + knitr (Sweave) sem números fixos
-│   ├── entrega-1-corpus.R              # Script que gera os CSVs diagnósticos e compila o PDF
-│   ├── referencias.bib                 # Base BibTeX (Manning, Robertson, Järvelin, Wikipédia)
-│   ├── entrega-1-*.csv                 # 6 tabelas CSV lidas pelos chunks do .Rnw
-│   ├── aula00_consolidado.md .. aula07_parteD_consolidado.md
+│   └── aula00_consolidado.md .. aula07_parteD_consolidado.md
+│
+├─── csv/
+│   ├── 05-qrels-respostas/             # Respostas e formulários de julgamento por juiz
+│   ├── rankings.csv                    # Rankings completos dos modelos (N = 132)
+│   ├── 05-pool.csv                     # Pool de avaliação (top-10 Booleano, TF-IDF, BM25)
+│   ├── 05-divergencias.csv             # Auditoria de divergências entre juízes
+│   ├── 05-qrels.csv                    # Gabarito consolidado nos 132 parágrafos válidos
+│   ├── 05b-metricas-por-consulta.csv   # P@10, Recall, AP, MRR e nDCG@10 por consulta
+│   ├── 05b-map.csv                     # MAP médio por modelo e conjunto (dev/teste)
+│   ├── 06-pseudo-feedback-por-consulta.csv
+│   ├── 06-rocchio-por-consulta.csv
+│   ├── 07-lsa-por-consulta.csv
+│   └── 07-lsa-map-por-k.csv
 │
 ├─── entregas/
 │   └─── entrega-1/
-│       ├── entrega-1-corpus.pdf        # PDF oficial da Entrega 1
-│       ├── entrega-1-corpus.Rnw        # Código-fonte LaTeX + knitr
+│       ├── entrega-1-corpus.pdf        # PDF oficial da Entrega 1 (abnTeX2, 3 págs + Referências)
+│       ├── entrega-1-corpus.Rnw        # Código-fonte LaTeX + knitr (Sweave) sem números fixos
 │       ├── entrega-1-corpus.R          # Script gerador dos CSVs e compilação do PDF
-│       ├── referencias.bib             # Base BibTeX
+│       ├── referencias.bib             # Base BibTeX (Manning, Robertson, Järvelin, Wikipédia)
 │       ├── entrega-1-*.csv             # 6 tabelas CSV geradas pelo script
 │       ├── coletar.R                   # Cópia do script de coleta/filtro do corpus
 │       ├── aula02.R                    # Cópia do script de demonstração da Aula 02
@@ -133,23 +139,20 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 ├─── estrutura/
 │   ├─── banco-de-dados/
 │   │   ├── docs.rds                    # Vetor nomeado (d1..d132) com os 132 parágrafos válidos
-│   │   └── origem.rds                  # Vetor nomeado (d1..d132) com a página de origem
-│   │
-│   ├─── bancoDeDados/
-│   │   ├── docs.rds
-│   │   ├── origem.rds
-│   │   ├── corpus.csv
-│   │   ├── necessidades.csv
-│   │   ├── qrels_jorge_2026-10-13.csv
+│   │   ├── origem.rds                  # Vetor nomeado (d1..d132) com a página de origem
+│   │   ├── corpus.csv                  # Base bruta (152 parágrafos; 132 válidos > 200 chars)
+│   │   ├── necessidades.csv            # 12 necessidades de informação (8 dev + 4 teste)
+│   │   ├── qrels_jorge_2026-10-13.csv  # 230 julgamentos humanos de relevância
 │   │   └── wikipedia_baixada_santista.csv
 │   │
 │   └─── codigo/
+│       ├── 05-julgamento/README.md     # Instruções da pool e julgamento de relevância
 │       ├── coletar.R                   # Regenera docs.rds e origem.rds a partir da base bruta
 │       ├── aula02.R                    # Executa TF-IDF + Cosseno nas 3 consultas de trabalho
 │       ├── buscar.R                    # Executa Booleano AND/OR, TF-IDF, Cosseno, BM25 e nDCG@5
+│       ├── pipeline.R                  # Pipeline reprodutível das Aulas 05–07 (exporta csv/)
 │       ├── config.R                    # Configuração homologada do motor
-│       ├── Consolidados_Colab.ipynb    # Leitor automático dos consolidados no Google Colab
-│       └── aula00.ipynb .. Aula07_ParteD.ipynb
+│       └── Aula00_Teoria.ipynb .. Aula07_ParteD.ipynb
 │
 └─── guias_estudo/
     └── GUIA_ESTUDO_aula00 .. aula07 (.md)
@@ -160,15 +163,15 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 ## 🔗 Abrir Entregas e Consolidados Diretamente no GitHub
 
 ### 🚨 Baixar e visualizar todos os consolidados pelo *Google Colab*
-- **Link direto para o Colab:** [Abrir o Colab e carregar os 17 arquivos `.md`](https://colab.research.google.com/github/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/estrutura/codigo/Consolidados_Colab.ipynb)  
+- **Link direto para o Colab:** [Abrir o Colab e carregar os arquivos `.md`](https://colab.research.google.com/github/Megalonnix/proj_ivan_gustavo_jorge_PI3/blob/main/arquivo-legado/Consolidados_Colab.ipynb)  
   *(No Colab, mantenha o runtime padrão **Python 3** e clique em **Runtime → Run all**).*
 
 ### Links diretos para cada documento no GitHub
 
 | Documento / Consolidado | Guia / Modelo de Origem | Abrir no GitHub |
 | --- | --- | --- |
-| **Texto do Corpus (PDF)** | Modelo oficial `entrega-1-corpus.Rnw` (`abnTeX2`) | [`consolidados/entrega-1-corpus.pdf`](consolidados/entrega-1-corpus.pdf) |
-| **Código-fonte do Corpus (`.Rnw`)** | Modelo oficial `entrega-1-corpus.Rnw` (`knitr`) | [`consolidados/entrega-1-corpus.Rnw`](consolidados/entrega-1-corpus.Rnw) |
+| **Texto do Corpus (PDF)** | Modelo oficial `entrega-1-corpus.Rnw` (`abnTeX2`) | [`entregas/entrega-1/entrega-1-corpus.pdf`](entregas/entrega-1/entrega-1-corpus.pdf) |
+| **Código-fonte do Corpus (`.Rnw`)** | Modelo oficial `entrega-1-corpus.Rnw` (`knitr`) | [`entregas/entrega-1/entrega-1-corpus.Rnw`](entregas/entrega-1/entrega-1-corpus.Rnw) |
 | **Ficha do Projeto** | Acumulativa ([Aula 01](guias_estudo/GUIA_ESTUDO_aula01_parteD.md) a [Aula 07](guias_estudo/GUIA_ESTUDO_aula07_parteD.md)) | [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md) |
 | **Aula 00 — Teoria** | [GUIA_ESTUDO_aula00_teoria.md](guias_estudo/GUIA_ESTUDO_aula00_teoria.md) | [`consolidados/aula00_consolidado.md`](consolidados/aula00_consolidado.md) |
 | **Aula 00 — Parte D** | [GUIA_ESTUDO_aula00_parteD.md](guias_estudo/GUIA_ESTUDO_aula00_parteD.md) | [`consolidados/aula00_parteD_consolidado.md`](consolidados/aula00_parteD_consolidado.md) |
@@ -180,6 +183,8 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 | **Aula 03 — Parte D** | [GUIA_ESTUDO_aula03_parteD.md](guias_estudo/GUIA_ESTUDO_aula03_parteD.md) | [`consolidados/aula03_parteD_consolidado.md`](consolidados/aula03_parteD_consolidado.md) |
 | **Aula 04 — Teoria** | [GUIA_ESTUDO_aula04_teoria.md](guias_estudo/GUIA_ESTUDO_aula04_teoria.md) | [`consolidados/aula04_consolidado.md`](consolidados/aula04_consolidado.md) |
 | **Aula 04 — Parte D** | [GUIA_ESTUDO_aula04_parteD.md](guias_estudo/GUIA_ESTUDO_aula04_parteD.md) | [`consolidados/aula04_parteD_consolidado.md`](consolidados/aula04_parteD_consolidado.md) |
+| **Aula 05 — Teoria** | Pool e Concordância (Kappa) | [`consolidados/aula05_consolidado.md`](consolidados/aula05_consolidado.md) |
+| **Aula 05 — Parte D** | Pool e Julgamentos do Grupo | [`consolidados/aula05_parteD_consolidado.md`](consolidados/aula05_parteD_consolidado.md) |
 | **Aula 05b — Teoria** | [GUIA_ESTUDO_aula05b_teoria.md](guias_estudo/GUIA_ESTUDO_aula05b_teoria.md) | [`consolidados/aula05b_consolidado.md`](consolidados/aula05b_consolidado.md) |
 | **Aula 05b — Parte D** | [GUIA_ESTUDO_aula05b_parteD.md](guias_estudo/GUIA_ESTUDO_aula05b_parteD.md) | [`consolidados/aula05b_parteD_consolidado.md`](consolidados/aula05b_parteD_consolidado.md) |
 | **Aula 06 — Teoria** | [GUIA_ESTUDO_aula06_teoria.md](guias_estudo/GUIA_ESTUDO_aula06_teoria.md) | [`consolidados/aula06_consolidado.md`](consolidados/aula06_consolidado.md) |
@@ -193,7 +198,7 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 
 1. **Aulas 00–02 (Corpus e Modelo Vetorial):** Extração de 152 parágrafos brutos da Wikipédia e congelamento de N = 132 parágrafos autônomos (`cfg$minimo = 200` caracteres: 86 de Santos, 29 de Guarujá e 17 de Bertioga). Homologação das 3 consultas de trabalho no modelo TF-IDF + Cosseno (q₁ → `d76`, q₂ → `d2`, q₃ → `d117`).
 
-2. **Aula 03 (Limpeza e Índice Invertido):** Adoção de `cfg$acentos = "translit"`, remoção de 27 stopwords funcionais e construção do índice invertido (`postings`), reduzindo o vocabulário de 4.250 para 3.483 termos no resultado registrado naquela sessão, sem partir topônimos regionais (ex.: `Guarujá` → `guaruja`, não `guaruj`/`guaruj a`).
+2. **Aula 03 (Limpeza e Índice Invertido):** Adoção de `cfg$acentos = "translit"`, remoção de 27 stopwords funcionais e construção do índice invertido (`postings`), reduzindo o vocabulário de 4.250 para 3.483 termos no resultado registrado naquela sessão (3.471 termos na geração limpa atual), sem partir topônimos regionais (ex.: `Guarujá` → `guaruja`, não `guaruj`/`guaruj a`).
 
 3. **Aula 04 (Modelo Probabilístico BM25):** Implementação do BM25 com parâmetros canônicos (k₁ = 1,2 e b = 0,75), promovendo documentos que cobrem **todos** os termos da consulta (como `d80` e `d118` em q₂), em contraste com o Cosseno, que privilegiava `d2` por repetição de `praias`.
 
@@ -207,3 +212,7 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
    - Avaliação sistemática de SVD truncada (k = 10, 20, 50) e fusão híbrida RRF (c = 60): no dev (q₀₁..q₀₈), o BM25 puro obteve MAP = 0,744 contra 0,652 do híbrido (k = 20) e 0,402 do LSA puro (k = 20); no teste (q₀₉..q₁₂), o BM25 confirmou a liderança com MAP = 0,718 contra 0,642 do híbrido (k = 20).
    - A inspeção qualitativa em q₀₁ ("fundação de Santos") mostrou que o LSA introduziu documentos sem termos da consulta por alinhamento latente — o exemplo canônico é o parágrafo sobre a poesia de Vicente de Carvalho e Victor Hugo, identificado como `d121` **na convenção dos consolidados** (`id_orig=121`), que corresponde ao `d108` **sequencial** da entrega.
    - Decisão homologada em `config.R`: manter **`modelo = "bm25"`** em produção (`lsa_k = 20`, `rrf_c = 60`).
+
+## Pipeline reprodutível (aulas 05–07)
+
+Na raiz: `Rscript estrutura/codigo/pipeline.R` (Base R). Saídas exportadas em `csv/` sobre os $N = 132$ parágrafos válidos (`nchar > 200`). Instruções de julgamento em [05-julgamento](estrutura/codigo/05-julgamento/README.md); decisões e parâmetros homologados em [00_FICHA_PROJETO.md](00_FICHA_PROJETO.md) e [config.R](config.R).

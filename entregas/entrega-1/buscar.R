@@ -12,11 +12,11 @@ if (length(file_arg) == 1) {
   setwd(dirname(normalizePath(sub("^--file=", "", file_arg))))
 }
 
-raiz <- if (file.exists("wikipedia_baixada_santista.csv")) {
+raiz <- if (file.exists(file.path("estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
   "."
-} else if (file.exists(file.path("..", "bancoDeDados", "wikipedia_baixada_santista.csv"))) {
+} else if (file.exists(file.path("..", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
   file.path("..", "..")
-} else if (file.exists(file.path("..", "..", "wikipedia_baixada_santista.csv"))) {
+} else if (file.exists(file.path("..", "..", "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
   file.path("..", "..")
 } else {
   "."
@@ -24,8 +24,8 @@ raiz <- if (file.exists("wikipedia_baixada_santista.csv")) {
 
 source(file.path(raiz, "config.R"))
 
-arq_csv <- if (file.exists(file.path(raiz, "estrutura", "bancoDeDados", "wikipedia_baixada_santista.csv"))) {
-  file.path(raiz, "estrutura", "bancoDeDados", "wikipedia_baixada_santista.csv")
+arq_csv <- if (file.exists(file.path(raiz, "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+  file.path(raiz, "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv")
 } else {
   file.path(raiz, "wikipedia_baixada_santista.csv")
 }
@@ -113,7 +113,7 @@ rank_bm25 <- function(q, k1 = cfg$k1, b = cfg$b) {
   sort(s, decreasing = TRUE)
 }
 
-qrels_df <- read.csv(file.path(raiz, "qrels_jorge_2026-10-13.csv"), stringsAsFactors = FALSE)
+qrels_df <- read.csv(file.path(raiz, "estrutura", "banco-de-dados", "qrels_jorge_2026-10-13.csv"), stringsAsFactors = FALSE)
 grau_de <- function(qid) {
   sub <- qrels_df[qrels_df$consulta == qid, ]
   d_ids <- doc_de_id[as.character(sub$documento)]
