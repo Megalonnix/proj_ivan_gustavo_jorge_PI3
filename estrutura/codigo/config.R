@@ -24,5 +24,8 @@ cfg <- list(
   # --- Aula 07: LSA e hibrido RRF -----------------------------------------
   modelo    = "bm25",                       # "bm25", "lsa" ou "hibrido"
   lsa_k     = 20,                           # dimensoes latentes da SVD truncada
-  rrf_c     = 60                            # constante da Reciprocal Rank Fusion
+  rrf_c     = 60,                           # constante da Reciprocal Rank Fusion
+  # --- Aula 08: reordenacao (rerank) --------------------------------------
+  rerank_k  = 0,                            # quantos do topo o reordenador reordena (0 = nao)
+  janela    = 3                             # distancia maxima da proximidade ordenada
 )

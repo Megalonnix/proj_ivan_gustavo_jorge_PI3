@@ -1,6 +1,6 @@
 # Ficha do Projeto — Motor de Busca da Baixada Santista
 
-*criada na Aula 01 (Parte D) em 2026-10-13 — última atualização: Aula 07 Parte D, 2026-10-23, motor07*
+*criada na Aula 01 (Parte D) em 2026-10-13 — última atualização: Aula 08 Parte D, 2026-11-10, motor08*
 
 ---
 
@@ -64,7 +64,7 @@
 | Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências) | OK — regenerado e conferido | `entregas/entrega-1/entrega-1-corpus.pdf` · `entregas/entrega-1/entrega-1-corpus.Rnw` · `entregas/entrega-1/entrega-1-corpus.R` |
 | Coleta e Extração do Corpus (`docs.rds` e `origem.rds`) | OK | `estrutura/codigo/coletar.R` · `estrutura/banco-de-dados/docs.rds` · `estrutura/banco-de-dados/wikipedia_baixada_santista.csv` |
 | Scripts Executáveis via Terminal (`Rscript`) | OK | `estrutura/codigo/coletar.R` · `estrutura/codigo/aula02.R` · `estrutura/codigo/buscar.R` · `estrutura/codigo/pipeline.R` |
-| Configuração `config.R` (`minimo, grupo, limpar, acentos, stopwords, k1, b, juizes, limiar, prf_k, rocchio, modelo, lsa_k, rrf_c`) | OK | `config.R` · `estrutura/codigo/config.R` |
+| Configuração `config.R` (`minimo, grupo, limpar, acentos, stopwords, k1, b, juizes, limiar, prf_k, rocchio, modelo, lsa_k, rrf_c, rerank_k, janela`) | OK | `config.R` · `estrutura/codigo/config.R` |
 | Tokenização e Vocabulário Real | OK | `Aula01_ParteD.ipynb` · `coletar.R` |
 | Matriz Termo-Documento ($4250 \times 132$ bruta; $3471 \times 132$ na geração atual; Aula 03 registrou $3483 \times 132$) | OK | `Aula01_ParteD.ipynb` · `Aula03_ParteD.ipynb` |
 | Busca Booleana Conjuntiva (AND) e Disjuntiva (OR) | OK | `Aula01_ParteD.ipynb` · `buscar.R` |
@@ -75,6 +75,7 @@
 | Avaliação com Gabarito (P@k, MAP, MRR, nDCG) | OK | `Aula05b_ParteD.ipynb` · `estrutura/banco-de-dados/qrels_jorge_2026-10-13.csv` · `csv/` |
 | Realimentação (Rocchio e Pseudo-realimentação PRF) | OK | `Aula06_ParteD.ipynb` (testado; desligado em produção: `prf_k = 0`) |
 | Decomposição Espectral LSA (SVD) e Fusão Híbrida RRF | OK | `Aula07_ParteD.ipynb` (testado; mantido BM25 em produção: `modelo = "bm25"`, `lsa_k = 20`, `rrf_c = 60`) |
+| Reordenação (proximidade ordenada) | testado, não usado (`rerank_k = 0`) | `estrutura/codigo/Aula08_ParteD.ipynb` · `csv/08-rerank-por-consulta.csv` · `csv/08-rerank-grade-dev.csv` (`rerank_k = 0`, `janela = 3`) |
 
 ---
 
@@ -89,6 +90,7 @@
 7. **Aula 06 (Rocchio e Coleção Residual):** Avaliação na consulta $q_{02}$ ("porto de Santos") demonstrou o viés otimista da coleção completa: AP salta de $0{,}780$ para $0{,}947$ pela simples reordenação de documentos já vistos e avaliados ($D_{r\_v}$). Na coleção residual (exclusão honesta dos documentos conhecidos), o AP passou de $0{,}649$ para $0{,}498$, comprovando que o ganho aparente reflete a recuperação de itens já conhecidos pelo usuário.
 8. **Aula 06 (Pseudo-Realimentação e Decisão do Motor):** Avaliação de PRF no conjunto de desenvolvimento ($q_{01}..q_{08}$) revelou queda expressiva de MAP para todos os $k \ge 2$: base $k=0$ ($0{,}653$), $k=2$ ($0{,}448$), $k=3$ ($0{,}515$), $k=5$ ($0{,}551$). O fenômeno de *query drift* foi identificado com termos contextuais específicos (ex.: `doencas`, `saneamento`, `mato grosso` introduzidos em $q_{02}$). No teste ($q_{09}..q_{12}$), o baseline $k=0$ obteve MAP $0{,}612$ contra $0{,}487$ de $k=2$. Decisão do grupo: **desligar a PRF no motor (`cfg$prf_k = 0`)** para preservar a precisão informacional em consultas curtas e eliminar latência de segunda busca, mantendo os pesos canônicos registrados em `cfg$rocchio = c(a = 1, b = 0.75, g = 0.15)`.
 9. **Aula 07 (LSA via SVD Truncada e Fusão Híbrida RRF):** A decomposição em valores singulares (SVD) acumulou $21{,}83\%$ da energia em $k=10$, $36{,}60\%$ em $k=20$, $65{,}98\%$ em $k=50$ e $92{,}00\%$ em $k=100$. No conjunto de desenvolvimento ($q_{01}..q_{08}$), o BM25 puro obteve MAP $0{,}744$, superando o LSA puro ($0{,}324$ em $k=10$; $0{,}402$ em $k=20$; $0{,}506$ em $k=50$) e a fusão híbrida RRF com $c=60$ ($0{,}585$ em $k=10$; $0{,}652$ em $k=20$; $0{,}684$ em $k=50$). No conjunto de teste ($q_{09}..q_{12}$), o BM25 confirmou a liderança com MAP $0{,}718$ contra $0{,}642$ do híbrido ($k=20$), embora na consulta conceitual $q_{09}$ ("estâncias balneárias no litoral paulista") o híbrido com $k=50$ tenha superado o BM25 ($0{,}867$ vs $0{,}843$). Decisão do grupo: **manter `cfg$modelo = "bm25"` como modelo oficial do motor**, registrando `cfg$lsa_k = 20` e `cfg$rrf_c = 60` em `config.R`.
+10. **Aula 08 (Reordenação por Proximidade Ordenada — *Retrieve & Rerank*):** Reordenação = top-$0$ (`0 = não reordenar`), janela $3$, sobre o estágio 1 `bm25`, porque no desenvolvimento ($q_{01}..q_{08}$) os cortes $k=3$ e $k=5$ apenas empataram com o estágio 1 ($\text{MAP}_{\text{dev}} = 0{,}744$ nas janelas $2, 3$ e $5$, sem vencer em nenhuma consulta) e $k=10$ reduziu o $\text{MAP}_{\text{dev}}$ para $0{,}743$ ($0{,}7425$), perdendo em $q_{04}$ (`"clima na Baixada Santista"`: $\text{AP}$ caiu de $0{,}766$ para $0{,}754$), onde o par do topônimo composto `("baixada", "santista")` atribuiu $\text{prox} = 1{,}0$ ao documento irrelevante `128` (sobre iatismo/vela) e rebaixou o documento climático `148` ($\text{prox} = 0{,}0$); no teste ($q_{09}..q_{12}$), $\text{MAP}_{\text{teste}}: 0{,}718 \to 0{,}718$ · `cfg$rerank_k = 0`, `cfg$janela = 3`.
 
 ---
 
@@ -101,17 +103,20 @@
 - **2026-10-13 (Aula 5,5 Parte D):** Presentes: Ivan, Jorge e Gustavo. Digitadores: M10: Ivan; M11: Jorge; M12: Gustavo. Leitura do gabarito oficial com 230 julgamentos (juiz Jorge), fixação do limiar $\ge 2$. Avaliação formal nas 12 consultas: empate em 6 a 6 no AP (MAP do Cosseno $0{,}640$, MAP do BM25 $0{,}637$, P@3 de $0{,}917$ em ambos).
 - **2026-10-13 (Aula 06 Parte D):** Presentes: Ivan, Jorge e Gustavo. Digitadores: M7: Ivan; M8: Jorge; M9: Gustavo. Teste do Rocchio na consulta $q_{02}$ revelou AP de $0{,}947$ na completa vs $0{,}498$ na residual. Avaliação de PRF no conjunto de desenvolvimento comprovou que $k=0$ (base) supera $k=2, 3, 5$ (MAP $0{,}653$ vs $0{,}448$ em $k=2$), com confirmação no conjunto de teste ($0{,}612$ vs $0{,}487$). O grupo decidiu manter `prf_k = 0` no motor com parâmetros `rocchio` documentados no `config.R`.
 - **2026-10-23 (Aula 07 Parte D):** Presentes: Ivan, Jorge e Gustavo. Digitadores: M7: Ivan; M8: Jorge; M9: Gustavo. Implementação de LSA (`lsa()`, `ranking_lsa()`) e fusão híbrida (`rrf()`, `ranking_modelo()`, `ranking_motor()`). Inspeção qualitativa de $q_{01}$ mostrou que o LSA ($k=20$) introduz documentos sem termos da consulta por alinhamento latente (ex.: $d_{121}$ sobre poesia). No dev ($q_{01}..q_{08}$), BM25 atingiu MAP $0{,}744$ contra $0{,}652$ do híbrido $k=20$; no teste ($q_{09}..q_{12}$), BM25 obteve MAP $0{,}718$ contra $0{,}642$ do híbrido $k=20$. O grupo decidiu manter `modelo = "bm25"`, `lsa_k = 20` e `rrf_c = 60` em `config.R`.
+- **2026-11-10 (Aula 08 Parte D):** Presentes: Ivan, Jorge e Gustavo. Digitadores: M7: Ivan; M8: Jorge; M9: Gustavo. Implementação de `proximidade()`, `reordenar()`, `estagio1()`, `rerank_prox()`, `ap_rerank()` e `ranking_final()` sobre o estágio 1 `bm25`. Inspeção qualitativa em $q_{02}$ mostrou troca entre `88` (que usa a forma flexionada *"Complexo Portuário"*, $\text{prox}=0$) e `58` ($\text{prox}=1$). Na grade de desenvolvimento ($k \in \{3, 5, 10\} \times w \in \{2, 3, 5\}$), $k=3$ e $k=5$ empataram com $k=0$ ($\text{MAP}_{\text{dev}} = 0{,}744$) e $k=10$ caiu para $0{,}743$ por promover menções genéricas a `"Baixada Santista"` em $q_{04}$ (`128` sobre iatismo acima de `148` sobre clima). No teste ($q_{09}..q_{12}$), $\text{MAP}_{\text{teste}} = 0{,}718$. Decisão homologada em `config.R`: `rerank_k = 0` e `janela = 3`.
 
 ---
 
 <!-- estado-R:inicio -->
 ## Estado do R ao fim da sessão
-*gerado por `anexar_estado()` em 2026-10-23 11:39 · R version 4.2.2 (2022-10-31 ucrt) · motor07 v1 2026-10-15 · não edite à mão*
+*gerado por `anexar_estado()` em 2026-11-10 11:17 · R version 4.6.1 (2026-06-24 ucrt) · motor08 v2 2026-10-22 · não edite à mão*
 
 ### Objetos
 
 | objeto | tipo | tamanho | valor / amostra |
 |---|---|---|---|
+| `ap0` | numeric, nomeado | 8 | q01 0.7181, q02 0.7909, q03 0.706, q04 0.7661, q05 0.7353, q06 0.7901, ... |
+| `ap1` | numeric, nomeado | 8 | q01 0.7181, q02 0.7909, q03 0.706, q04 0.7544, q05 0.7353, q06 0.7901, ... |
 | `arqs` | character | 1 | qrels_jorge_2026-10-13.csv |
 | `cfg$minimo` | numeric | 1 | 200 |
 | `cfg$grupo` | character | 1 | ivan_gustavo_jorge |
@@ -127,12 +132,13 @@
 | `cfg$modelo` | character | 1 | bm25 |
 | `cfg$lsa_k` | numeric | 1 | 20 |
 | `cfg$rrf_c` | numeric | 1 | 60 |
+| `cfg$rerank_k` | numeric | 1 | 0 |
+| `cfg$janela` | numeric | 1 | 3 |
 | `consultas` | character, nomeado | 12 | q01 fundação de Santos, q02 porto de Santos, q03 praias de Guarujá, q04 clima na Baixada Santista, q05 população de Santos, q06 origem do nome Bertioga, ... |
-| `corpus_raw` | data.frame | 152 × 5 | colunas: id, titulo, texto, data, url |
-| `cp_validos` | data.frame | 132 × 5 | colunas: id, titulo, texto, data, url |
+| `cp` | data.frame | 132 × 5 | colunas: id, titulo, texto, data, url |
 | `dev` | character | 8 | q01, q02, q03, q04, q05, q06, ... |
 | `docs` | character, nomeado | 132 | 1 Guarujá é um município bras..., 2 Atualmente, a cidade de Gua..., 3 Guarujá é um dos quinze mun..., 5 A Ilha de Santo Amaro surge..., 6 Os primeiros habitantes for..., 7 Após a era dos sambaquis, a..., ... |
-| `escolha` | character | 1 | bm25 |
+| `grade` | matrix | 3 × 3 | linhas: k3, k5, k10 \| colunas: janela2, janela3, janela5 |
 | `ix$tokens` | list | 132 | elementos: 1, 2, 3, 5, 6, 7, 8, 9, ... |
 | `ix$vocab` | character | 3493 | 0, 000, 000e, 001, 013, 0132, ... |
 | `ix$tf` | matrix | 3493 × 132 | linhas: 0, 000, 000e, ... \| colunas: 1, 2, 3, 5, ... |
@@ -145,20 +151,14 @@
 | `ix$dl` | numeric, nomeado | 132 | 1 54, 2 62, 3 54, 5 36, 6 69, 7 40, ... |
 | `ix$avgdl` | numeric | 1 | 66.26 |
 | `ix$idf_bm25` | numeric, nomeado | 3493 | 0 3.386, 000 3.386, 000e 4.485, 001 4.485, 013 3.974, 0132 3.638, ... |
-| `k_esc` | numeric | 1 | 20 |
-| `ks` | numeric | 3 | 10, 20, 50 |
-| `m_esc$U` | matrix | 3493 × 20 | linhas: 0, 000, 000e, ... \| colunas: (sem nomes) |
-| `m_esc$S` | numeric | 20 | 73.7, 66.63, 56.37, 55.67, 53.67, 52.62, ... |
-| `m_esc$D` | matrix | 132 × 20 | linhas: 1, 2, 3, ... \| colunas: (sem nomes) |
-| `m20$U` | matrix | 3493 × 20 | linhas: 0, 000, 000e, ... \| colunas: (sem nomes) |
-| `m20$S` | numeric | 20 | 73.7, 66.63, 56.37, 55.67, 53.67, 52.62, ... |
-| `m20$D` | matrix | 132 × 20 | linhas: 1, 2, 3, ... \| colunas: (sem nomes) |
-| `MOTOR_VERSAO` | character | 1 | motor07 v1 2026-10-15 |
-| `ms$k10` | list | 3 | elementos: U, S, D |
-| `ms$k20` | list | 3 | elementos: U, S, D |
-| `ms$k50` | list | 3 | elementos: U, S, D |
+| `j_esc` | numeric | 1 | 3 |
+| `k_esc` | numeric | 1 | 0 |
+| `m` | NULL | 0 |  |
+| `map0` | numeric | 1 | 0.744 |
+| `MOTOR_VERSAO` | character | 1 | motor08 v2 2026-10-22 |
 | `nec` | data.frame | 12 × 5 | colunas: consulta, texto_consulta, necessidade, escopo, conjunto |
 | `origem` | character, nomeado | 132 | 1 Guaruja, 2 Guaruja, 3 Guaruja, 5 Guaruja, 6 Guaruja, 7 Guaruja, ... |
+| `q` | character | 1 | q02 |
 | `qrels$q01` | numeric, nomeado | 24 | 83 2, 110 2, 92 2, 10 2, 114 2, 9 2, ... |
 | `qrels$q02` | numeric, nomeado | 19 | 89 2, 87 2, 35 2, 138 2, 47 2, 110 2, ... |
 | `qrels$q03` | numeric, nomeado | 19 | 29 2, 1 2, 20 2, 4 2, 83 2, 18 2, ... |
@@ -171,18 +171,41 @@
 | `qrels$q10` | numeric, nomeado | 18 | 136 2, 140 2, 81 2, 29 2, 137 2, 130 2, ... |
 | `qrels$q11` | numeric, nomeado | 23 | 79 2, 49 2, 16 2, 106 2, 126 2, 47 2, ... |
 | `qrels$q12` | numeric, nomeado | 20 | 10 2, 12 2, 38 2, 87 2, 112 2, 107 2, ... |
+| `qt` | character | 2 | porto, santos |
+| `qts$q01` | character | 2 | fundacao, santos |
+| `qts$q02` | character | 2 | porto, santos |
+| `qts$q03` | character | 2 | praias, guaruja |
+| `qts$q04` | character | 3 | clima, baixada, santista |
+| `qts$q05` | character | 2 | populacao, santos |
+| `qts$q06` | character | 3 | origem, nome, bertioga |
+| `qts$q07` | character | 3 | vida, cultural, santos |
+| `qts$q08` | character | 4 | acesso, entre, guaruja, santos |
+| `qts$q09` | character | 4 | estancias, balnearias, litoral, paulista |
+| `qts$q10` | character | 4 | fatos, historicos, marcantes, bertioga |
+| `qts$q11` | character | 2 | esporte, santos |
+| `qts$q12` | character | 3 | economia, cafe, santos |
 | `R_q` | integer, nomeado | 12 | q01 24, q02 19, q03 19, q04 18, q05 18, q06 19, ... |
-| `REPO_DIR` | character | 1 | C:/Users/lab31/.gemini/anti... |
-| `s$d` | numeric | 132 | 73.7, 66.63, 56.37, 55.67, 53.67, 52.62, ... |
-| `s$u` | matrix | 3493 × 132 | linhas: (sem nomes) \| colunas: (sem nomes) |
-| `s$v` | matrix | 132 × 132 | linhas: (sem nomes) \| colunas: (sem nomes) |
-| `tab_dev` | matrix | 7 × 8 | linhas: bm25, lsa.k10, lsa.k20, ... \| colunas: q01, q02, q03, q04, ... |
-| `tab_teste` | matrix | 2 × 4 | linhas: bm25, escolhido \| colunas: q09, q10, q11, q12 |
+| `rk` | numeric, nomeado | 132 | 87 3.9, 89 3.314, 31 3.188, 88 3.188, 47 3.175, 58 3.013, ... |
+| `rks$q01` | numeric, nomeado | 132 | 13 5.12, 55 4.268, 114 0.8364, 87 0.8257, 83 0.8167, 99 0.8124, ... |
+| `rks$q02` | numeric, nomeado | 132 | 87 3.9, 89 3.314, 31 3.188, 88 3.188, 47 3.175, 58 3.013, ... |
+| `rks$q03` | numeric, nomeado | 132 | 2 5.958, 20 5.268, 19 4.654, 6 3.874, 18 3.738, 29 2.96, ... |
+| `rks$q04` | numeric, nomeado | 132 | 63 5.531, 148 5.377, 129 5.315, 85 4.893, 76 4.824, 70 4.743, ... |
+| `rks$q05` | numeric, nomeado | 132 | 129 3.492, 40 3.394, 53 3.31, 78 3.303, 50 3.101, 57 2.85, ... |
+| `rks$q06` | numeric, nomeado | 132 | 132 10.83, 10 4.694, 131 4.649, 50 4.461, 42 3.49, 139 3.158, ... |
+| `rks$q07` | numeric, nomeado | 132 | 79 4.624, 130 4.329, 46 3.954, 61 3.891, 38 3.873, 41 3.133, ... |
+| `rks$q08` | numeric, nomeado | 132 | 19 7.221, 33 6.053, 102 5.734, 104 5.253, 138 5.004, 150 4.855, ... |
+| `rks$q09` | numeric, nomeado | 132 | 3 7.871, 94 7.819, 77 6.827, 131 6.668, 11 6.037, 40 5.935, ... |
+| `rks$q10` | numeric, nomeado | 132 | 130 5.733, 139 3.158, 136 3.092, 132 3.082, 137 3.073, 148 2.669, ... |
+| `rks$q11` | numeric, nomeado | 132 | 128 5.91, 126 5.532, 114 0.8364, 87 0.8257, 83 0.8167, 99 0.8124, ... |
+| `rks$q12` | numeric, nomeado | 132 | 39 7.385, 57 5.863, 110 5.055, 87 4.341, 93 3.975, 88 3.755, ... |
+| `rn` | character | 132 | 87, 89, 31, 47, 58, 88, ... |
+| `tab_teste` | matrix | 2 × 4 | linhas: estagio1, rerank \| colunas: q09, q10, q11, q12 |
 | `teste` | character | 4 | q09, q10, q11, q12 |
 | `usar` | character | 12 | q01, q02, q03, q04, q05, q06, ... |
 | `validos` | logical | 152 | TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, ... |
 
 ### Funções definidas
 
-`anexar_estado`, `ap`, `ap_modelo`, `bm25`, `bm25_doc`, `busca_AND`, `busca_booleana`, `cfg_aula`, `cosseno`, `dcg`, `docs_aula`, `estado`, `gabarito_aula`, `idf_bm25`, `idf_classico`, `indice_invertido`, `kappa_cohen`, `kappa_matriz`, `ler_qrels`, `limpar`, `lsa`, `matriz_tf`, `metricas`, `montar`, `ndcg`, `norm_cols`, `precisao_k`, `preparar`, `prf`, `ranking_bm25`, `ranking_cosseno`, `ranking_lsa`, `ranking_modelo`, `ranking_motor`, `ranking_vetor`, `recall_k`, `relevancia`, `residual`, `rocchio`, `rr`, `rrf`, `saturacao`, `sem_stop`, `stopwords_aula`, `tokenizar`, `vetor_consulta`
+`anexar_estado`, `ap`, `ap_rerank`, `bm25`, `bm25_doc`, `busca_AND`, `busca_booleana`, `cfg_aula`, `cosseno`, `dcg`, `docs_aula`, `estado`, `estagio1`, `gabarito_aula`, `idf_bm25`, `idf_classico`, `indice_invertido`, `kappa_cohen`, `kappa_matriz`, `ler_qrels`, `limpar`, `lsa`, `matriz_tf`, `metricas`, `montar`, `ndcg`, `norm_cols`, `precisao_k`, `preparar`, `prf`, `proximidade`, `ranking_bm25`, `ranking_cosseno`, `ranking_final`, `ranking_lsa`, `ranking_vetor`, `recall_k`, `relevancia`, `reordenar`, `rerank_prox`, `residual`, `rocchio`, `rr`, `rrf`, `saturacao`, `sem_stop`, `stopwords_aula`, `tokenizar`, `vetor_consulta`
 <!-- estado-R:fim -->
+

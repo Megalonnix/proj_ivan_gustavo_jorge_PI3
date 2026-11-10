@@ -129,8 +129,8 @@ hr("=")
 cat("  BUSCAR.R  |  Auditoria Multi-Metodo — Motor de Busca da Baixada Santista\n")
 cat("  Grupo: Ivan Guimaraes, Gustavo Geminiano e Jorge Sugano Suzart\n")
 cat(sprintf("  Corpus: N = %d paragrafos (Santos=86, Guaruja=29, Bertioga=17) | Vocab: %d\n", N, length(vocab)))
-cat(sprintf("  Modelo oficial em config.R: %s (k1=%.2f, b=%.2f, prf_k=%d, lsa_k=%d, rrf_c=%d)\n",
-            cfg$modelo, cfg$k1, cfg$b, cfg$prf_k, cfg$lsa_k, cfg$rrf_c))
+cat(sprintf("  Modelo oficial em config.R: %s (k1=%.2f, b=%.2f, prf_k=%d, lsa_k=%d, rrf_c=%d, rerank_k=%d, janela=%d)\n",
+            cfg$modelo, cfg$k1, cfg$b, cfg$prf_k, cfg$lsa_k, cfg$rrf_c, cfg$rerank_k, cfg$janela))
 hr("=")
 
 consultas <- c(

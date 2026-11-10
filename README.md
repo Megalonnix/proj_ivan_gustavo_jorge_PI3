@@ -29,7 +29,7 @@ Esta seção reúne em um único lugar todas as entregas exigidas nas diretrizes
 | **1. Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências)** | ✅ Regenerado e conferido | • PDF em `entregas/entrega-1/`: [`entregas/entrega-1/entrega-1-corpus.pdf`](entregas/entrega-1/entrega-1-corpus.pdf)<br>• Código-fonte `.Rnw`: [`entregas/entrega-1/entrega-1-corpus.Rnw`](entregas/entrega-1/entrega-1-corpus.Rnw)<br>• Bibliografia `.bib`: [`entregas/entrega-1/referencias.bib`](entregas/entrega-1/referencias.bib)<br>• Script gerador dos CSVs e compilação: [`entregas/entrega-1/entrega-1-corpus.R`](entregas/entrega-1/entrega-1-corpus.R) |
 | **2. Ficha do Projeto completa (Seções 1 a 7 + Estado do R)** | ✅ Entregue | • [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md)<br>• [`00_FICHA_PROJETO.md`](00_FICHA_PROJETO.md) (espelho na raiz) |
 | **3. Corpus congelado em `.rds` e scripts executáveis (`coletar.R`, `aula02.R`, `buscar.R`, `pipeline.R`)** | ✅ Entregue | • Corpus `.rds`: [`estrutura/banco-de-dados/docs.rds`](estrutura/banco-de-dados/docs.rds) e [`estrutura/banco-de-dados/origem.rds`](estrutura/banco-de-dados/origem.rds)<br>• Base bruta `.csv`: [`estrutura/banco-de-dados/wikipedia_baixada_santista.csv`](estrutura/banco-de-dados/wikipedia_baixada_santista.csv) (152 brutos → 132 válidos)<br>• Scripts de terminal: [`estrutura/codigo/coletar.R`](estrutura/codigo/coletar.R) · [`estrutura/codigo/aula02.R`](estrutura/codigo/aula02.R) · [`estrutura/codigo/buscar.R`](estrutura/codigo/buscar.R) · [`estrutura/codigo/pipeline.R`](estrutura/codigo/pipeline.R) (também em `entregas/entrega-1/`) |
-| **4. Consolidados das Aulas 00 a 07 (Teoria e Parte D)** | ✅ Entregue | • Pasta [`consolidados/`](consolidados/) completa (`aula00` a `aula07`, teoria e `parteD`)<br>• Leitor automático no Colab: [`arquivo-legado/Consolidados_Colab.ipynb`](arquivo-legado/Consolidados_Colab.ipynb) |
+| **4. Consolidados das Aulas 00 a 08 (Teoria e Parte D)** | ✅ Entregue | • Pasta [`consolidados/`](consolidados/) completa (`aula00` a `aula08`, teoria e `parteD`)<br>• Leitor automático no Colab: [`arquivo-legado/Consolidados_Colab.ipynb`](arquivo-legado/Consolidados_Colab.ipynb) |
 
 ---
 
@@ -101,7 +101,7 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 
 ```text
 .
-├── 00_FICHA_PROJETO.md                 # Ficha acumulativa (Aulas 01 a 07 - motor07)
+├── 00_FICHA_PROJETO.md                 # Ficha acumulativa (Aulas 01 a 08 - motor08)
 ├── config.R                            # Configuração homologada do motor de busca
 ├── README.md                           # Este guia de navegação e instruções para o professor
 │
@@ -110,7 +110,7 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 │
 ├─── consolidados/
 │   ├── 00_FICHA_PROJETO.md             # Ficha do projeto sincronizada
-│   └── aula00_consolidado.md .. aula07_parteD_consolidado.md
+│   └── aula00_consolidado.md .. aula08_parteD_consolidado.md
 │
 ├─── csv/
 │   ├── 05-qrels-respostas/             # Respostas e formulários de julgamento por juiz
@@ -123,7 +123,9 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 │   ├── 06-pseudo-feedback-por-consulta.csv
 │   ├── 06-rocchio-por-consulta.csv
 │   ├── 07-lsa-por-consulta.csv
-│   └── 07-lsa-map-por-k.csv
+│   ├── 07-lsa-map-por-k.csv
+│   ├── 08-rerank-por-consulta.csv      # Métricas e top-5 após reordenação por proximidade
+│   └── 08-rerank-grade-dev.csv         # Grade de MAP (k x janela) em dev/teste
 │
 ├─── entregas/
 │   └─── entrega-1/
@@ -150,12 +152,12 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 │       ├── coletar.R                   # Regenera docs.rds e origem.rds a partir da base bruta
 │       ├── aula02.R                    # Executa TF-IDF + Cosseno nas 3 consultas de trabalho
 │       ├── buscar.R                    # Executa Booleano AND/OR, TF-IDF, Cosseno, BM25 e nDCG@5
-│       ├── pipeline.R                  # Pipeline reprodutível das Aulas 05–07 (exporta csv/)
+│       ├── pipeline.R                  # Pipeline reprodutível das Aulas 05–08 (exporta csv/)
 │       ├── config.R                    # Configuração homologada do motor
-│       └── Aula00_Teoria.ipynb .. Aula07_ParteD.ipynb
+│       └── Aula00_Teoria.ipynb .. Aula08_ParteD.ipynb
 │
 └─── guias_estudo/
-    └── GUIA_ESTUDO_aula00 .. aula07 (.md)
+    └── GUIA_ESTUDO_aula00 .. aula08 (.md)
 ```
 
 ---
@@ -172,7 +174,7 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 | --- | --- | --- |
 | **Texto do Corpus (PDF)** | Modelo oficial `entrega-1-corpus.Rnw` (`abnTeX2`) | [`entregas/entrega-1/entrega-1-corpus.pdf`](entregas/entrega-1/entrega-1-corpus.pdf) |
 | **Código-fonte do Corpus (`.Rnw`)** | Modelo oficial `entrega-1-corpus.Rnw` (`knitr`) | [`entregas/entrega-1/entrega-1-corpus.Rnw`](entregas/entrega-1/entrega-1-corpus.Rnw) |
-| **Ficha do Projeto** | Acumulativa ([Aula 01](guias_estudo/GUIA_ESTUDO_aula01_parteD.md) a [Aula 07](guias_estudo/GUIA_ESTUDO_aula07_parteD.md)) | [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md) |
+| **Ficha do Projeto** | Acumulativa ([Aula 01](guias_estudo/GUIA_ESTUDO_aula01_parteD.md) a [Aula 08](guias_estudo/GUIA_ESTUDO_aula08_parteD.md)) | [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md) |
 | **Aula 00 — Teoria** | [GUIA_ESTUDO_aula00_teoria.md](guias_estudo/GUIA_ESTUDO_aula00_teoria.md) | [`consolidados/aula00_consolidado.md`](consolidados/aula00_consolidado.md) |
 | **Aula 00 — Parte D** | [GUIA_ESTUDO_aula00_parteD.md](guias_estudo/GUIA_ESTUDO_aula00_parteD.md) | [`consolidados/aula00_parteD_consolidado.md`](consolidados/aula00_parteD_consolidado.md) |
 | **Aula 01 — Teoria** | [GUIA_ESTUDO_aula01_teoria.md](guias_estudo/GUIA_ESTUDO_aula01_teoria.md) | [`consolidados/aula01_consolidado.md`](consolidados/aula01_consolidado.md) |
@@ -191,6 +193,8 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 | **Aula 06 — Parte D** | [GUIA_ESTUDO_aula06_parteD.md](guias_estudo/GUIA_ESTUDO_aula06_parteD.md) | [`consolidados/aula06_parteD_consolidado.md`](consolidados/aula06_parteD_consolidado.md) |
 | **Aula 07 — Teoria** | [GUIA_ESTUDO_aula07_teoria.md](guias_estudo/GUIA_ESTUDO_aula07_teoria.md) | [`consolidados/aula07_consolidado.md`](consolidados/aula07_consolidado.md) |
 | **Aula 07 — Parte D** | [GUIA_ESTUDO_aula07_parteD.md](guias_estudo/GUIA_ESTUDO_aula07_parteD.md) | [`consolidados/aula07_parteD_consolidado.md`](consolidados/aula07_parteD_consolidado.md) |
+| **Aula 08 — Teoria** | [GUIA_ESTUDO_aula08.md](guias_estudo/GUIA_ESTUDO_aula08.md) | [`consolidados/aula08_consolidado.md`](consolidados/aula08_consolidado.md) |
+| **Aula 08 — Parte D** | [GUIA_ESTUDO_aula08_parteD.md](guias_estudo/GUIA_ESTUDO_aula08_parteD.md) | [`consolidados/aula08_parteD_consolidado.md`](consolidados/aula08_parteD_consolidado.md) |
 
 ---
 
@@ -213,6 +217,11 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
    - A inspeção qualitativa em q₀₁ ("fundação de Santos") mostrou que o LSA introduziu documentos sem termos da consulta por alinhamento latente — o exemplo canônico é o parágrafo sobre a poesia de Vicente de Carvalho e Victor Hugo, identificado como `d121` **na convenção dos consolidados** (`id_orig=121`), que corresponde ao `d108` **sequencial** da entrega.
    - Decisão homologada em `config.R`: manter **`modelo = "bm25"`** em produção (`lsa_k = 20`, `rrf_c = 60`).
 
-## Pipeline reprodutível (aulas 05–07)
+7. **Aula 08 (Reordenação por Proximidade Ordenada — *Retrieve & Rerank*):**
+   - Implementação de `proximidade()` e `reordenar()` sobre o estágio 1 (`bm25`). Na consulta q₀₂ (`"porto de Santos"`), a reordenação do top-10 trocou `d88` (que usa a forma flexionada *"Complexo Portuário de Santos"*, `prox = 0`) por `d58` (`prox = 1`).
+   - Na grade de desenvolvimento ($k \in \{3, 5, 10\} \times \text{janela} \in \{2, 3, 5\}$), $k = 3$ e $k = 5$ empataram exatamente com o estágio 1 (MAP<sub>dev</sub> = 0,744) e $k = 10$ reduziu o MAP<sub>dev</sub> para 0,743 (0,7425), perdendo em q₀₄ (`"clima na Baixada Santista"`: AP caiu de 0,766 para 0,754), onde o par do topônimo composto `("baixada", "santista")` atribuiu `prox = 1,0` ao documento irrelevante `d128` (sobre iatismo/vela) e rebaixou o documento climático `d148` (`prox = 0,0`). No teste, MAP<sub>teste</sub> permaneceu em 0,718.
+   - Decisão homologada em `config.R`: **`rerank_k = 0`** e **`janela = 3`** (não reordenar em produção, evitando latência extra por consulta).
+
+## Pipeline reprodutível (aulas 05–08)
 
 Na raiz: `Rscript estrutura/codigo/pipeline.R` (Base R). Saídas exportadas em `csv/` sobre os $N = 132$ parágrafos válidos (`nchar > 200`). Instruções de julgamento em [05-julgamento](estrutura/codigo/05-julgamento/README.md); decisões e parâmetros homologados em [00_FICHA_PROJETO.md](00_FICHA_PROJETO.md) e [config.R](config.R).

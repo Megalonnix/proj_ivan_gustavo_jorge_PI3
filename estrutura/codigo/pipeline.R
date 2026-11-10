@@ -211,5 +211,51 @@ for (q in intersect(g$consulta, n$consulta[n$conjunto == 'dev'])) {
 if (length(feedback)) exportar(do.call(rbind, feedback), '06-rocchio-por-consulta.csv')
 exportar(metrics[grepl('^(lsa_|hibrido_)', metrics$modelo), ], '07-lsa-map-por-k.csv')
 
+# Aula 08: Reordenacao por proximidade ordenada sobre o estagio 1 (cfg$modelo)
+proximidade <- function(qt, dt, janela = 3) {
+  s <- 0
+  for (i in seq_along(qt)) for (j in seq_along(qt))
+    if (i < j && qt[i] != qt[j]) {
+      pos_i <- which(dt == qt[i])
+      pos_j <- which(dt == qt[j])
+      if (length(pos_i) && length(pos_j)) {
+        d <- outer(pos_j, pos_i, '-')
+        d <- d[d > 0 & d <= janela]
+        if (length(d)) s <- s + 1 / min(d)
+      }
+    }
+  s
+}
+
+reordenar <- function(rk_ids, k, sc) {
+  if (k == 0) return(rk_ids)
+  k <- min(k, length(rk_ids))
+  top <- rk_ids[1:k]
+  nova <- top[order(-sc[top], seq_along(top))]
+  c(nova, rk_ids[-(1:k)])
+}
+
+names(ts) <- ids
+rerank_out <- list()
+for (i in seq_len(nrow(n))) {
+  q <- n$consulta[i]
+  qt <- tok(n$texto_consulta[i])[[1]]
+  rk_base <- r$documento[r$consulta == q & r$modelo == cfg$modelo]
+  for (w_jan in c(2, 3, 5)) {
+    sc_all <- setNames(vapply(ts[rk_base[1:10]], function(dt) proximidade(qt, dt, w_jan), numeric(1)), rk_base[1:10])
+    for (k_rr in c(0, 3, 5, 10)) {
+      ord_rr <- reordenar(rk_base, k_rr, sc_all)
+      m_rr <- metric(ord_rr, g[g$consulta == q, ])
+      rerank_out[[length(rerank_out) + 1]] <- data.frame(
+        consulta = q, conjunto = n$conjunto[i], k = k_rr, janela = w_jan,
+        t(m_rr), top1 = ord_rr[1], top5 = paste(ord_rr[1:5], collapse = ' ')
+      )
+    }
+  }
+}
+rerank_df <- do.call(rbind, rerank_out)
+exportar(rerank_df, '08-rerank-por-consulta.csv')
+exportar(aggregate(AP ~ k + janela + conjunto, rerank_df, mean), '08-rerank-grade-dev.csv')
+
 cat(sprintf('Pipeline concluido com sucesso! Corpus: N = %d paragrafos validos | Vocabulario limpo: %d termos.\n', N, length(vocab)))
-cat('Tabelas CSV exportadas em csv/.\n')
+cat('Tabelas CSV exportadas em csv/ (Aulas 05 a 08).\n')
