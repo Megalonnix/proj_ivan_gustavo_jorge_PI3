@@ -12,7 +12,7 @@
 
 > **Nota sobre convenção de identificadores.** Ao longo do curso convivem duas numerações para os documentos do corpus:
 > - **Sequencial (`d1..d132`)** — usada no `entrega-1-docs.csv`, nos notebooks e em `docs.rds`. É a numeração estável do corpus congelado.
-> - **Por id original (`d<id_orig>`, 1..152 com 132 válidos)** — usada nos consolidados das Aulas 05b–07, em `pipeline.R` (`csv/`) e no `estado-R`. Reflete o `id` que veio da extração bruta antes do filtro `nchar > 200`.
+> - **Por id original (`d<id_orig>`, 1..152 com 132 válidos)** — usada nos consolidados das Aulas 05b–08, em `pipeline.R` (`csv/`) e no `estado-R`. Reflete o `id` que veio da extração bruta antes do filtro `nchar > 200`.
 >
 > A ponte entre as duas é a coluna `id_orig` do `entrega-1-docs.csv` (e o mapa `id_orig_map` em `entrega-1-corpus.R`). Exemplo: o `d121` citado no consolidado da Aula 07 (poesia de Vicente de Carvalho e Victor Hugo, `id_orig=121`) corresponde ao **`d108` sequencial** da entrega. Já o `d121` sequencial da entrega (`id_orig=134`) é outro parágrafo, sobre o Forte de São João de Bertioga.
 
@@ -26,19 +26,20 @@ Esta seção reúne em um único lugar todas as entregas exigidas nas diretrizes
 
 | Entrega Exigida | Status | Arquivos no Repositório (Links Diretos) |
 |---|---|---|
-| **1. Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências)** | ✅ Regenerado e conferido | • PDF em `entregas/entrega-1/`: [`entregas/entrega-1/entrega-1-corpus.pdf`](entregas/entrega-1/entrega-1-corpus.pdf)<br>• Código-fonte `.Rnw`: [`entregas/entrega-1/entrega-1-corpus.Rnw`](entregas/entrega-1/entrega-1-corpus.Rnw)<br>• Bibliografia `.bib`: [`entregas/entrega-1/referencias.bib`](entregas/entrega-1/referencias.bib)<br>• Script gerador dos CSVs e compilação: [`entregas/entrega-1/entrega-1-corpus.R`](entregas/entrega-1/entrega-1-corpus.R) |
-| **2. Ficha do Projeto completa (Seções 1 a 7 + Estado do R)** | ✅ Entregue | • [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md)<br>• [`00_FICHA_PROJETO.md`](00_FICHA_PROJETO.md) (espelho na raiz) |
-| **3. Corpus congelado em `.rds` e scripts executáveis (`coletar.R`, `aula02.R`, `buscar.R`, `pipeline.R`)** | ✅ Entregue | • Corpus `.rds`: [`estrutura/banco-de-dados/docs.rds`](estrutura/banco-de-dados/docs.rds) e [`estrutura/banco-de-dados/origem.rds`](estrutura/banco-de-dados/origem.rds)<br>• Base bruta `.csv`: [`estrutura/banco-de-dados/wikipedia_baixada_santista.csv`](estrutura/banco-de-dados/wikipedia_baixada_santista.csv) (152 brutos → 132 válidos)<br>• Scripts de terminal: [`estrutura/codigo/coletar.R`](estrutura/codigo/coletar.R) · [`estrutura/codigo/aula02.R`](estrutura/codigo/aula02.R) · [`estrutura/codigo/buscar.R`](estrutura/codigo/buscar.R) · [`estrutura/codigo/pipeline.R`](estrutura/codigo/pipeline.R) (também em `entregas/entrega-1/`) |
-| **4. Consolidados das Aulas 00 a 08 (Teoria e Parte D)** | ✅ Entregue | • Pasta [`consolidados/`](consolidados/) completa (`aula00` a `aula08`, teoria e `parteD`)<br>• Leitor automático no Colab: [`arquivo-legado/Consolidados_Colab.ipynb`](arquivo-legado/Consolidados_Colab.ipynb) |
+| **1. Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências)** | ✅ Entregue | • PDF em `entregas/entrega-1/`: [`entregas/entrega-1/entrega-1-corpus.pdf`](entregas/entrega-1/entrega-1-corpus.pdf)<br>• Código-fonte `.Rnw`: [`entregas/entrega-1/entrega-1-corpus.Rnw`](entregas/entrega-1/entrega-1-corpus.Rnw)<br>• Bibliografia `.bib`: [`entregas/entrega-1/referencias.bib`](entregas/entrega-1/referencias.bib)<br>• Script gerador e resumo: [`entregas/entrega-1/entrega-1-corpus.R`](entregas/entrega-1/entrega-1-corpus.R) · [`entregas/entrega-1/entrega-1-numeros.txt`](entregas/entrega-1/entrega-1-numeros.txt) |
+| **2. Ficha do Projeto completa (Seções 1 a 7 + Estado do R)** | ✅ Entregue | • [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md) |
+| **3. Corpus congelado em `.rds` e scripts executáveis (`coletar.R`, `01b-shannon-pesos.R`, `aula02.R`, `buscar.R`, `pipeline.R`)** | ✅ Entregue | • Corpus `.rds`: [`estrutura/banco-de-dados/docs.rds`](estrutura/banco-de-dados/docs.rds) e [`estrutura/banco-de-dados/origem.rds`](estrutura/banco-de-dados/origem.rds)<br>• Base bruta `.csv`: [`estrutura/banco-de-dados/corpus.csv`](estrutura/banco-de-dados/corpus.csv) (152 brutos → 132 válidos)<br>• Scripts de terminal: [`estrutura/codigo/coletar.R`](estrutura/codigo/coletar.R) · [`estrutura/codigo/01b-shannon-pesos.R`](estrutura/codigo/01b-shannon-pesos.R) · [`estrutura/codigo/aula02.R`](estrutura/codigo/aula02.R) · [`estrutura/codigo/buscar.R`](estrutura/codigo/buscar.R) · [`estrutura/codigo/pipeline.R`](estrutura/codigo/pipeline.R)<br>• Configuração canônica: [`config.R`](config.R) |
+| **4. Consolidados das Aulas 00 a 08 (Teoria, Parte D, 01b Shannon e Tema 7)** | ✅ Entregue | • Pasta [`consolidados/`](consolidados/) completa (`aula00` a `aula08`, `aula01b_shannon_consolidado.md` e `aula08_tema/aula08_tema_consolidado.md`)<br>• Leitor automático no Colab: [`arquivo-legado/Consolidados_Colab.ipynb`](arquivo-legado/Consolidados_Colab.ipynb) |
+| **5. Julgamento, Pool (12 consultas) e Kappa (`05-julgamento/`)** | ✅ Estruturado | • Interface HTML: [`estrutura/codigo/05-julgamento/05-julgar.html`](estrutura/codigo/05-julgamento/05-julgar.html)<br>• Scripts: [`05a-kappa.R`](estrutura/codigo/05-julgamento/05a-kappa.R) · [`05e-consolidar-qrels.R`](estrutura/codigo/05-julgamento/05e-consolidar-qrels.R)<br>• Respostas e templates (`q01..q12`): [`csv/05-qrels-respostas/`](csv/05-qrels-respostas/README.md) |
 
 ---
 
 ### 2. Instruções para o Professor — Roteiro da Demonstração no Terminal
 
-Todos os scripts foram construídos apenas com **R base** (sem dependências externas para o motor) e detectam automaticamente a raiz do repositório, podendo ser executados da raiz do projeto, de `estrutura/codigo/` ou de `entregas/entrega-1/`.
+Todos os scripts foram construídos apenas com **R base** (sem dependências externas para o motor) e detectam automaticamente a raiz do repositório, podendo ser executados da raiz do projeto ou de `estrutura/codigo/`.
 
 #### Passo 1 — Conferir o repositório, o PDF do corpus e a Ficha do Projeto
-- Abrir [`entregas/entrega-1/entrega-1-corpus.pdf`](entregas/entrega-1/entrega-1-corpus.pdf) (3 páginas de texto + Referências na página 4).
+- Abrir [`entregas/entrega-1/entrega-1-corpus.pdf`](entregas/entrega-1/entrega-1-corpus.pdf) (3 páginas de texto + Referências na página 4) e [`entregas/entrega-1/entrega-1-numeros.txt`](entregas/entrega-1/entrega-1-numeros.txt).
 - Abrir [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md) e verificar na **Seção 4** os rankings Top-5 de referência das três consultas de trabalho (q₁, q₂, q₃).
 
 #### Passo 2 — Regenerar e verificar o corpus (`docs.rds` e `origem.rds`)
@@ -54,19 +55,20 @@ length(docs)        # [1] 132
 table(origem)       # Bertioga: 17 | Guaruja: 29 | Santos: 86
 substr(docs[1:2], 1, 90)
 ```
-> **Resultado esperado:** lê os 152 parágrafos brutos de `wikipedia_baixada_santista.csv`, aplica o corte `nchar(texto) > cfg$minimo` (`200` caracteres), descarta os 20 fragmentos curtos (cabeçalhos/rodapés) e grava os **132 parágrafos autônomos (`d1..d132`)** distribuídos em **Santos (86 — 65,2%)**, **Guarujá (29 — 22,0%)** e **Bertioga (17 — 12,9%)**.
+> **Resultado esperado:** lê os 152 parágrafos brutos de `estrutura/banco-de-dados/corpus.csv`, aplica o corte `nchar(texto) > cfg$minimo` (`200` caracteres), descarta os 20 fragmentos curtos (cabeçalhos/rodapés) e grava os **132 parágrafos autônomos (`d1..d132`)** distribuídos em **Santos (86 — 65,2%)**, **Guarujá (29 — 22,0%)** e **Bertioga (17 — 12,9%)**.
 
-#### Passo 3 — Rodar `aula02.R` (TF-IDF + Cosseno) e conferir com a Seção 4 da Ficha
+#### Passo 3 — Rodar `aula02.R` (TF-IDF + Cosseno) e `01b-shannon-pesos.R`
 No terminal:
 ```bash
+Rscript estrutura/codigo/01b-shannon-pesos.R
 Rscript estrutura/codigo/aula02.R
 ```
-> **Resultado esperado (idêntico à Seção 4 de `00_FICHA_PROJETO.md` — tokenização bruta da Aula 02, antes da limpeza):**
+> **Resultado esperado em `aula02.R` (tokenização bruta da Aula 02, antes da limpeza — idêntico à Seção 4 de `consolidados/00_FICHA_PROJETO.md`):**
 > - **`q1 = "porto de santos"`** → Top-5 Cosseno: `d76 (0.193) · d39 (0.146) · d50 (0.132) · d67 (0.132) · d26 (0.123)`
 > - **`q2 = "praias e turismo"`** → Top-5 Cosseno: `d2 (0.135) · d19 (0.120) · d80 (0.116) · d118 (0.106) · d53 (0.097)`
 > - **`q3 = "forte sao joao"`** → Top-5 Cosseno: `d117 (0.205) · d121 (0.190) · d16 (0.129) · d132 (0.106) · d10 (0.104)`
 >
-> **Nota sobre os escores.** Os valores acima são da **tokenização bruta** (Aula 02, sem limpeza e sem stopwords) e são exatamente os que `aula02.R` imprime. A partir da Aula 03, com `translit` e 27 stopwords, os escores pós-limpeza são diferentes — e são esses que aparecem no `entrega-1-rankings.csv`: `q1 d76 = 0.2648`, `q2 d2 = 0.1780`, `q3 d117 = 0.2974`. **Ambos estão corretos dentro do seu contexto**; o `aula02.R` documenta o passo bruto; o CSV da entrega documenta o resultado pós-limpeza (fonte canônica da entrega).
+> **Nota sobre os escores.** Os valores acima são da **tokenização bruta** (Aula 02, sem limpeza e sem stopwords). A partir da Aula 03, com `translit` e 27 stopwords, os escores pós-limpeza no `entrega-1-rankings.csv` passam a ser: `q1 d76 = 0.2711`, `q2 d2 = 0.1789`, `q3 d117 = 0.3219`.
 
 #### Passo 4 — Explicar por que o 1.º colocado ganhou (parcelas do produto escalar `qw * w[, melhor]`)
 O próprio script `aula02.R` já imprime no terminal a decomposição exata de `qw * w[, melhor]` para o 1.º colocado de cada consulta:
@@ -75,13 +77,13 @@ O próprio script `aula02.R` já imprime no terminal a decomposição exata de `
 - Em **q₃ (`"forte sao joao"`)**, vence **`d117`** (Bertioga, Forte de São João): `forte = 6.28 | são = 1.37 | joão = 3.78`.
 
 #### Passo 5 (Opcional) — Auditoria multimétodo (Booleano AND/OR, TF-IDF, Cosseno, BM25 e nDCG@5)
-Para verificar os resultados da **Tabela 2 do PDF do corpus** (pós-limpeza da Aula 03 com `translit` e remoção das 27 stopwords, avaliados contra `qrels_jorge_2026-10-13.csv`):
+Para verificar os resultados da **Tabela 2 do PDF do corpus** (pós-limpeza da Aula 03 com `translit` e remoção das 27 stopwords, avaliados contra `csv/05-qrels-respostas/qrels_jorge_2026-10-13.csv`):
 ```bash
 Rscript estrutura/codigo/buscar.R
 ```
 
-#### Passo 6 (Opcional) — Recompilar o PDF `entrega-1-corpus.pdf` do zero
-Caso deseje regenerar todas as tabelas `.csv` (`entrega-1-docs.csv`, `entrega-1-paginas.csv`, `entrega-1-metodos.csv`, `entrega-1-rankings.csv`, `entrega-1-resultados.csv`, `entrega-1-top10.csv`) e recompilar o `.Rnw` em PDF (requer pacote `knitr` e distribuição LaTeX com `abntex2`):
+#### Passo 6 (Opcional) — Recompilar os CSVs e o PDF `entrega-1-corpus.pdf` do zero
+Para regenerar todas as tabelas de `entregas/entrega-1/` (`entrega-1-docs.csv`, `entrega-1-paginas.csv`, `entrega-1-metodos.csv`, `entrega-1-rankings.csv`, `entrega-1-resultados.csv`, `entrega-1-top10.csv`, `entrega-1-julgamento.csv`, `entrega-meio-semestre-auditoria.csv`, `entrega-1-numeros.txt`) e recompilar o `.Rnw` em PDF (requer pacote `knitr` e distribuição LaTeX com `abntex2`):
 ```bash
 Rscript entregas/entrega-1/entrega-1-corpus.R
 ```
@@ -91,9 +93,7 @@ cd entregas/entrega-1
 Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 ```
 
-> **Auditoria dos tamanhos limpos:** os 132 documentos têm de **22 a 186 tokens limpos**, total de **9.632**, média **73,0** e mediana **64,5**; `d85` é o maior, com 186 tokens. Os CSVs e o PDF foram regenerados a partir dos dados e apresentam essas medidas. O vocabulário limpo calculado pelo gerador atual é **3.471 termos**.
-
-> **Nota histórica sobre vocabulário:** os consolidados das Aulas 03 e 07 registram 3.483 e 3.493 termos, respectivamente. Esses números são snapshots de sessões anteriores; para a versão atual da Entrega 1, use 3.471, calculado pelo gerador.
+> **Auditoria dos tamanhos limpos (UTF-8 transliterado sem mojibake):** os 132 documentos têm de **20 a 167 tokens limpos**, total de **8.746**, média **66,3** e mediana **58,5**; `d85` é o maior, com 167 tokens. O vocabulário limpo unificado é **3.483 termos** (idêntico ao registrado na Aula 03).
 
 ---
 
@@ -101,59 +101,64 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 
 ```text
 .
-├── 00_FICHA_PROJETO.md                 # Ficha acumulativa (Aulas 01 a 08 - motor08)
-├── config.R                            # Configuração homologada do motor de busca
+├── config.R                            # Configuração única homologada do motor de busca
 ├── README.md                           # Este guia de navegação e instruções para o professor
 │
 ├─── arquivo-legado/
 │   └── Consolidados_Colab.ipynb        # Leitor automático dos consolidados no Google Colab
 │
 ├─── consolidados/
-│   ├── 00_FICHA_PROJETO.md             # Ficha do projeto sincronizada
-│   └── aula00_consolidado.md .. aula08_parteD_consolidado.md
+│   ├── 00_FICHA_PROJETO.md             # Ficha acumulativa do projeto (Seções 1–7 + Estado do R)
+│   ├── aula00_consolidado.md .. aula08_parteD_consolidado.md
+│   ├── aula01b_shannon_consolidado.md  # Teoria da Informação (bits) no curso e no corpus
+│   └── aula08_tema/
+│       └── aula08_tema_consolidado.md  # Tema 7 (combinar escores: notas vs posições) + Estado do R
 │
 ├─── csv/
-│   ├── 05-qrels-respostas/             # Respostas e formulários de julgamento por juiz
+│   ├── 05-qrels-respostas/             # Gabarito (qrels_jorge), templates q01..q12 e README
 │   ├── rankings.csv                    # Rankings completos dos modelos (N = 132)
-│   ├── 05-pool.csv                     # Pool de avaliação (top-10 Booleano, TF-IDF, BM25)
+│   ├── 05-pool.csv                     # Pool completa de 12 consultas (Booleano, TF-IDF, BM25)
 │   ├── 05-divergencias.csv             # Auditoria de divergências entre juízes
-│   ├── 05-qrels.csv                    # Gabarito consolidado nos 132 parágrafos válidos
-│   ├── 05b-metricas-por-consulta.csv   # P@10, Recall, AP, MRR e nDCG@10 por consulta
+│   ├── 05-qrels.csv                    # Gabarito consolidado nos 132 parágrafos válidos (219 linhas)
+│   ├── 05b-metricas-por-consulta.csv   # P@10, Recall, AP, MRR e nDCG@10 (ganho linear)
 │   ├── 05b-map.csv                     # MAP médio por modelo e conjunto (dev/teste)
 │   ├── 06-pseudo-feedback-por-consulta.csv
 │   ├── 06-rocchio-por-consulta.csv
+│   ├── 06-rocchio-metricas.csv         # Comparativo completo vs residual realista no dev
 │   ├── 07-lsa-por-consulta.csv
 │   ├── 07-lsa-map-por-k.csv
+│   ├── 07-lsa-top5.csv                 # Top-5 comparativo: bm25 vs lsa_20 vs hibrido_20_60
 │   ├── 08-rerank-por-consulta.csv      # Métricas e top-5 após reordenação por proximidade
-│   └── 08-rerank-grade-dev.csv         # Grade de MAP (k x janela) em dev/teste
+│   ├── 08-rerank-grade-dev.csv         # Grade de MAP (k x janela) em dev/teste
+│   └── 08-rerank-top5.csv              # Comparativo top-5 estágio 1 vs rerank (k=10, janela=3)
 │
 ├─── entregas/
 │   └─── entrega-1/
 │       ├── entrega-1-corpus.pdf        # PDF oficial da Entrega 1 (abnTeX2, 3 págs + Referências)
 │       ├── entrega-1-corpus.Rnw        # Código-fonte LaTeX + knitr (Sweave) sem números fixos
-│       ├── entrega-1-corpus.R          # Script gerador dos CSVs e compilação do PDF
+│       ├── entrega-1-corpus.R          # Script gerador dos CSVs, TXT e compilação do PDF
 │       ├── referencias.bib             # Base BibTeX (Manning, Robertson, Järvelin, Wikipédia)
-│       ├── entrega-1-*.csv             # 6 tabelas CSV geradas pelo script
-│       ├── coletar.R                   # Cópia do script de coleta/filtro do corpus
-│       ├── aula02.R                    # Cópia do script de demonstração da Aula 02
-│       └── buscar.R                    # Cópia do script de auditoria multimétodo
+│       ├── entrega-1-numeros.txt       # Resumo auditável em texto puro dos números da entrega
+│       └── entrega-1-*.csv / entrega-meio-semestre-auditoria.csv
 │
 ├─── estrutura/
 │   ├─── banco-de-dados/
 │   │   ├── docs.rds                    # Vetor nomeado (d1..d132) com os 132 parágrafos válidos
 │   │   ├── origem.rds                  # Vetor nomeado (d1..d132) com a página de origem
-│   │   ├── corpus.csv                  # Base bruta (152 parágrafos; 132 válidos > 200 chars)
-│   │   ├── necessidades.csv            # 12 necessidades de informação (8 dev + 4 teste)
-│   │   ├── qrels_jorge_2026-10-13.csv  # 230 julgamentos humanos de relevância
-│   │   └── wikipedia_baixada_santista.csv
+│   │   ├── corpus.csv                  # Base bruta única (152 parágrafos; 132 válidos > 200 chars)
+│   │   └── necessidades.csv            # 12 necessidades de informação (8 dev + 4 teste)
 │   │
 │   └─── codigo/
-│       ├── 05-julgamento/README.md     # Instruções da pool e julgamento de relevância
+│       ├── 05-julgamento/
+│       │   ├── 05-julgar.html          # Ferramenta HTML de julgamento às cegas (Aula 05)
+│       │   ├── 05a-kappa.R             # Cálculo do Kappa de Cohen (matrizes da aula + qrels)
+│       │   ├── 05e-consolidar-qrels.R  # Consolidação de respostas em csv/05-qrels.csv
+│       │   └── README.md               # Instruções da pool e julgamento de relevância
 │       ├── coletar.R                   # Regenera docs.rds e origem.rds a partir da base bruta
+│       ├── 01b-shannon-pesos.R         # Aula 01b: autoinformação em bits (8 docs + corpus)
 │       ├── aula02.R                    # Executa TF-IDF + Cosseno nas 3 consultas de trabalho
 │       ├── buscar.R                    # Executa Booleano AND/OR, TF-IDF, Cosseno, BM25 e nDCG@5
 │       ├── pipeline.R                  # Pipeline reprodutível das Aulas 05–08 (exporta csv/)
-│       ├── config.R                    # Configuração homologada do motor
 │       └── Aula00_Teoria.ipynb .. Aula08_ParteD.ipynb
 │
 └─── guias_estudo/
@@ -179,14 +184,15 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 | **Aula 00 — Parte D** | [GUIA_ESTUDO_aula00_parteD.md](guias_estudo/GUIA_ESTUDO_aula00_parteD.md) | [`consolidados/aula00_parteD_consolidado.md`](consolidados/aula00_parteD_consolidado.md) |
 | **Aula 01 — Teoria** | [GUIA_ESTUDO_aula01_teoria.md](guias_estudo/GUIA_ESTUDO_aula01_teoria.md) | [`consolidados/aula01_consolidado.md`](consolidados/aula01_consolidado.md) |
 | **Aula 01 — Parte D** | [GUIA_ESTUDO_aula01_parteD.md](guias_estudo/GUIA_ESTUDO_aula01_parteD.md) | [`consolidados/aula01_parteD_consolidado.md`](consolidados/aula01_parteD_consolidado.md) |
+| **Aula 01b — Shannon (Bits)** | [`estrutura/codigo/01b-shannon-pesos.R`](estrutura/codigo/01b-shannon-pesos.R) | [`consolidados/aula01b_shannon_consolidado.md`](consolidados/aula01b_shannon_consolidado.md) |
 | **Aula 02 — Teoria** | [GUIA_ESTUDO_aula02_teoria.md](guias_estudo/GUIA_ESTUDO_aula02_teoria.md) | [`consolidados/aula02_consolidado.md`](consolidados/aula02_consolidado.md) |
 | **Aula 02 — Parte D** | [GUIA_ESTUDO_aula02_parteD.md](guias_estudo/GUIA_ESTUDO_aula02_parteD.md) | [`consolidados/aula02_parteD_consolidado.md`](consolidados/aula02_parteD_consolidado.md) |
 | **Aula 03 — Teoria** | [GUIA_ESTUDO_aula03_teoria.md](guias_estudo/GUIA_ESTUDO_aula03_teoria.md) | [`consolidados/aula03_consolidado.md`](consolidados/aula03_consolidado.md) |
 | **Aula 03 — Parte D** | [GUIA_ESTUDO_aula03_parteD.md](guias_estudo/GUIA_ESTUDO_aula03_parteD.md) | [`consolidados/aula03_parteD_consolidado.md`](consolidados/aula03_parteD_consolidado.md) |
 | **Aula 04 — Teoria** | [GUIA_ESTUDO_aula04_teoria.md](guias_estudo/GUIA_ESTUDO_aula04_teoria.md) | [`consolidados/aula04_consolidado.md`](consolidados/aula04_consolidado.md) |
 | **Aula 04 — Parte D** | [GUIA_ESTUDO_aula04_parteD.md](guias_estudo/GUIA_ESTUDO_aula04_parteD.md) | [`consolidados/aula04_parteD_consolidado.md`](consolidados/aula04_parteD_consolidado.md) |
-| **Aula 05 — Teoria** | Pool e Concordância (Kappa) | [`consolidados/aula05_consolidado.md`](consolidados/aula05_consolidado.md) |
-| **Aula 05 — Parte D** | Pool e Julgamentos do Grupo | [`consolidados/aula05_parteD_consolidado.md`](consolidados/aula05_parteD_consolidado.md) |
+| **Aula 05 — Teoria** | [GUIA_ESTUDO_aula05_teoria.md](guias_estudo/GUIA_ESTUDO_aula05_teoria.md) | [`consolidados/aula05_consolidado.md`](consolidados/aula05_consolidado.md) |
+| **Aula 05 — Parte D** | [GUIA_ESTUDO_aula05_parteD.md](guias_estudo/GUIA_ESTUDO_aula05_parteD.md) | [`consolidados/aula05_parteD_consolidado.md`](consolidados/aula05_parteD_consolidado.md) |
 | **Aula 05b — Teoria** | [GUIA_ESTUDO_aula05b_teoria.md](guias_estudo/GUIA_ESTUDO_aula05b_teoria.md) | [`consolidados/aula05b_consolidado.md`](consolidados/aula05b_consolidado.md) |
 | **Aula 05b — Parte D** | [GUIA_ESTUDO_aula05b_parteD.md](guias_estudo/GUIA_ESTUDO_aula05b_parteD.md) | [`consolidados/aula05b_parteD_consolidado.md`](consolidados/aula05b_parteD_consolidado.md) |
 | **Aula 06 — Teoria** | [GUIA_ESTUDO_aula06_teoria.md](guias_estudo/GUIA_ESTUDO_aula06_teoria.md) | [`consolidados/aula06_consolidado.md`](consolidados/aula06_consolidado.md) |
@@ -195,33 +201,36 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 | **Aula 07 — Parte D** | [GUIA_ESTUDO_aula07_parteD.md](guias_estudo/GUIA_ESTUDO_aula07_parteD.md) | [`consolidados/aula07_parteD_consolidado.md`](consolidados/aula07_parteD_consolidado.md) |
 | **Aula 08 — Teoria** | [GUIA_ESTUDO_aula08.md](guias_estudo/GUIA_ESTUDO_aula08.md) | [`consolidados/aula08_consolidado.md`](consolidados/aula08_consolidado.md) |
 | **Aula 08 — Parte D** | [GUIA_ESTUDO_aula08_parteD.md](guias_estudo/GUIA_ESTUDO_aula08_parteD.md) | [`consolidados/aula08_parteD_consolidado.md`](consolidados/aula08_parteD_consolidado.md) |
+| **Aula 08 — Tema 7 (Notas × Posições)** | `GUIA_TEMA_07_combinar_escores.md` | [`consolidados/aula08_tema/aula08_tema_consolidado.md`](consolidados/aula08_tema/aula08_tema_consolidado.md) |
 
 ---
 
 ## 📊 Resumo dos Resultados Experimentais Homologados pelo Grupo
 
-1. **Aulas 00–02 (Corpus e Modelo Vetorial):** Extração de 152 parágrafos brutos da Wikipédia e congelamento de N = 132 parágrafos autônomos (`cfg$minimo = 200` caracteres: 86 de Santos, 29 de Guarujá e 17 de Bertioga). Homologação das 3 consultas de trabalho no modelo TF-IDF + Cosseno (q₁ → `d76`, q₂ → `d2`, q₃ → `d117`).
+1. **Aulas 00–02 (Corpus e Modelo Vetorial):** Extração de 152 parágrafos brutos da Wikipédia e congelamento de $N = 132$ parágrafos autônomos (`cfg$minimo = 200` caracteres: 86 de Santos, 29 de Guarujá e 17 de Bertioga). Homologação das 3 consultas de trabalho no modelo TF-IDF + Cosseno (q₁ → `d76`, q₂ → `d2`, q₃ → `d117`).
 
-2. **Aula 03 (Limpeza e Índice Invertido):** Adoção de `cfg$acentos = "translit"`, remoção de 27 stopwords funcionais e construção do índice invertido (`postings`), reduzindo o vocabulário de 4.250 para 3.483 termos no resultado registrado naquela sessão (3.471 termos na geração limpa atual), sem partir topônimos regionais (ex.: `Guarujá` → `guaruja`, não `guaruj`/`guaruj a`).
+2. **Aula 01b (Shannon e Bits):** $\log_2(132) = 7{,}044\text{ bits}$ de incerteza inicial; a preposição `de` ocorre em todos os 132 parágrafos ($I = 0{,}000\text{ bits}$), enquanto termos específicos como `forte` e `cafe` carregam $4{,}044\text{ bits}$ cada.
 
-3. **Aula 04 (Modelo Probabilístico BM25):** Implementação do BM25 com parâmetros canônicos (k₁ = 1,2 e b = 0,75), promovendo documentos que cobrem **todos** os termos da consulta (como `d80` e `d118` em q₂), em contraste com o Cosseno, que privilegiava `d2` por repetição de `praias`.
+3. **Aula 03 (Limpeza e Índice Invertido):** Adoção de `cfg$acentos = "translit"`, remoção de 27 stopwords funcionais e construção do índice invertido (`postings`), reduzindo o vocabulário de **4.250 para 3.483 termos** (8.746 tokens limpos), sem partir topônimos regionais (ex.: `Guarujá` → `guaruja`, não `guaruj`).
 
-4. **Aula 05,5 (Avaliação Formal com 230 Qrels):** No conjunto de 12 necessidades julgadas pelo juiz Jorge (`cfg$limiar = 2`), houve empate técnico de **6 a 6** em AP entre Cosseno (MAP = 0,640) e BM25 (MAP = 0,637), ambos com P@3 = 0,917. A diferença de 0,003 no MAP é estatisticamente indistinguível em 12 consultas.
+4. **Aula 04 (Modelo Probabilístico BM25):** Implementação do BM25 com parâmetros canônicos ($k_1 = 1{,}2$ e $b = 0{,}75$), promovendo documentos que cobrem **todos** os termos da consulta (como `d80` e `d118` em q₂), em contraste com o Cosseno, que privilegiava `d2` por repetição de `praias`.
 
-5. **Aula 06 (Rocchio e Pseudo-Realimentação PRF):**
-   - Na consulta q₀₂, o Rocchio elevou o AP na **coleção completa** (0,780 → 0,947), mas caiu na **coleção residual** (0,649 → 0,498), comprovando o viés otimista de reordenação dos documentos já vistos pelo usuário.
-   - A PRF provocou *query drift* em consultas curtas (MAP<sub>dev</sub>: 0,653 → 0,448 em k = 2; MAP<sub>teste</sub>: 0,612 → 0,487). Decisão homologada em `config.R`: **`prf_k = 0`** (desligada em produção).
+5. **Aula 05 / 05,5 (Pool, Julgamento e Avaliação Formal):**
+   - Os 230 julgamentos iniciais do juiz Jorge (`csv/05-qrels-respostas/qrels_jorge_2026-10-13.csv`, todos marcados com `grau = 2`, sendo 219 nos 132 parágrafos válidos) servem como base de referência atual (`cfg$juizes = c("jorge")`, `cfg$limiar = 2`). A pool completa das 12 consultas (`csv/05-pool.csv`) e a ferramenta [`05-julgar.html`](estrutura/codigo/05-julgamento/05-julgar.html) já estão configuradas para coleta dos votos graduados (`0/1/2`) dos demais juízes (Ivan e Gustavo) e cálculo de $\kappa$.
+   - Na comparação entre **Cosseno** e **BM25**: nos notebooks (`motor08.R`, 230 qrels brutos) registrou-se empate em AP (MAP Cosseno = $0{,}640$ vs BM25 = $0{,}637$); no `pipeline.R` limpo (219 qrels filtrados aos 132 docs válidos), **BM25 obtém $\text{MAP}_{\text{dev}} = 0{,}787$** ($\text{MAP}_{\text{teste}} = 0{,}749$) contra $\text{MAP}_{\text{dev}} = 0{,}784$ ($\text{MAP}_{\text{teste}} = 0{,}765$) do TF-IDF/Cosseno.
 
-6. **Aula 07 (Decomposição Espectral LSA/SVD e Fusão Híbrida RRF):**
-   - Avaliação sistemática de SVD truncada (k = 10, 20, 50) e fusão híbrida RRF (c = 60): no dev (q₀₁..q₀₈), o BM25 puro obteve MAP = 0,744 contra 0,652 do híbrido (k = 20) e 0,402 do LSA puro (k = 20); no teste (q₀₉..q₁₂), o BM25 confirmou a liderança com MAP = 0,718 contra 0,642 do híbrido (k = 20).
-   - A inspeção qualitativa em q₀₁ ("fundação de Santos") mostrou que o LSA introduziu documentos sem termos da consulta por alinhamento latente — o exemplo canônico é o parágrafo sobre a poesia de Vicente de Carvalho e Victor Hugo, identificado como `d121` **na convenção dos consolidados** (`id_orig=121`), que corresponde ao `d108` **sequencial** da entrega.
+6. **Aula 06 (Rocchio e Pseudo-Realimentação PRF):**
+   - Na avaliação residual realista (`csv/06-rocchio-metricas.csv`), o Rocchio eleva artificialmente o AP na **coleção completa** (ex.: $q_{02}$ salta de $0{,}823$ para $1{,}000$), mas cai fortemente na **coleção residual** ($0{,}699 \to 0{,}537$), comprovando o viés otimista de reordenação dos documentos já vistos.
+   - A PRF provocou *query drift* em consultas curtas ($\text{MAP}_{\text{dev}}$ cai de $0{,}784$ para $0{,}601$ no `pipeline.R`; $0{,}653 \to 0{,}448$ em $k=2$ no notebook). Decisão homologada em `config.R`: **`prf_k = 0`**.
+
+7. **Aula 07 (LSA/SVD e Fusão Híbrida RRF):**
+   - No `dev` ($q_{01}..q_{08}$), o **BM25 puro vence todas as variantes** ($\text{MAP}_{\text{dev}} = 0{,}787$ no `pipeline.R` e $0{,}744$ no notebook `motor08.R`, contra $0{,}691$ / $0{,}652$ do híbrido RRF com $k=20, c=60$ e $0{,}425$ / $0{,}402$ do LSA $k=20$).
    - Decisão homologada em `config.R`: manter **`modelo = "bm25"`** em produção (`lsa_k = 20`, `rrf_c = 60`).
 
-7. **Aula 08 (Reordenação por Proximidade Ordenada — *Retrieve & Rerank*):**
-   - Implementação de `proximidade()` e `reordenar()` sobre o estágio 1 (`bm25`). Na consulta q₀₂ (`"porto de Santos"`), a reordenação do top-10 trocou `d88` (que usa a forma flexionada *"Complexo Portuário de Santos"*, `prox = 0`) por `d58` (`prox = 1`).
-   - Na grade de desenvolvimento ($k \in \{3, 5, 10\} \times \text{janela} \in \{2, 3, 5\}$), $k = 3$ e $k = 5$ empataram exatamente com o estágio 1 (MAP<sub>dev</sub> = 0,744) e $k = 10$ reduziu o MAP<sub>dev</sub> para 0,743 (0,7425), perdendo em q₀₄ (`"clima na Baixada Santista"`: AP caiu de 0,766 para 0,754), onde o par do topônimo composto `("baixada", "santista")` atribuiu `prox = 1,0` ao documento irrelevante `d128` (sobre iatismo/vela) e rebaixou o documento climático `d148` (`prox = 0,0`). No teste, MAP<sub>teste</sub> permaneceu em 0,718.
-   - Decisão homologada em `config.R`: **`rerank_k = 0`** e **`janela = 3`** (não reordenar em produção, evitando latência extra por consulta).
+8. **Aula 08 (Reordenação por Proximidade Ordenada + Tema 7 — Combinação de Escores):**
+   - **Proximidade ordenada:** na grade `dev` ($k \in \{3, 5, 10\} \times \text{janela} \in \{2, 3, 5\}$), $k=3$ e $k=5$ empataram exatamente com o estágio 1 (`0,787` no `pipeline.R` / `0,744` no notebook), enquanto $k=10$ caiu para `0,786` / `0,743` por perda em $q_{04}$ (`"clima na Baixada Santista"`). Decisão em `config.R`: **`rerank_k = 0`** e **`janela = 3`**.
+   - **Tema 7 (Combinação por notas *min-max* / *z-score*):** no `dev`, nenhuma combinação na grade ($\alpha \in \{0{,}2, 0{,}5, 0{,}8\}$ com $k = 10$) superou o BM25 puro ($0{,}744$ contra $0{,}743$ em $\alpha \in \{0{,}5, 0{,}8\}$ e $0{,}738$–$0{,}739$ em $\alpha = 0{,}2$), confirmando a permanência de `bm25` em produção.
 
 ## Pipeline reprodutível (aulas 05–08)
 
-Na raiz: `Rscript estrutura/codigo/pipeline.R` (Base R). Saídas exportadas em `csv/` sobre os $N = 132$ parágrafos válidos (`nchar > 200`). Instruções de julgamento em [05-julgamento](estrutura/codigo/05-julgamento/README.md); decisões e parâmetros homologados em [00_FICHA_PROJETO.md](00_FICHA_PROJETO.md) e [config.R](config.R).
+Na raiz: `Rscript estrutura/codigo/pipeline.R` (Base R). Saídas exportadas em `csv/` sobre os $N = 132$ parágrafos válidos (`nchar > 200`). Instruções de julgamento em [05-julgamento](estrutura/codigo/05-julgamento/README.md); decisões e parâmetros homologados em [consolidados/00_FICHA_PROJETO.md](consolidados/00_FICHA_PROJETO.md) e [config.R](config.R).
