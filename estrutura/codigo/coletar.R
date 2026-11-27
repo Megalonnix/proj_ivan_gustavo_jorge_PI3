@@ -50,9 +50,8 @@ validos <- !is.na(corpus_raw$texto) & (nchar(corpus_raw$texto) > cfg$minimo)
 cp_validos <- corpus_raw[validos, ]
 
 # Nas Aulas 01 a 04 os documentos sao nomeados d1..d132;
-# nas Aulas 05b a 07 o gabarito usa o id original da linha (1..152).
-# Gravamos docs.rds / origem.rds com d1..d132 (padrao da Aula 01/02)
-# e tambem docs_id.rds / origem_id.rds com os IDs do gabarito.
+# nas Aulas 05b a 08 o gabarito usa o id original da linha (1..152).
+# Gravamos docs.rds / origem.rds com d1..d132 (padrao estavel do corpus congelado).
 docs <- setNames(cp_validos$texto, paste0("d", seq_len(nrow(cp_validos))))
 origem <- setNames(
   ifelse(grepl("guaruja", cp_validos$titulo, ignore.case = TRUE), "Guaruja",
