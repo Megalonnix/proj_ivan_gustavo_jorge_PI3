@@ -1,1 +1,17 @@
 assets/
+
+# Artefatos temporarios de compilacao LaTeX / knitr
+*.log
+*.aux
+*.bbl
+*.blg
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Temporarios do R / RStudio
+.Rhistory
+.RData
+.Rproj.user/
