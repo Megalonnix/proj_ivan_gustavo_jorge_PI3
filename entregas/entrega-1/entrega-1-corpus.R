@@ -12,11 +12,11 @@ if (length(file_arg) == 1) {
   setwd(dirname(normalizePath(sub("^--file=", "", file_arg))))
 }
 
-raiz <- if (file.exists(file.path("estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+raiz <- if (file.exists(file.path("estrutura", "banco-de-dados", "corpus.csv"))) {
   "."
-} else if (file.exists(file.path("..", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+} else if (file.exists(file.path("..", "banco-de-dados", "corpus.csv"))) {
   file.path("..", "..")
-} else if (file.exists(file.path("..", "..", "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+} else if (file.exists(file.path("..", "..", "estrutura", "banco-de-dados", "corpus.csv"))) {
   file.path("..", "..")
 } else {
   "."
@@ -29,10 +29,10 @@ dir.create("consolidados", recursive = TRUE, showWarnings = FALSE)
 
 # 1. Carrega config.R e gera docs.rds / origem.rds (132 paragrafos validos)
 source("config.R")
-arq_csv <- if (file.exists(file.path("estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
-  file.path("estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv")
+arq_csv <- if (file.exists(file.path("estrutura", "banco-de-dados", "corpus.csv"))) {
+  file.path("estrutura", "banco-de-dados", "corpus.csv")
 } else {
-  "wikipedia_baixada_santista.csv"
+  file.path("estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv")
 }
 
 corpus_raw <- tryCatch({
@@ -73,8 +73,7 @@ freq_bruto  <- sort(table(unlist(tok_bruto)), decreasing = TRUE)
 
 # 3. Limpeza e indexacao da Aula 03/04 (translit + 27 stopwords do config.R)
 limpar <- function(x) {
-  Encoding(x) <- "latin1"
-  x_utf8 <- enc2utf8(x)
+  x_utf8 <- enc2utf8(as.character(x))
   x_utf8 <- chartr(
     intToUtf8(c(225,224,226,227,228, 233,232,234,235, 237,236,238,239, 243,242,244,245,246, 250,249,251,252, 231, 241,
                 193,192,194,195,196, 201,200,202,203, 205,204,206,207, 211,210,212,213,214, 218,217,219,220, 199, 209)),
@@ -143,12 +142,12 @@ rank_bm25 <- function(q, k1 = cfg$k1, b = cfg$b) {
 }
 
 # 5. Avaliacao das 3 consultas de trabalho com o gabarito do grupo (qrels_jorge)
-arq_qrels <- if (file.exists(file.path("estrutura", "banco-de-dados", "qrels_jorge_2026-10-13.csv"))) {
-  file.path("estrutura", "banco-de-dados", "qrels_jorge_2026-10-13.csv")
+arq_qrels <- if (file.exists(file.path("csv", "05-qrels-respostas", "qrels_jorge_2026-10-13.csv"))) {
+  file.path("csv", "05-qrels-respostas", "qrels_jorge_2026-10-13.csv")
 } else {
-  "qrels_jorge_2026-10-13.csv"
+  file.path("estrutura", "banco-de-dados", "qrels_jorge_2026-10-13.csv")
 }
-qrels_df <- read.csv(arq_qrels, stringsAsFactors = FALSE)
+qrels_df <- read.csv(arq_qrels, fileEncoding = "UTF-8-BOM", stringsAsFactors = FALSE)
 grau_de <- function(qid) {
   sub <- qrels_df[qrels_df$consulta == qid, ]
   # Mapeia id original (1..152) para d1..d132
@@ -181,10 +180,18 @@ consultas_trab <- c(
 # Mapeamento para as necessidades correspondentes em qrels_jorge_2026-10-13.csv
 qrels_map <- c(q1 = "q02", q2 = "q03", q3 = "q10")
 
-metodos <- list(); rankings <- list()
+metodos <- list(); rankings <- list(); julgamentos <- list()
 for (cq in names(consultas_trab)) {
   q <- consultas_trab[[cq]]
   grau <- grau_de(qrels_map[[cq]])
+  julgamentos[[length(julgamentos) + 1]] <- data.frame(
+    consulta = cq,
+    julgados = length(grau),
+    g0 = sum(grau == 0),
+    g1 = sum(grau == 1),
+    g2 = sum(grau == 2),
+    stringsAsFactors = FALSE
+  )
   and_res <- busca_and(q)
   or_res  <- busca_or(q)
   r_list  <- list(tfidf = rank_tfidf(q), cosseno = rank_cos(q), bm25 = rank_bm25(q))
@@ -212,8 +219,9 @@ for (cq in names(consultas_trab)) {
     )
   }
 }
-metodos  <- do.call(rbind, metodos)
-rankings <- do.call(rbind, rankings)
+metodos     <- do.call(rbind, metodos)
+rankings    <- do.call(rbind, rankings)
+julgamentos <- do.call(rbind, julgamentos)
 
 # 6. Tabelas de diagnostico do corpus para o .Rnw
 ord_pags <- c("Santos", "Guaruja", "Bertioga")
@@ -258,20 +266,41 @@ docs_df <- data.frame(
   origem = unname(origem),
   n_tokens_bruto = tam_bruto,
   n_tokens_limpo = tam_limpo,
-  texto = iconv(unname(docs), from = "latin1", to = "UTF-8"),
+  texto = enc2utf8(unname(docs)),
   stringsAsFactors = FALSE
 )
 
-for (dest in c(pasta_ent)) {
-  write.csv(docs_df,    file.path(dest, "entrega-1-docs.csv"),       row.names = FALSE, fileEncoding = "UTF-8")
-  write.csv(pag_df,     file.path(dest, "entrega-1-paginas.csv"),    row.names = FALSE, fileEncoding = "UTF-8")
-  write.csv(metodos,    file.path(dest, "entrega-1-metodos.csv"),    row.names = FALSE, fileEncoding = "UTF-8")
-  write.csv(rankings,   file.path(dest, "entrega-1-rankings.csv"),   row.names = FALSE, fileEncoding = "UTF-8")
-  write.csv(resultados, file.path(dest, "entrega-1-resultados.csv"), row.names = FALSE, fileEncoding = "UTF-8")
-  write.csv(top10_df,   file.path(dest, "entrega-1-top10.csv"),      row.names = FALSE, fileEncoding = "UTF-8")
-}
+auditoria_df <- merge(
+  metodos,
+  data.frame(consulta = names(consultas_trab), texto_consulta = unname(consultas_trab),
+             qrels_id = unname(qrels_map), stringsAsFactors = FALSE),
+  by = "consulta", sort = FALSE
+)
 
-cat("CSVs de diagnostico gerados com sucesso em entregas/entrega-1/!\n")
+write.csv(docs_df,      file.path(pasta_ent, "entrega-1-docs.csv"),       row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(pag_df,       file.path(pasta_ent, "entrega-1-paginas.csv"),    row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(metodos,      file.path(pasta_ent, "entrega-1-metodos.csv"),    row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(rankings,     file.path(pasta_ent, "entrega-1-rankings.csv"),   row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(resultados,   file.path(pasta_ent, "entrega-1-resultados.csv"), row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(top10_df,     file.path(pasta_ent, "entrega-1-top10.csv"),      row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(julgamentos,  file.path(pasta_ent, "entrega-1-julgamento.csv"), row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(auditoria_df, file.path(pasta_ent, "entrega-meio-semestre-auditoria.csv"), row.names = FALSE, fileEncoding = "UTF-8")
+
+sink(file.path(pasta_ent, "entrega-1-numeros.txt"))
+cat("=== corpus ===\n")
+print(pag_df[, c("origem", "brutos", "documentos", "pct", "tokens_bruto", "tokens_limpo")])
+print(resultados)
+cat("\n=== 10 termos mais frequentes (tokenizacao bruta da Aula 01) ===\n")
+print(freq_bruto[1:10])
+cat("\n=== julgamento das 3 consultas (qrels_jorge) ===\n")
+print(julgamentos)
+cat("\n=== metodos: ms medio de 200 execucoes; P@3 e RR com grau>=2; nDCG@5 graduado ===\n")
+print(metodos)
+cat("\n=== top-5 ===\n")
+print(rankings)
+sink()
+
+cat("CSVs e entrega-1-numeros.txt gerados com sucesso em entregas/entrega-1/!\n")
 print(pag_df)
 cat("\nResumo das 3 consultas nos 5 metodos:\n")
 print(metodos, digits = 3)
@@ -291,10 +320,4 @@ if (requireNamespace("knitr", quietly = TRUE)) {
     cat("\nAviso na compilacao direta do PDF:", conditionMessage(e), "\n")
   })
   setwd(old_wd)
-  for (scr in c("coletar.R", "aula02.R", "buscar.R")) {
-    src_p <- file.path("estrutura", "codigo", scr)
-    if (file.exists(src_p)) {
-      file.copy(src_p, file.path(pasta_ent, scr), overwrite = TRUE)
-    }
-  }
 }

@@ -12,11 +12,11 @@ if (length(file_arg) == 1) {
   setwd(dirname(normalizePath(sub("^--file=", "", file_arg))))
 }
 
-raiz <- if (file.exists(file.path("estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+raiz <- if (file.exists(file.path("estrutura", "banco-de-dados", "corpus.csv"))) {
   "."
-} else if (file.exists(file.path("..", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+} else if (file.exists(file.path("..", "banco-de-dados", "corpus.csv"))) {
   file.path("..", "..")
-} else if (file.exists(file.path("..", "..", "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+} else if (file.exists(file.path("..", "..", "estrutura", "banco-de-dados", "corpus.csv"))) {
   file.path("..", "..")
 } else {
   "."
@@ -24,10 +24,10 @@ raiz <- if (file.exists(file.path("estrutura", "banco-de-dados", "wikipedia_baix
 
 source(file.path(raiz, "config.R"))
 
-arq_csv <- if (file.exists(file.path(raiz, "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
-  file.path(raiz, "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv")
+arq_csv <- if (file.exists(file.path(raiz, "estrutura", "banco-de-dados", "corpus.csv"))) {
+  file.path(raiz, "estrutura", "banco-de-dados", "corpus.csv")
 } else {
-  file.path(raiz, "wikipedia_baixada_santista.csv")
+  file.path(raiz, "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv")
 }
 
 corpus_raw <- tryCatch({
@@ -48,8 +48,7 @@ origem <- setNames(
 doc_de_id <- setNames(names(docs), as.character(cp_validos$id))
 
 limpar <- function(x) {
-  Encoding(x) <- "latin1"
-  x_utf8 <- enc2utf8(x)
+  x_utf8 <- enc2utf8(as.character(x))
   x_utf8 <- chartr(
     intToUtf8(c(225,224,226,227,228, 233,232,234,235, 237,236,238,239, 243,242,244,245,246, 250,249,251,252, 231, 241,
                 193,192,194,195,196, 201,200,202,203, 205,204,206,207, 211,210,212,213,214, 218,217,219,220, 199, 209)),
@@ -113,7 +112,12 @@ rank_bm25 <- function(q, k1 = cfg$k1, b = cfg$b) {
   sort(s, decreasing = TRUE)
 }
 
-qrels_df <- read.csv(file.path(raiz, "estrutura", "banco-de-dados", "qrels_jorge_2026-10-13.csv"), stringsAsFactors = FALSE)
+arq_qrels <- if (file.exists(file.path(raiz, "csv", "05-qrels-respostas", "qrels_jorge_2026-10-13.csv"))) {
+  file.path(raiz, "csv", "05-qrels-respostas", "qrels_jorge_2026-10-13.csv")
+} else {
+  file.path(raiz, "estrutura", "banco-de-dados", "qrels_jorge_2026-10-13.csv")
+}
+qrels_df <- read.csv(arq_qrels, fileEncoding = "UTF-8-BOM", stringsAsFactors = FALSE)
 grau_de <- function(qid) {
   sub <- qrels_df[qrels_df$consulta == qid, ]
   d_ids <- doc_de_id[as.character(sub$documento)]

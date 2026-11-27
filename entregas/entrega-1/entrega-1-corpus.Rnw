@@ -171,7 +171,7 @@ IBGE por não constituírem texto em prosa.
 % ==========================================================================
 
 Os artigos foram coletados via API da Wikipédia e armazenados na base bruta
-\texttt{wikipedia\_baixada\_santista.csv} ($\Sexpr{f0(r[["n.brutos"]])}$
+\texttt{estrutura/banco-de-dados/corpus.csv} ($\Sexpr{f0(r[["n.brutos"]])}$
 parágrafos). O script \texttt{coletar.R} (e o notebook \texttt{Aula01\_ParteD.ipynb})
 lê a base bruta, aplica o filtro \texttt{nchar(texto) > cfg\$minimo}
 ($\Sexpr{f0(r[["minimo"]])}$ caracteres), atribui os identificadores canônicos
