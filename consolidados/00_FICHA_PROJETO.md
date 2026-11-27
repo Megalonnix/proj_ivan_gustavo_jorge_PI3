@@ -62,6 +62,7 @@
 | Componente | Status | Arquivo / Entrega |
 |---|---|---|
 | Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências) | OK — CSVs corrigidos; PDF pronto para recompilar em ambiente com `abnTeX2` | `entregas/entrega-1/entrega-1-corpus.pdf` · `entregas/entrega-1/entrega-1-corpus.Rnw` · `entregas/entrega-1/entrega-1-corpus.R` · `entregas/entrega-1/entrega-1-numeros.txt` |
+| Apresentação do Projeto (Slides PDF) | OK | `entregas/apresentacao.pdf` |
 | Coleta e Extração do Corpus (`docs.rds` e `origem.rds`) | OK | `estrutura/codigo/coletar.R` · `estrutura/banco-de-dados/docs.rds` · `estrutura/banco-de-dados/corpus.csv` |
 | Scripts Executáveis via Terminal (`Rscript`) | OK | `estrutura/codigo/coletar.R` · `estrutura/codigo/01b-shannon-pesos.R` · `estrutura/codigo/aula02.R` · `estrutura/codigo/buscar.R` · `estrutura/codigo/pipeline.R` |
 | Configuração `config.R` (`minimo, grupo, limpar, acentos, stopwords, k1, b, juizes, limiar, prf_k, rocchio, modelo, lsa_k, rrf_c, rerank_k, janela`) | OK | `config.R` |
