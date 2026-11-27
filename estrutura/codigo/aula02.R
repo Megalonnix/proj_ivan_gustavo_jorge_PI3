@@ -10,11 +10,11 @@ if (length(file_arg) == 1) {
   setwd(dirname(normalizePath(sub("^--file=", "", file_arg))))
 }
 
-raiz <- if (file.exists(file.path("estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+raiz <- if (file.exists(file.path("estrutura", "banco-de-dados", "corpus.csv"))) {
   "."
-} else if (file.exists(file.path("..", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+} else if (file.exists(file.path("..", "banco-de-dados", "corpus.csv"))) {
   file.path("..", "..")
-} else if (file.exists(file.path("..", "..", "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+} else if (file.exists(file.path("..", "..", "estrutura", "banco-de-dados", "corpus.csv"))) {
   file.path("..", "..")
 } else {
   "."
@@ -27,10 +27,10 @@ if (file.exists(rds_docs) && file.exists(rds_orig)) {
   docs   <- readRDS(rds_docs)
   origem <- readRDS(rds_orig)
 } else {
-  arq_csv <- if (file.exists(file.path(raiz, "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
-    file.path(raiz, "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv")
+  arq_csv <- if (file.exists(file.path(raiz, "estrutura", "banco-de-dados", "corpus.csv"))) {
+    file.path(raiz, "estrutura", "banco-de-dados", "corpus.csv")
   } else {
-    file.path(raiz, "wikipedia_baixada_santista.csv")
+    file.path(raiz, "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv")
   }
   corpus_raw <- tryCatch({
     read.csv(arq_csv, stringsAsFactors = FALSE, fileEncoding = "latin1")

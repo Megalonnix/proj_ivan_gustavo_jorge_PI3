@@ -11,11 +11,11 @@ if (length(file_arg) == 1) {
 }
 
 # Localiza a raiz do repositorio independentemente de onde Rscript foi chamado
-raiz <- if (file.exists(file.path("estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+raiz <- if (file.exists(file.path("estrutura", "banco-de-dados", "corpus.csv"))) {
   "."
-} else if (file.exists(file.path("..", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+} else if (file.exists(file.path("..", "banco-de-dados", "corpus.csv"))) {
   file.path("..", "..")
-} else if (file.exists(file.path("..", "..", "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
+} else if (file.exists(file.path("..", "..", "estrutura", "banco-de-dados", "corpus.csv"))) {
   file.path("..", "..")
 } else {
   "."
@@ -34,10 +34,10 @@ if (!is.null(arq_cfg)) {
   cfg <- list(minimo = 200, grupo = "ivan_gustavo_jorge")
 }
 
-arq_csv <- if (file.exists(file.path(raiz, "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv"))) {
-  file.path(raiz, "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv")
+arq_csv <- if (file.exists(file.path(raiz, "estrutura", "banco-de-dados", "corpus.csv"))) {
+  file.path(raiz, "estrutura", "banco-de-dados", "corpus.csv")
 } else {
-  file.path(raiz, "wikipedia_baixada_santista.csv")
+  file.path(raiz, "estrutura", "banco-de-dados", "wikipedia_baixada_santista.csv")
 }
 
 corpus_raw <- tryCatch({
