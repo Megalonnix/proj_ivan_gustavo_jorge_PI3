@@ -31,6 +31,7 @@ Esta seção reúne em um único lugar todas as entregas exigidas nas diretrizes
 | **3. Corpus congelado em `.rds` e scripts executáveis (`coletar.R`, `01b-shannon-pesos.R`, `aula02.R`, `buscar.R`, `pipeline.R`)** | ✅ Entregue | • Corpus `.rds`: [`estrutura/banco-de-dados/docs.rds`](estrutura/banco-de-dados/docs.rds) e [`estrutura/banco-de-dados/origem.rds`](estrutura/banco-de-dados/origem.rds)<br>• Base bruta `.csv`: [`estrutura/banco-de-dados/corpus.csv`](estrutura/banco-de-dados/corpus.csv) (152 brutos → 132 válidos)<br>• Scripts de terminal: [`estrutura/codigo/coletar.R`](estrutura/codigo/coletar.R) · [`estrutura/codigo/01b-shannon-pesos.R`](estrutura/codigo/01b-shannon-pesos.R) · [`estrutura/codigo/aula02.R`](estrutura/codigo/aula02.R) · [`estrutura/codigo/buscar.R`](estrutura/codigo/buscar.R) · [`estrutura/codigo/pipeline.R`](estrutura/codigo/pipeline.R)<br>• Configuração canônica: [`config.R`](config.R) |
 | **4. Consolidados das Aulas 00 a 08 (Teoria, Parte D, 01b Shannon e Tema 7)** | ✅ Entregue | • Pasta [`consolidados/`](consolidados/) completa (`aula00` a `aula08`, `aula01b_shannon_consolidado.md` e `aula08_tema/aula08_tema_consolidado.md`)<br>• Leitor automático no Colab: [`arquivo-legado/Consolidados_Colab.ipynb`](arquivo-legado/Consolidados_Colab.ipynb) |
 | **5. Julgamento, Pool (12 consultas) e Kappa (`05-julgamento/`)** | ✅ Estruturado | • Interface HTML: [`estrutura/codigo/05-julgamento/05-julgar.html`](estrutura/codigo/05-julgamento/05-julgar.html)<br>• Scripts: [`05a-kappa.R`](estrutura/codigo/05-julgamento/05a-kappa.R) · [`05e-consolidar-qrels.R`](estrutura/codigo/05-julgamento/05e-consolidar-qrels.R)<br>• Respostas e templates (`q01..q12`): [`csv/05-qrels-respostas/`](csv/05-qrels-respostas/README.md) |
+| **6. Apresentação do Projeto (Slides PDF)** | ✅ Entregue | • [`entregas/apresentacao.pdf`](entregas/apresentacao.pdf) |
 
 ---
 
@@ -133,6 +134,7 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 │   └── 08-rerank-top5.csv              # Comparativo top-5 estágio 1 vs rerank (k=10, janela=3)
 │
 ├─── entregas/
+│   ├── apresentacao.pdf                # Apresentação do projeto em PDF
 │   └─── entrega-1/
 │       ├── entrega-1-corpus.pdf        # PDF oficial da Entrega 1 (abnTeX2, 3 págs + Referências)
 │       ├── entrega-1-corpus.Rnw        # Código-fonte LaTeX + knitr (Sweave) sem números fixos
@@ -177,6 +179,7 @@ Rscript -e "knitr::knit2pdf('entrega-1-corpus.Rnw', bib_engine = 'bibtex')"
 
 | Documento / Consolidado | Guia / Modelo de Origem | Abrir no GitHub |
 | --- | --- | --- |
+| **Apresentação do Projeto (PDF)** | Slides da apresentação do grupo | [`entregas/apresentacao.pdf`](entregas/apresentacao.pdf) |
 | **Texto do Corpus (PDF)** | Modelo oficial `entrega-1-corpus.Rnw` (`abnTeX2`) | [`entregas/entrega-1/entrega-1-corpus.pdf`](entregas/entrega-1/entrega-1-corpus.pdf) |
 | **Código-fonte do Corpus (`.Rnw`)** | Modelo oficial `entrega-1-corpus.Rnw` (`knitr`) | [`entregas/entrega-1/entrega-1-corpus.Rnw`](entregas/entrega-1/entrega-1-corpus.Rnw) |
 | **Ficha do Projeto** | Acumulativa ([Aula 01](guias_estudo/GUIA_ESTUDO_aula01_parteD.md) a [Aula 08](guias_estudo/GUIA_ESTUDO_aula08_parteD.md)) | [`consolidados/00_FICHA_PROJETO.md`](consolidados/00_FICHA_PROJETO.md) |
