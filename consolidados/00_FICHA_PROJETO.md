@@ -1,6 +1,6 @@
 # Ficha do Projeto — Motor de Busca da Baixada Santista
 
-*criada na Aula 01 (Parte D) em 2026-10-13 — última atualização: Aula 08 Parte D, 2026-11-10, motor08*
+*criada na Aula 01 (Parte D) em 2026-10-13 — última atualização: Aula 08 Tema 7 e Revisão Pós-Pente-Fino, 2026-11-26*
 
 ---
 
@@ -44,16 +44,16 @@
 
 | Métrica | Valor Observado |
 |---|---|
-| **Total de Documentos ($N$)** | 132 parágrafos autônomos (`d1..d132`) congelados em `estrutura/banco-de-dados/docs.rds` (de 152 parágrafos brutos extraídos em `estrutura/banco-de-dados/wikipedia_baixada_santista.csv`; 20 descartados com $\le 200$ caracteres). |
-| **Distribuição por Artigo** | Santos: 86 parágrafos de 91 brutos (65,2%, média 100,5 tokens brutos / 76,0 limpos) · Guarujá: 29 de 37 (22,0%, média 93,8 brutos / 68,5 limpos) · Bertioga: 17 de 24 (12,9%, média 91,8 brutos / 65,5 limpos). |
-| **Tamanho dos Documentos (Tokens)** | Tokenização bruta (Aula 01): menor 24 · maior 239 · média 98,0 tokens (0 curtos $<20$; 7 longos $>200$). <br>Tokenização limpa no CSV atual: menor 22 · maior 186 (`d85` - Santos) · média 73,0 · mediana 64,5 tokens. |
-| **Vocabulário** | 4.250 termos brutos (12.925 ocorrências) · 3.471 termos limpos na versão atual da Entrega 1 (`buscar.R` / `pipeline.R`). Os registros históricos das Aulas 03 e 07 registram 3.483 e 3.493, respectivamente. |
+| **Total de Documentos ($N$)** | 132 parágrafos autônomos (`d1..d132`) congelados em `estrutura/banco-de-dados/docs.rds` (de 152 parágrafos brutos extraídos em `estrutura/banco-de-dados/corpus.csv`; 20 descartados com $\le 200$ caracteres). |
+| **Distribuição por Artigo** | Santos: 86 parágrafos de 91 brutos (65,2%, média 100,5 tokens brutos / 69,1 limpos) · Guarujá: 29 de 37 (22,0%, média 93,8 brutos / 61,8 limpos) · Bertioga: 17 de 24 (12,9%, média 91,8 brutos / 59,5 limpos). |
+| **Tamanho dos Documentos (Tokens)** | Tokenização bruta (Aula 01): menor 24 · maior 239 · média 97,9 (98,0) tokens · mediana 81,5 (0 curtos $<20$; 7 longos $>200$). <br>Tokenização limpa (Aula 03, UTF-8 transliterado): menor 20 · maior 167 (`d85` - Santos) · média 66,3 · mediana 58,5 tokens. |
+| **Vocabulário** | 4.250 termos brutos (12.925 ocorrências) · **3.483 termos limpos** (8.746 ocorrências) após transliteração e remoção das 27 stopwords (alinhado entre Aula 03, `buscar.R`, `pipeline.R` e Entrega 1). |
 | **Top-10 Termos Brutos** | `de` (910), `a` (494), `e` (392), `o` (365), `do` (301), `da` (250), `em` (226), `que` (157), `com` (126), `na` (114). |
-| **Gabarito e Necessidades** | 12 consultas formuladas em `estrutura/banco-de-dados/necessidades.csv` e julgadas em `estrutura/banco-de-dados/qrels_jorge_2026-10-13.csv` (230 julgamentos, juiz Jorge). Divisão: 8 dev ($q_{01}..q_{08}$) e 4 teste ($q_{09}..q_{12}$). |
+| **Gabarito e Necessidades** | 12 consultas formuladas em `estrutura/banco-de-dados/necessidades.csv` e julgadas em `csv/05-qrels-respostas/qrels_jorge_2026-10-13.csv` (230 julgamentos, juiz Jorge; 219 nos 132 documentos válidos em `csv/05-qrels.csv`). Divisão: 8 dev ($q_{01}..q_{08}$) e 4 teste ($q_{09}..q_{12}$). |
 | **Idioma, acentos, caixa, pontuação** | Decisão de acentos: `"translit"` (transliteração para ASCII sem partir palavras); pontuações eliminadas por `[^a-z0-9 ]`. |
 | **Consultas de Trabalho Fixadas** | $q_1$: `"porto de santos"` · $q_2$: `"praias e turismo"` · $q_3$: `"forte sao joao"`. |
 | **Top-5 Cosseno — Aula 02 (`Rscript estrutura/codigo/aula02.R`, tokenização bruta)** | • $q_1$ (`"porto de santos"`): `d76 (0.193) · d39 (0.146) · d50 (0.132) · d67 (0.132) · d26 (0.123)` — 1.º lugar `d76` (Santos), parcelas `porto=4.22 | de=0.01 | santos=0.59` <br>• $q_2$ (`"praias e turismo"`): `d2 (0.135) · d19 (0.120) · d80 (0.116) · d118 (0.106) · d53 (0.097)` — 1.º lugar `d2` (Guarujá), parcelas `praias=5.32 | e=0.05 | turismo=0.00` <br>• $q_3$ (`"forte sao joao"`): `d117 (0.205) · d121 (0.190) · d16 (0.129) · d132 (0.106) · d10 (0.104)` — 1.º lugar `d117` (Bertioga), parcelas `forte=6.28 | são=1.37 | joão=3.78` |
-| **Top-5 Pós-Limpeza — Aula 03/04 (`Rscript estrutura/codigo/buscar.R`, `translit` + 27 stopwords)** | • $q_1$ (`"porto de santos"`): Cosseno `d76 (0.26) · d78 (0.17) · d25 (0.15) · d77 (0.13) · d50 (0.12)` ($\text{nDCG@5}=1{,}00$) \| BM25 `d76 (3.88) · d78 (3.29) · d25 (3.19) · d77 (3.13) · d39 (3.12)` ($\text{nDCG@5}=1{,}00$) <br>• $q_2$ (`"praias e turismo"`): Cosseno `d2 (0.18) · d118 (0.15) · d80 (0.13) · d19 (0.13) · d53 (0.12)` ($\text{nDCG@5}=0{,}70$) \| BM25 `d80 (5.01) · d118 (4.83) · d19 (4.73) · d53 (4.70) · d51 (4.22)` ($\text{nDCG@5}=0{,}51$) <br>• $q_3$ (`"forte sao joao"`): Cosseno `d117 (0.30) · d121 (0.17) · d132 (0.12) · d16 (0.11) · d123 (0.09)` ($\text{nDCG@5}=0{,}68$) \| BM25 `d117 (4.43) · d121 (3.60) · d132 (3.44) · d16 (3.08) · d123 (2.73)` ($\text{nDCG@5}=0{,}68$) |
+| **Top-5 Pós-Limpeza — Aula 03/04 (`Rscript estrutura/codigo/buscar.R`, `translit` + 27 stopwords)** | • $q_1$ (`"porto de santos"`): Cosseno `d76 (0.2711) · d78 (0.1750) · d25 (0.1496) · d77 (0.1317) · d50 (0.1245)` ($\text{nDCG@5}=1{,}00$) \| BM25 `d76 (3.9001) · d78 (3.3143) · d25 (3.1880) · d77 (3.1880) · d39 (3.1746)` ($\text{nDCG@5}=1{,}00$) <br>• $q_2$ (`"praias e turismo"`): Cosseno `d2 (0.1789) · d118 (0.1553) · d80 (0.1298) · d19 (0.1295) · d53 (0.1255)` ($\text{nDCG@5}=0{,}70$) \| BM25 `d80 (4.9961) · d118 (4.9305) · d19 (4.7322) · d53 (4.7228) · d51 (4.2598)` ($\text{nDCG@5}=0{,}51$) <br>• $q_3$ (`"forte sao joao"`): Cosseno `d117 (0.3219) · d121 (0.2022) · d16 (0.1513) · d123 (0.1291) · d132 (0.0871)` ($\text{nDCG@5}=0{,}70$) \| BM25 `d117 (8.6140) · d121 (7.1844) · d16 (6.0740) · d123 (5.9826) · d36 (3.5062)` ($\text{nDCG@5}=0{,}70$) |
 
 ---
 
@@ -61,21 +61,24 @@
 
 | Componente | Status | Arquivo / Entrega |
 |---|---|---|
-| Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências) | OK — regenerado e conferido | `entregas/entrega-1/entrega-1-corpus.pdf` · `entregas/entrega-1/entrega-1-corpus.Rnw` · `entregas/entrega-1/entrega-1-corpus.R` |
-| Coleta e Extração do Corpus (`docs.rds` e `origem.rds`) | OK | `estrutura/codigo/coletar.R` · `estrutura/banco-de-dados/docs.rds` · `estrutura/banco-de-dados/wikipedia_baixada_santista.csv` |
-| Scripts Executáveis via Terminal (`Rscript`) | OK | `estrutura/codigo/coletar.R` · `estrutura/codigo/aula02.R` · `estrutura/codigo/buscar.R` · `estrutura/codigo/pipeline.R` |
-| Configuração `config.R` (`minimo, grupo, limpar, acentos, stopwords, k1, b, juizes, limiar, prf_k, rocchio, modelo, lsa_k, rrf_c, rerank_k, janela`) | OK | `config.R` · `estrutura/codigo/config.R` |
+| Texto de Descrição e Defesa do Corpus (PDF `abnTeX2`, 3 páginas + Referências) | OK — CSVs corrigidos; PDF pronto para recompilar em ambiente com `abnTeX2` | `entregas/entrega-1/entrega-1-corpus.pdf` · `entregas/entrega-1/entrega-1-corpus.Rnw` · `entregas/entrega-1/entrega-1-corpus.R` · `entregas/entrega-1/entrega-1-numeros.txt` |
+| Coleta e Extração do Corpus (`docs.rds` e `origem.rds`) | OK | `estrutura/codigo/coletar.R` · `estrutura/banco-de-dados/docs.rds` · `estrutura/banco-de-dados/corpus.csv` |
+| Scripts Executáveis via Terminal (`Rscript`) | OK | `estrutura/codigo/coletar.R` · `estrutura/codigo/01b-shannon-pesos.R` · `estrutura/codigo/aula02.R` · `estrutura/codigo/buscar.R` · `estrutura/codigo/pipeline.R` |
+| Configuração `config.R` (`minimo, grupo, limpar, acentos, stopwords, k1, b, juizes, limiar, prf_k, rocchio, modelo, lsa_k, rrf_c, rerank_k, janela`) | OK | `config.R` |
 | Tokenização e Vocabulário Real | OK | `Aula01_ParteD.ipynb` · `coletar.R` |
-| Matriz Termo-Documento ($4250 \times 132$ bruta; $3471 \times 132$ na geração atual; Aula 03 registrou $3483 \times 132$) | OK | `Aula01_ParteD.ipynb` · `Aula03_ParteD.ipynb` |
+| Aula 01b — Shannon e Pesos em Bits | OK | `estrutura/codigo/01b-shannon-pesos.R` · `consolidados/aula01b_shannon_consolidado.md` |
+| Matriz Termo-Documento ($4250 \times 132$ bruta; $3483 \times 132$ limpa) | OK | `Aula01_ParteD.ipynb` · `Aula03_ParteD.ipynb` · `buscar.R` · `pipeline.R` |
 | Busca Booleana Conjuntiva (AND) e Disjuntiva (OR) | OK | `Aula01_ParteD.ipynb` · `buscar.R` |
 | TF-IDF + Similaridade do Cosseno | OK | `Aula02_ParteD.ipynb` · `estrutura/codigo/aula02.R` |
-| Limpeza textual e stopwords do grupo | OK | `Aula03_ParteD.ipynb` |
+| Limpeza textual e stopwords do grupo | OK | `Aula03_ParteD.ipynb` · `buscar.R` · `pipeline.R` |
 | Índice invertido rápido + Busca AND | OK | `Aula03_ParteD.ipynb` |
 | Modelo Probabilístico BM25 ($k_1=1{,}2, b=0{,}75$) | OK | `Aula04_ParteD.ipynb` · `estrutura/codigo/buscar.R` |
-| Avaliação com Gabarito (P@k, MAP, MRR, nDCG) | OK | `Aula05b_ParteD.ipynb` · `estrutura/banco-de-dados/qrels_jorge_2026-10-13.csv` · `csv/` |
-| Realimentação (Rocchio e Pseudo-realimentação PRF) | OK | `Aula06_ParteD.ipynb` (testado; desligado em produção: `prf_k = 0`) |
-| Decomposição Espectral LSA (SVD) e Fusão Híbrida RRF | OK | `Aula07_ParteD.ipynb` (testado; mantido BM25 em produção: `modelo = "bm25"`, `lsa_k = 20`, `rrf_c = 60`) |
-| Reordenação (proximidade ordenada) | testado, não usado (`rerank_k = 0`) | `estrutura/codigo/Aula08_ParteD.ipynb` · `csv/08-rerank-por-consulta.csv` · `csv/08-rerank-grade-dev.csv` (`rerank_k = 0`, `janela = 3`) |
+| Ferramental de Julgamento, Pool (12 consultas) e Kappa | OK (pool completa e `05-julgar.html` prontos; aguardando votos de Ivan e Gustavo) | `estrutura/codigo/05-julgamento/05-julgar.html` · `05a-kappa.R` · `05e-consolidar-qrels.R` · `csv/05-pool.csv` |
+| Avaliação com Gabarito (P@k, MAP, MRR, nDCG) | OK | `Aula05b_ParteD.ipynb` · `csv/05-qrels-respostas/qrels_jorge_2026-10-13.csv` · `csv/05b-metricas-por-consulta.csv` |
+| Realimentação (Rocchio e Pseudo-realimentação PRF) | OK | `Aula06_ParteD.ipynb` · `csv/06-rocchio-metricas.csv` (desligado em produção: `prf_k = 0`) |
+| Decomposição Espectral LSA (SVD) e Fusão Híbrida RRF | OK | `Aula07_ParteD.ipynb` · `csv/07-lsa-top5.csv` (mantido BM25 em produção: `modelo = "bm25"`, `lsa_k = 20`, `rrf_c = 60`) |
+| Reordenação (proximidade ordenada) | testado, não usado (`rerank_k = 0`) | `estrutura/codigo/Aula08_ParteD.ipynb` · `csv/08-rerank-por-consulta.csv` · `csv/08-rerank-grade-dev.csv` · `csv/08-rerank-top5.csv` |
+| Tema 7 — Combinação de Escores (min-max e z-score) | testado, não usado (mantido `bm25`) | `consolidados/aula08_tema/aula08_tema_consolidado.md` |
 
 ---
 
@@ -91,6 +94,7 @@
 8. **Aula 06 (Pseudo-Realimentação e Decisão do Motor):** Avaliação de PRF no conjunto de desenvolvimento ($q_{01}..q_{08}$) revelou queda expressiva de MAP para todos os $k \ge 2$: base $k=0$ ($0{,}653$), $k=2$ ($0{,}448$), $k=3$ ($0{,}515$), $k=5$ ($0{,}551$). O fenômeno de *query drift* foi identificado com termos contextuais específicos (ex.: `doencas`, `saneamento`, `mato grosso` introduzidos em $q_{02}$). No teste ($q_{09}..q_{12}$), o baseline $k=0$ obteve MAP $0{,}612$ contra $0{,}487$ de $k=2$. Decisão do grupo: **desligar a PRF no motor (`cfg$prf_k = 0`)** para preservar a precisão informacional em consultas curtas e eliminar latência de segunda busca, mantendo os pesos canônicos registrados em `cfg$rocchio = c(a = 1, b = 0.75, g = 0.15)`.
 9. **Aula 07 (LSA via SVD Truncada e Fusão Híbrida RRF):** A decomposição em valores singulares (SVD) acumulou $21{,}83\%$ da energia em $k=10$, $36{,}60\%$ em $k=20$, $65{,}98\%$ em $k=50$ e $92{,}00\%$ em $k=100$. No conjunto de desenvolvimento ($q_{01}..q_{08}$), o BM25 puro obteve MAP $0{,}744$, superando o LSA puro ($0{,}324$ em $k=10$; $0{,}402$ em $k=20$; $0{,}506$ em $k=50$) e a fusão híbrida RRF com $c=60$ ($0{,}585$ em $k=10$; $0{,}652$ em $k=20$; $0{,}684$ em $k=50$). No conjunto de teste ($q_{09}..q_{12}$), o BM25 confirmou a liderança com MAP $0{,}718$ contra $0{,}642$ do híbrido ($k=20$), embora na consulta conceitual $q_{09}$ ("estâncias balneárias no litoral paulista") o híbrido com $k=50$ tenha superado o BM25 ($0{,}867$ vs $0{,}843$). Decisão do grupo: **manter `cfg$modelo = "bm25"` como modelo oficial do motor**, registrando `cfg$lsa_k = 20` e `cfg$rrf_c = 60` em `config.R`.
 10. **Aula 08 (Reordenação por Proximidade Ordenada — *Retrieve & Rerank*):** Reordenação = top-$0$ (`0 = não reordenar`), janela $3$, sobre o estágio 1 `bm25`, porque no desenvolvimento ($q_{01}..q_{08}$) os cortes $k=3$ e $k=5$ apenas empataram com o estágio 1 ($\text{MAP}_{\text{dev}} = 0{,}744$ nas janelas $2, 3$ e $5$, sem vencer em nenhuma consulta) e $k=10$ reduziu o $\text{MAP}_{\text{dev}}$ para $0{,}743$ ($0{,}7425$), perdendo em $q_{04}$ (`"clima na Baixada Santista"`: $\text{AP}$ caiu de $0{,}766$ para $0{,}754$), onde o par do topônimo composto `("baixada", "santista")` atribuiu $\text{prox} = 1{,}0$ ao documento irrelevante `128` (sobre iatismo/vela) e rebaixou o documento climático `148` ($\text{prox} = 0{,}0$); no teste ($q_{09}..q_{12}$), $\text{MAP}_{\text{teste}}: 0{,}718 \to 0{,}718$ · `cfg$rerank_k = 0`, `cfg$janela = 3`.
+11. **Aula 08 — Tema 7 (Combinação por Notas *min-max* / *z-score*) e Consolidação Pós-Pente-Fino:** No Tema 7, a fusão por escores normalizados de BM25 + LSA ($k=20$, top-$10$) não superou o BM25 puro no desenvolvimento ($\text{MAP}_{\text{dev}} = 0{,}744$ contra $0{,}743$ para $\alpha \in \{0{,}5, 0{,}8\}$), mantendo-se `bm25` em produção. Na revisão do `pipeline.R` (correção de encoding UTF-8 em `limpar()`, DCG linear unificado e filtragem estrita aos 219 qrels pertencentes aos 132 documentos válidos), os números de `csv/05b-map.csv` e `csv/08-rerank-grade-dev.csv` passaram a refletir integralmente as mesmas decisões (`bm25` vence no dev com $\text{MAP}_{\text{dev}} = 0{,}787$; `rerank` $k=3,5$ empata e $k=10$ cai para $0{,}786$).
 
 ---
 
@@ -104,6 +108,7 @@
 - **2026-10-13 (Aula 06 Parte D):** Presentes: Ivan, Jorge e Gustavo. Digitadores: M7: Ivan; M8: Jorge; M9: Gustavo. Teste do Rocchio na consulta $q_{02}$ revelou AP de $0{,}947$ na completa vs $0{,}498$ na residual. Avaliação de PRF no conjunto de desenvolvimento comprovou que $k=0$ (base) supera $k=2, 3, 5$ (MAP $0{,}653$ vs $0{,}448$ em $k=2$), com confirmação no conjunto de teste ($0{,}612$ vs $0{,}487$). O grupo decidiu manter `prf_k = 0` no motor com parâmetros `rocchio` documentados no `config.R`.
 - **2026-10-23 (Aula 07 Parte D):** Presentes: Ivan, Jorge e Gustavo. Digitadores: M7: Ivan; M8: Jorge; M9: Gustavo. Implementação de LSA (`lsa()`, `ranking_lsa()`) e fusão híbrida (`rrf()`, `ranking_modelo()`, `ranking_motor()`). Inspeção qualitativa de $q_{01}$ mostrou que o LSA ($k=20$) introduz documentos sem termos da consulta por alinhamento latente (ex.: $d_{121}$ sobre poesia). No dev ($q_{01}..q_{08}$), BM25 atingiu MAP $0{,}744$ contra $0{,}652$ do híbrido $k=20$; no teste ($q_{09}..q_{12}$), BM25 obteve MAP $0{,}718$ contra $0{,}642$ do híbrido $k=20$. O grupo decidiu manter `modelo = "bm25"`, `lsa_k = 20` e `rrf_c = 60` em `config.R`.
 - **2026-11-10 (Aula 08 Parte D):** Presentes: Ivan, Jorge e Gustavo. Digitadores: M7: Ivan; M8: Jorge; M9: Gustavo. Implementação de `proximidade()`, `reordenar()`, `estagio1()`, `rerank_prox()`, `ap_rerank()` e `ranking_final()` sobre o estágio 1 `bm25`. Inspeção qualitativa em $q_{02}$ mostrou troca entre `88` (que usa a forma flexionada *"Complexo Portuário"*, $\text{prox}=0$) e `58` ($\text{prox}=1$). Na grade de desenvolvimento ($k \in \{3, 5, 10\} \times w \in \{2, 3, 5\}$), $k=3$ e $k=5$ empataram com $k=0$ ($\text{MAP}_{\text{dev}} = 0{,}744$) e $k=10$ caiu para $0{,}743$ por promover menções genéricas a `"Baixada Santista"` em $q_{04}$ (`128` sobre iatismo acima de `148` sobre clima). No teste ($q_{09}..q_{12}$), $\text{MAP}_{\text{teste}} = 0{,}718$. Decisão homologada em `config.R`: `rerank_k = 0` e `janela = 3`.
+- **2026-11-26 (Aula 08 Tema 7 + Revisão Pós-Pente-Fino):** Consolidação do Tema 7 (`consolidados/aula08_tema/aula08_tema_consolidado.md`, `Estado do R` anexado no Colab); correção de encoding UTF-8 em `limpar()`, leitura `UTF-8-BOM` de qrels, DCG linear unificado e pool completa de 12 consultas em `pipeline.R`; remoção de arquivos duplicados; inclusão da Aula 01b (`01b-shannon-pesos.R`), guias da Aula 05 e ferramenta `05-julgar.html` + `05a-kappa.R` + `05e-consolidar-qrels.R`.
 
 ---
 
